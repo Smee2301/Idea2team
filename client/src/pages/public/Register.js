@@ -1,10 +1,31 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Button from '../../components/common/Button';
+import axios from 'axios';
+import Swal from 'sweetalert2';
 
 const Register = () => {
     function handleSubmit() {
+        const role = document.querySelector("#role").value;
+        const full_name = document.querySelector("#full_name").value;
+        const email = document.querySelector("#email").value;
+        const password = document.querySelector("#password").value;
+        const phone = document.querySelector("#phone").value;
+        console.log(role, full_name, email, password, phone);
 
+        axios.post("http://localhost:1337/api/register",{
+            role,
+            full_name,
+            email,
+            password,
+            phone
+        }).then((res)=>{
+            console.log(res);
+            return Swal.fire("Success", "Your account has been created successfully!", "success");
+        }).catch((err)=>{
+            console.error(err);
+            return Swal.fire("Error", err.response?.data?.message || "An error occurred while creating your account. Please try again.", "error");
+        })
     }
     return (
         <div className="auth-page">
@@ -30,13 +51,13 @@ const Register = () => {
                     {/* Role Selector */}
                     <div className="role-selector">
                         <label className="role-option">
-                            <input type="radio" name="role" value="founder" defaultChecked />
+                            <input id="role" type="radio" name="role" value="founder" defaultChecked />
                             <div className="role-option-icon">🏢</div>
                             <div className="role-option-label">I'm a Founder</div>
                             <p style={{ fontSize: '12px', color: 'var(--gray-500)', marginTop: '4px' }}>Post projects & hire talent</p>
                         </label>
                         <label className="role-option">
-                            <input type="radio" name="role" value="freelancer" />
+                            <input id="role" type="radio" name="role" value="freelancer" />
                             <div className="role-option-icon">💻</div>
                             <div className="role-option-label">I'm a Freelancer</div>
                             <p style={{ fontSize: '12px', color: 'var(--gray-500)', marginTop: '4px' }}>Find projects & earn money</p>
@@ -52,12 +73,16 @@ const Register = () => {
                     </div>
                     <div className="form-group">
                         <label className="form-label">Email Address</label>
-                        <input type="email" className="form-input" placeholder="alex@idea2team.com" />
+                        <input id="email" type="email" className="form-input" placeholder="Enter Your Email" />
                     </div>
                     <div className="form-group">
                         <label className="form-label">Password</label>
-                        <input type="password" className="form-input" placeholder="Create a strong password" />
+                        <input id="password" type="password" className="form-input" placeholder="Create a strong password" />
                         <p className="form-helper">Must be at least 8 characters with a number and special character</p>
+                    </div>
+                    <div className="form-group">
+                        <label className="form-label">Phone Number</label>
+                        <input id="phone" type="tel" className="form-input" placeholder="Enter your phone number" />
                     </div>
                     <div style={{ marginBottom: '20px' }}>
                         <label style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', fontSize: '13px', color: 'var(--gray-600)', cursor: 'pointer' }}>

@@ -28,12 +28,6 @@ import MyApplications from './pages/freelancer/MyApplications';
 import FreelancerWorkspace from './pages/freelancer/FreelancerWorkspace';
 import FreelancerProfile from './pages/freelancer/FreelancerProfile';
 
-// Admin Pages
-import AdminOverview from './pages/admin/AdminOverview';
-import ManageUsers from './pages/admin/ManageUsers';
-import AdminManageProjects from './pages/admin/AdminManageProjects';
-import Reports from './pages/admin/Reports';
-
 function App() {
   return (
     <Router>
@@ -57,12 +51,6 @@ function App() {
         <Route path="/freelancer/applications" element={<MyApplications />} />
         <Route path="/freelancer/workspace" element={<FreelancerWorkspace />} />
         <Route path="/freelancer/profile" element={<FreelancerProfile />} />
-
-        {/* Admin Dashboard Routes */}
-        <Route path="/admin/dashboard" element={<AdminOverview />} />
-        <Route path="/admin/users" element={<ManageUsers />} />
-        <Route path="/admin/projects" element={<AdminManageProjects />} />
-        <Route path="/admin/reports" element={<Reports />} />
       </Routes>
     </Router>
   );

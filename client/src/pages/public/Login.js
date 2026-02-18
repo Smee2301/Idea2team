@@ -1,8 +1,33 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Button from '../../components/common/Button';
+import axios from 'axios';
+import Swal from 'sweetalert2';
 
 const Login = () => {
+    function handleLogin() {
+        const email = document.querySelector("#login_email").value;
+        const password = document.querySelector("#login_password").value;
+
+        axios.post("http://localhost:1337/api/login", {
+            email,
+            password
+        }).then((res) => {
+            console.log(res);
+            Swal.fire("Success", "Login successful!", "success");
+            // Redirect based on role
+            const role = res.data?.user?.role;
+            if (role === 'founder') {
+                window.location.href = "/founder/dashboard";
+            } else {
+                window.location.href = "/freelancer/dashboard";
+            }
+        }).catch((err) => {
+            console.error(err);
+            Swal.fire("Error", err.response?.data?.message || "Invalid credentials. Please try again.", "error");
+        });
+    }
+
     return (
         <div className="auth-page">
             <div className="auth-visual">
@@ -26,11 +51,11 @@ const Login = () => {
 
                     <div className="form-group">
                         <label className="form-label">Email Address</label>
-                        <input type="email" className="form-input" placeholder="alex@idea2team.com" />
+                        <input id="login_email" type="email" className="form-input" placeholder="Enter your email" />
                     </div>
                     <div className="form-group">
                         <label className="form-label">Password</label>
-                        <input type="password" className="form-input" placeholder="Enter your password" />
+                        <input id="login_password" type="password" className="form-input" placeholder="Enter your password" />
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
                         <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', color: 'var(--gray-600)', cursor: 'pointer' }}>
@@ -38,7 +63,7 @@ const Login = () => {
                         </label>
                         <a href="#forgot" style={{ fontSize: '14px', color: 'var(--primary-600)', fontWeight: '600' }}>Forgot password?</a>
                     </div>
-                    <Button variant="primary" size="lg" style={{ width: '100%' }}>Sign In</Button>
+                    <Button variant="primary" size="lg" style={{ width: '100%' }} onClick={handleLogin}>Sign In</Button>
 
                     <div className="auth-divider">or</div>
 
@@ -51,6 +76,9 @@ const Login = () => {
 
                     <p className="auth-footer">
                         Don't have an account? <Link to="/register">Create one</Link>
+                    </p>
+                    <p style={{ textAlign: 'center', marginTop: '12px', fontSize: '13px' }}>
+                        <a href="http://localhost:3001" style={{ color: 'var(--gray-400)', textDecoration: 'none' }}>Admin Login →</a>
                     </p>
                 </div>
             </div>
