@@ -79,6 +79,7 @@ const MyProjects = () => {
                             <th>Duration</th>
                             <th>Actions</th>
                            
+                           
                         </tr>
                     </thead>
 
