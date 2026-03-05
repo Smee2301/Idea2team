@@ -1,61 +1,72 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DashboardLayout from '../../components/layout/DashboardLayout';
-import ProjectCard from '../../components/cards/ProjectCard';
+import axios from "axios";
 import SearchBar from '../../components/common/SearchBar';
-import { projects, categories } from '../../data/dummyData';
+import "../../styles/BrowseProject.css";
 
 const BrowseProjects = () => {
-    const [activeCategory, setActiveCategory] = useState('All');
 
-    const filteredProjects = activeCategory === 'All'
-        ? projects
-        : projects.filter(p => p.category === activeCategory);
+   const [search, setSearch] = useState("");
+   const [projects, setProjects] = useState([]);
 
-    return (
-        <DashboardLayout role="freelancer">
-            <div className="page-header">
-                <div>
-                    <h1>Browse Projects</h1>
-                    <p>Discover projects that match your skills and interests.</p>
-                </div>
+   useEffect(() => {
+      axios.get("http://localhost:1337/api/projects")
+      .then((res) => setProjects(res.data))
+      .catch((err) => console.log(err));
+   }, []);
+
+   const filteredProjects = projects.filter((p) =>
+      p.title.toLowerCase().includes(search.toLowerCase()) ||
+      p.required_skills.toLowerCase().includes(search.toLowerCase())
+   );
+
+   return (
+      <DashboardLayout role="freelancer">
+
+         <div className="browse-container">
+
+            <div className="browse-header">
+               <h1 className="browse-title">Browse Projects</h1>
+               <p className="browse-subtitle">Find projects matching your skills 🚀</p>
             </div>
 
-            <div className="filter-bar">
-                <SearchBar placeholder="Search projects by title, skill, or company..." style={{ flex: 1 }} />
-                <select className="form-input form-select" style={{ marginBottom: 0, minWidth: '180px' }}>
-                    <option value="">Budget Range</option>
-                    {['Any Budget', 'Under $5,000', '$5,000 - $10,000', '$10,000 - $20,000', 'Over $20,000'].map((opt, i) => (
-                        <option key={i} value={opt}>{opt}</option>
-                    ))}
-                </select>
+            <div className="browse-search">
+               <SearchBar
+                  placeholder="Search by title or skills..."
+                  onChange={(e) => setSearch(e.target.value)}
+               />
             </div>
 
-            <div className="filter-chips" style={{ marginBottom: '24px' }}>
-                {categories.map(cat => (
-                    <button
-                        key={cat}
-                        className={`filter-chip ${activeCategory === cat ? 'active' : ''}`}
-                        onClick={() => setActiveCategory(cat)}
-                    >
-                        {cat}
-                    </button>
-                ))}
+            <div className="project-list">
+               {filteredProjects.map((p) => (
+                  <div key={p.project_id} className="project-item">
+
+                     <div className="project-top">
+                        <h3 className="project-heading">{p.title}</h3>
+                        <span className="project-budget">
+                           ₹{p.budget_min} - ₹{p.budget_max}
+                        </span>
+                     </div>
+
+                     <p className="project-desc">{p.description}</p>
+
+                     <div className="project-meta">
+                        <span className="project-skill">⚡ {p.required_skills}</span>
+                     </div>
+
+                     <div className="project-actions">
+                        <button className="view-btn">View Details</button>
+                        <button className="apply-btn">Apply Now</button>
+                     </div>
+
+                  </div>
+               ))}
             </div>
 
-            <div className="projects-grid">
-                {filteredProjects.map(project => (
-                    <ProjectCard key={project.id} project={project} />
-                ))}
-            </div>
+         </div>
 
-            {filteredProjects.length === 0 && (
-                <div style={{ textAlign: 'center', padding: '60px 0', color: 'var(--gray-400)' }}>
-                    <p style={{ fontSize: '48px', marginBottom: '12px' }}>🔍</p>
-                    <p>No projects found in this category. Try a different filter.</p>
-                </div>
-            )}
-        </DashboardLayout>
-    );
+      </DashboardLayout>
+   );
 };
 
 export default BrowseProjects;

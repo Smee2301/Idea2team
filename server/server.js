@@ -34,7 +34,7 @@ app.post("/api/admin-login", (req, res) => {
     const query = "SELECT * FROM admin WHERE email = ? AND password = ?";
     const admin_id = 1;
     db.query(`${query}`, [admin_id, email, password], (err, results) => {
-        if (email === "patelmeet52271@gmail.com" && password === "Meet@0811P_") {
+        if (email === "smitp5281@gmail.com" && password === "Smit@2310") {
             return res.json({
                 message: "Admin Login Successful",
                 email: email
@@ -353,6 +353,17 @@ app.delete("/api/project/:id",(req,res)=>{
         res.json({message:"Project deleted successfully"});
     })
 })
+
+app.get("/api/projects",(req,res)=>{
+    const query = "SELECT * FROM projects WHERE status='active'";
+    db.query(query,(err,result)=>{
+        if(err){
+            return res.status(500).json({message:"Error fetching projects"});
+        }
+
+        res.json(result);
+    });
+});
 
 const PORT = 1337;
 app.listen(PORT, () => {
