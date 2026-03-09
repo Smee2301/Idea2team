@@ -66,59 +66,48 @@ const MyProjects = () => {
                 <SearchBar placeholder="Search projects..." />
             </div>
 
-            <div className="table">
-                <table className="project-list">
+            <div className="project-grid">
+    {projects.map((val) => (
 
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Title</th>
-                            <th>Description</th>
-                            <th>Skills</th>
-                            <th>Budget</th>
-                            <th>Duration</th>
-                            <th>Actions</th>
-                           
-                           
-                        </tr>
-                    </thead>
+        <div className="project-card" key={val.project_id}>
 
-                    <tbody>
-                        {projects.map((val, index) => (
-
-                            <tr key={val.project_id}>
-                                <td>{index + 1}</td>
-                                <td>{val.title}</td>
-                                <td>{val.description}</td>
-                                <td>{val.required_skills}</td>
-                                <td>{val.budget_min}-{val.budget_max}</td>
-                                <td>{val.duration_weeks} Weeks</td>
-
-                                <td>
-
-                                    <button
-                                        className="action-btn edit"
-                                        onClick={() => handleEdit(val.project_id)}
-                                    >
-                                        Edit
-                                    </button>
-
-                                    <button
-                                        className="action-btn delete"
-                                        onClick={() => handleDelete(val.project_id)}
-                                    >
-                                        Delete
-                                    </button>
-
-                                </td>
-                                
-                            </tr>
-
-                        ))}
-                    </tbody>
-
-                </table>
+            <div className="card-top">
+                <h3>{val.title}</h3>
+                <span className="duration">{val.duration_weeks} Weeks</span>
             </div>
+
+            <p className="desc">{val.description}</p>
+
+            <div className="skills">
+                {val.required_skills.split(",").map((skill, i) => (
+                    <span key={i} className="skill">{skill}</span>
+                ))}
+            </div>
+
+            <div className="budget">
+                ₹{val.budget_min} - ₹{val.budget_max}
+            </div>
+
+            <div className="card-actions">
+                <button
+                    className="action-btn edit"
+                    onClick={() => handleEdit(val.project_id)}
+                >
+                    Edit
+                </button>
+
+                <button
+                    className="action-btn delete"
+                    onClick={() => handleDelete(val.project_id)}
+                >
+                    Delete
+                </button>
+            </div>
+
+        </div>
+
+    ))}
+</div>
 
         </DashboardLayout>
     );

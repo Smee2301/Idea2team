@@ -25,6 +25,7 @@ import EditProject from './pages/founder/EditProject';
 // Freelancer Pages
 import FreelancerOverview from './pages/freelancer/FreelancerOverview';
 import BrowseProjects from './pages/freelancer/BrowseProjects';
+import ApplyProject from './pages/freelancer/ApplyProject';
 import MyApplications from './pages/freelancer/MyApplications';
 import FreelancerWorkspace from './pages/freelancer/FreelancerWorkspace';
 import FreelancerProfile from './pages/freelancer/FreelancerProfile';
@@ -49,6 +50,7 @@ function App() {
         {/* Freelancer */}
         <Route path="/freelancer/dashboard" element={<FreelancerOverview />} />
         <Route path="/freelancer/browse" element={<BrowseProjects />} />
+        <Route path="/freelancer/apply" element={<ApplyProject />} />
         <Route path="/freelancer/applications" element={<MyApplications />} />
         <Route path="/freelancer/workspace" element={<FreelancerWorkspace />} />
         <Route path="/freelancer/profile" element={<FreelancerProfile />} />

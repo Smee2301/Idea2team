@@ -1,126 +1,162 @@
-/* ===== Container ===== */
-.browse-container {
-   padding: 30px;
+/* PAGE BACKGROUND */
+body{
+background:#f8fafc;
 }
 
-/* ===== Header ===== */
-.browse-header {
-   margin-bottom: 20px;
+/* HEADER */
+.browse-header{
+margin-bottom:20px;
 }
 
-.browse-title {
-   font-size: 28px;
-   font-weight: 700;
-   color: #111827;
+.browse-title{
+font-size:28px;
+font-weight:700;
+color:#111827;
 }
 
-.browse-subtitle {
-   color: #6b7280;
-   margin-top: 6px;
+.browse-subtitle{
+font-size:14px;
+color:#6b7280;
 }
 
-/* ===== Search ===== */
-.browse-search {
-   margin-bottom: 25px;
+/* SEARCH */
+.browse-search{
+margin-bottom:20px;
 }
 
-/* ===== Grid Layout ===== */
-.project-list {
-   display: grid;
-   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-   gap: 20px;
+/* GRID */
+.project-grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+gap:26px;
 }
 
-/* ===== Card ===== */
-.project-item {
-   background: white;
-   padding: 20px;
-   border-radius: 12px;
-   box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-   transition: 0.3s ease;
-   border: 1px solid #f1f1f1;
+/* CARD */
+.project-card{
+background:#ffffff;
+border-radius:18px;
+padding:26px;
+border:1px solid #e5e7eb;
+
+box-shadow:0 10px 30px rgba(0,0,0,0.05);
+
+display:flex;
+flex-direction:column;
+
+transition:all .25s ease;
 }
 
-.project-item:hover {
-   transform: translateY(-5px);
-   box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+.project-card:hover{
+transform:translateY(-6px);
+box-shadow:0 20px 40px rgba(0,0,0,0.08);
+border-color:#e2e8f0;
 }
 
-/* ===== Top Row ===== */
-.project-top {
-   display: flex;
-   justify-content: space-between;
-   align-items: center;
+/* TITLE */
+.project-card h3{
+font-size:22px;
+font-weight:700;
+color:#111827;
+margin-bottom:6px;
 }
 
-.project-heading {
-   font-size: 18px;
-   font-weight: 600;
-   color: #111827;
+/* DESCRIPTION */
+.project-desc{
+font-size:14px;
+color:#6b7280;
+margin-bottom:18px;
+
+display:-webkit-box;
+-webkit-box-orient:vertical;
+overflow:hidden;
 }
 
-.project-budget {
-   background: #eef2ff;
-   color: #4338ca;
-   padding: 4px 10px;
-   border-radius: 6px;
-   font-size: 13px;
-   font-weight: 600;
+/* DETAILS */
+.project-details-container{
+display:flex;
+flex-direction:column;
+gap:10px;
+
+padding-bottom:16px;
+border-bottom:1px solid #f1f5f9;
+
+margin-bottom:16px;
 }
 
-/* ===== Description ===== */
-.project-desc {
-   margin: 12px 0;
-   font-size: 14px;
-   color: #4b5563;
-   line-height: 1.5;
+.project-detail-item{
+display:flex;
+align-items:center;
+gap:6px;
+
+font-size:13px;
+color:#4b5563;
 }
 
-/* ===== Skills ===== */
-.project-meta {
-   margin-bottom: 15px;
+.project-detail-value{
+font-weight:600;
+color:#111827;
 }
 
-.project-skill {
-   font-size: 13px;
-   background: #f3f4f6;
-   padding: 6px 10px;
-   border-radius: 6px;
-   color: #374151;
+/* SKILLS */
+.project-skills-list{
+display:flex;
+flex-wrap:wrap;
+gap:6px;
+margin-bottom:16px;
 }
 
-/* ===== Button ===== */
-.project-actions {
-   text-align: right;
+.project-skill-tag{
+background:#eef2ff;
+color:#4f46e5;
+
+padding:4px 10px;
+border-radius:20px;
+
+font-size:12px;
+font-weight:600;
 }
 
-.apply-btn {
-   background: #4f46e5;
-   color: white;
-   border: rgba(0, 0, 0, 0.284) solid 1px;
-   padding: 8px 16px;
-   border-radius: 8px;
-   cursor: pointer;
-   font-weight: 600;
-   transition: 0.3s;
+/* BUTTONS */
+.project-card-actions{
+display:flex;
+gap:12px;
 }
 
-.apply-btn:hover {
-   background: #4338ca;
+.project-action-btn{
+flex:1;
+padding:11px;
+border-radius:10px;
+font-size:14px;
+font-weight:600;
+border:none;
+cursor:pointer;
+transition:all .2s;
 }
 
-.view-btn {
-
-  background :rgba(192, 192, 192, 0.266);
-   color: black;
-   border: rgba(0, 0, 0, 0.284) solid 1px;
-   margin-right: 10px;
-   padding: 8px 16px;
-   border-radius: 8px;
-   cursor: pointer;
-   font-weight: 600;
-   transition: 0.3s;
+/* VIEW */
+.project-action-btn.view{
+background:#f3f4f6;
+color:#374151;
 }
-.view-btn:hover {
-   color: #4338ca;
+
+.project-action-btn.view:hover{
+background:#e5e7eb;
+}
+
+/* APPLY */
+.project-action-btn.apply{
+background:linear-gradient(135deg,#6366f1,#4f46e5);
+color:white;
+}
+
+.project-action-btn.apply:hover{
+transform:scale(1.03);
+box-shadow:0 6px 18px rgba(79,70,229,0.35);
+}
+
+/* LOADING TEXT */
+.loading-text{
+text-align:center;
+margin-top:20px;
+color:#6b7280;
 }
