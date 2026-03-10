@@ -16,7 +16,8 @@ const EditProject = () => {
         required_skills: "",
         budget_min: "",
         budget_max: "",
-        duration_weeks: ""
+        duration_weeks: "",
+        team_members_required: ""
     });
 
     // ✅ Load Project
@@ -45,80 +46,88 @@ const EditProject = () => {
             `http://localhost:1337/api/founder/edit-project/${id}`,
             form
         )
-        .then(() => {
-            Swal.fire(
-                "Updated",
-                "Project updated successfully",
-                "success"
-            ).then(() => {
-                navigate("/founder/projects");
+            .then(() => {
+                Swal.fire(
+                    "Updated",
+                    "Project updated successfully",
+                    "success"
+                ).then(() => {
+                    navigate("/founder/projects");
+                });
+            })
+            .catch(() => {
+                Swal.fire("Error", "Update failed", "error");
             });
-        })
-        .catch(() => {
-            Swal.fire("Error", "Update failed", "error");
-        });
     };
 
- return (
-<DashboardLayout role="founder">
+    return (
+        <DashboardLayout role="founder">
 
-<div className="edit-project-container">
+            <div className="edit-project-container">
 
-<h2>Edit Project</h2>
+                <h2>Edit Project</h2>
 
-<div className="edit-project-form">
+                <div className="edit-project-form">
 
-<label>Project Title</label>
-<input
-    name="title"
-    value={form.title}
-    onChange={handleChange}
-/>
+                    <label>Project Title</label>
+                    <input
+                        name="title"
+                        value={form.title}
+                        onChange={handleChange}
+                    />
 
-<label>Description</label>
-<textarea
-    name="description"
-    value={form.description}
-    onChange={handleChange}
-/>
+                    <label>Description</label>
+                    <textarea
+                        name="description"
+                        value={form.description}
+                        onChange={handleChange}
+                    />
 
-<label>Required Skills</label>
-<input
-    name="required_skills"
-    value={form.required_skills}
-    onChange={handleChange}
-/>
+                    <label>Required Skills</label>
+                    <input
+                        name="required_skills"
+                        value={form.required_skills}
+                        onChange={handleChange}
+                    />
 
-<label>Minimum Budget</label>
-<input
-    name="budget_min"
-    value={form.budget_min}
-    onChange={handleChange}
-/>
+                    <label>Minimum Budget</label>
+                    <input
+                        name="budget_min"
+                        value={form.budget_min}
+                        onChange={handleChange}
+                    />
 
-<label>Maximum Budget</label>
-<input
-    name="budget_max"
-    value={form.budget_max}
-    onChange={handleChange}
-/>
+                    <label>Maximum Budget</label>
+                    <input
+                        name="budget_max"
+                        value={form.budget_max}
+                        onChange={handleChange}
+                    />
 
-<label>Duration (Weeks)</label>
-<input
-    name="duration_weeks"
-    value={form.duration_weeks}
-    onChange={handleChange}
-/>
+                    <label>Duration (Weeks)</label>
+                    <input
+                        name="duration_weeks"
+                        value={form.duration_weeks}
+                        onChange={handleChange}
+                    />
 
-<button className="update-btn" onClick={handleUpdate}>
-    Update Project
-</button>
+                    <label>Team Members Required</label>
+                    <input
+                        name="team_members_required"
+                        value={form.team_members_required}
+                        onChange={handleChange}
+                        type="number"
+                    />
 
-</div>
-</div>
+                    <button className="update-btn" onClick={handleUpdate}>
+                        Update Project
+                    </button>
 
-</DashboardLayout>
-);
+                </div>
+            </div>
+
+        </DashboardLayout>
+    );
 };
 
 export default EditProject;

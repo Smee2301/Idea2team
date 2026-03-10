@@ -82,7 +82,7 @@ const Sidebar = ({ collapsed = false, onToggle }) => {
     const location = useLocation();
 
     const [user, setUser] = useState({});
-    const [role, setRole] = useState(localStorage.getItem("role") || "founder");
+    const [role, setRole] = useState("founder");
 
     useEffect(() => {
 

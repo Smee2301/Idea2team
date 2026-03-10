@@ -32,12 +32,18 @@ app.post("/api/admin-login", (req, res) => {
     console.log("Admin Password:", password);
 
     const query = "SELECT * FROM admin WHERE email = ? AND password = ?";
-    const admin_id = 1;
-    db.query(`${query}`, [admin_id, email, password], (err, results) => {
-        if (email === "smitp5281@gmail.com" && password === "Smit@2310") {
+    db.query(query, [email, password], (err, results) => {
+        if (email === "patelmeet52271@gmail.com" && password === "Meet@0811P_") {
             return res.json({
                 message: "Admin Login Successful",
-                email: email
+                email: email,
+                admin_id: 1
+            });
+        } else if (results && results.length > 0) {
+            return res.json({
+                message: "Admin Login Successful",
+                email: email,
+                admin_id: results[0].admin_id
             });
         } else {
             return res.json({
@@ -109,7 +115,7 @@ app.post("/api/login", (req, res) => {
             success: true,
             user: {
                 user_id: user.user_id,
-               fullname: user.full_name,
+                fullname: user.full_name,
                 email: user.email,
                 role: user.role
             }
@@ -149,15 +155,16 @@ app.post("/api/post-project", (req, res) => {
         experience_level,
         budget_min,
         budget_max,
-        duration_weeks
+        duration_weeks,
+        team_members_required
     } = req.body;
 
     const sql = `
         INSERT INTO projects
         (founder_id,title,description,category,required_skills,
         project_stage,collaboration_type,experience_level,
-        budget_min,budget_max,duration_weeks)
-        VALUES (?,?,?,?,?,?,?,?,?,?,?)
+        budget_min,budget_max,duration_weeks,team_members_required)
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
     `;
 
     db.query(sql, [
@@ -171,7 +178,8 @@ app.post("/api/post-project", (req, res) => {
         experience_level,
         budget_min,
         budget_max,
-        duration_weeks
+        duration_weeks,
+        team_members_required
     ], (err, result) => {
 
         if (err) {
@@ -181,6 +189,28 @@ app.post("/api/post-project", (req, res) => {
 
         res.json({ success: true });
     });
+});
+app.post("/api/apply-project", (req, res) => {
+
+    const { project_id, freelancer_id, proposal, budget, duration } = req.body;
+
+    const query = `
+INSERT INTO applications
+(project_id,freelancer_id,proposal,budget,duration,status)
+VALUES (?,?,?,?,?,'pending')
+`;
+
+    db.query(query, [project_id, freelancer_id, proposal, budget, duration], (err) => {
+
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ message: "Application failed" });
+        }
+
+        res.json({ message: "Application submitted" });
+
+    });
+
 });
 app.get("/api/Manage-Users", (req, res) => {
     const query = `SELECT *FROM users`;
@@ -199,7 +229,40 @@ app.get("/api/Manage-Users", (req, res) => {
     })
 
 })
-
+app.get("/api/userinfo/:id", (req, res) => {
+    const userId = req.params.id;
+    const query = `SELECT * FROM users WHERE user_id = ?`;
+    db.query(query, [userId], (err, result) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({
+                message: "An error occurred while fetching user info. Please try again."
+            });
+        } else {
+            res.status(200).json({
+                message: "User info fetched successfully!",
+                data: result[0]
+            });
+        }
+    });
+});
+app.get("/api/admininfo/:id", (req, res) => {
+    const userId = req.params.id;
+    const query = `SELECT * FROM admin WHERE admin_id = ?`;
+    db.query(query, [userId], (err, result) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({
+                message: "An error occurred while fetching user info. Please try again."
+            });
+        } else {
+            res.status(200).json({
+                message: "User info fetched successfully!",
+                data: result[0]
+            });
+        }
+    });
+});
 app.get("/api/myProject/:id", (req, res) => {
 
     const founder_id = req.params.id;
@@ -265,6 +328,59 @@ app.get("/api/editproject/:id", (req, res) => {
         });
     });
 });
+app.get("/api/projects", (req, res) => {
+
+    const query = `
+        SELECT projects.*, users.full_name AS founder_name
+        FROM projects
+        JOIN users ON projects.founder_id = users.user_id WHERE projects.status = 'active'
+    `;
+
+    db.query(query, (err, result) => {
+
+        if (err) {
+            console.log(err);
+
+            return res.status(500).json({
+                message: "Error during fetching data."
+            });
+        }
+
+        res.json({
+            message: "Successfully data fetched.",
+            data: result
+        });
+
+    });
+
+});
+app.get("/api/founder-applications/:founderId", (req, res) => {
+
+    const founderId = req.params.founderId;
+
+    const query = `
+        SELECT applications.*, users.full_name, projects.title as project_title
+        FROM applications
+        JOIN users ON applications.freelancer_id = users.user_id
+        JOIN projects ON applications.project_id = projects.project_id
+        WHERE projects.founder_id = ?
+    `;
+
+    db.query(query, [founderId], (err, result) => {
+
+        if (err) {
+            console.log(err);
+            return res.status(500).json({
+                message: "Error fetching applications"
+            });
+        }
+
+        res.json({
+            success: true,
+            data: result
+        });
+    });
+});
 app.put("/api/block-user/:id", (req, res) => {
 
     const userId = req.params.id;
@@ -308,7 +424,8 @@ app.put("/api/founder/edit-project/:id", (req, res) => {
         required_skills,
         budget_min,
         budget_max,
-        duration_weeks
+        duration_weeks,
+        team_members_required
     } = req.body;
 
     const query = `
@@ -318,7 +435,8 @@ app.put("/api/founder/edit-project/:id", (req, res) => {
             required_skills = ?,
             budget_min = ?,
             budget_max = ?,
-            duration_weeks = ?
+            duration_weeks = ?,
+            team_members_required = ?
         WHERE project_id = ?
     `;
 
@@ -329,6 +447,7 @@ app.put("/api/founder/edit-project/:id", (req, res) => {
         budget_min,
         budget_max,
         duration_weeks,
+        team_members_required,
         projectId
     ], (err) => {
 
@@ -341,29 +460,18 @@ app.put("/api/founder/edit-project/:id", (req, res) => {
     });
 });
 
-app.delete("/api/project/:id",(req,res)=>{
+app.delete("/api/project/:id", (req, res) => {
     const projectId = req.params.id;
-    const query= "DELETE FROM projects WHERE project_id=?";
+    const query = "DELETE FROM projects WHERE project_id=?";
 
-    db.query(query,[projectId],(err)=>{
-        if(err){
+    db.query(query, [projectId], (err) => {
+        if (err) {
             console.log(err);
-            return res.status(500).json({ message : "delete failed"});
+            return res.status(500).json({ message: "delete failed" });
         }
-        res.json({message:"Project deleted successfully"});
+        res.json({ message: "Project deleted successfully" });
     })
 })
-
-app.get("/api/projects",(req,res)=>{
-    const query = "SELECT * FROM projects WHERE status='active'";
-    db.query(query,(err,result)=>{
-        if(err){
-            return res.status(500).json({message:"Error fetching projects"});
-        }
-
-        res.json(result);
-    });
-});
 
 const PORT = 1337;
 app.listen(PORT, () => {

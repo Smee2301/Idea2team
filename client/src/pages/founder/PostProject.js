@@ -3,6 +3,7 @@ import DashboardLayout from '../../components/layout/DashboardLayout';
 import Button from '../../components/common/Button';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import '../../styles/postproject.css';
 
 
 const PostProject = () => {
@@ -18,17 +19,18 @@ const PostProject = () => {
         const budget_max = document.querySelector("#budget_max").value;
         const duration_weeks = document.querySelector("#duration_weeks").value;
         const required_skills = document.querySelector("#required_skills").value;
+        const team_members_required = document.querySelector("#team_members_required").value;
 
-        console.log(title, description, category, project_stage, collaboration_type, experience_level, budget_min, budget_max, duration_weeks, required_skills);
+        console.log(title, description, category, project_stage, collaboration_type, experience_level, budget_min, budget_max, duration_weeks, required_skills, team_members_required);
 
-        if (!title || !description || !category || !project_stage || !collaboration_type || !experience_level || !budget_min || !budget_max || !duration_weeks) {
+        if (!title || !description || !category || !project_stage || !collaboration_type || !experience_level || !budget_min || !budget_max || !duration_weeks || !team_members_required) {
             return Swal.fire("Error", "Please fill all the fields", "error");
         }
 
         const founder_id = localStorage.getItem("user_id");
-        
+
         axios.post("http://localhost:1337/api/post-project", {
-            
+
             founder_id,
             title,
             description,
@@ -39,7 +41,8 @@ const PostProject = () => {
             experience_level,
             budget_min,
             budget_max,
-            duration_weeks
+            duration_weeks,
+            team_members_required
         })
             .then((res) => {
                 console.log(res.data);
@@ -50,8 +53,9 @@ const PostProject = () => {
                 Swal.fire("Error", "An error occurred while posting the project. Please try again.", "error");
             })
     }
+
     return (
-        <DashboardLayout role="founder">
+        <DashboardLayout role="founder"     >
             <div className="page-header">
                 <div>
                     <h1>🚀 Post a New Project</h1>
@@ -59,151 +63,150 @@ const PostProject = () => {
                 </div>
             </div>
 
-            <div className="form-page">
-                <div className="form-card">
+            <div className="pp-container">
 
-                    {/* ── SECTION: Basic Details ── */}
-                    <div className="form-section">
-                        <div className="form-section-header">
-                            <span className="form-section-icon">📋</span>
-                            <div>
-                                <h3 className="form-section-title">Basic Details</h3>
-                                <p className="form-section-desc">Give your project a name and description.</p>
-                            </div>
-                        </div>
+                <div className="pp-card">
 
-                        <div className="form-group">
-                            <label className="form-label">Project Title</label>
-                            <input id="title" type="text" className="form-input" placeholder="Enter project title" />
-                        </div>
+                    {/* BASIC DETAILS */}
 
-                        <div className="form-group">
-                            <label className="form-label">Project Description</label>
-                            <textarea id="description"
-                                className="form-input form-textarea"
-                                placeholder="Describe your project in detail — what problem does it solve, what features do you need?"
-                                style={{ minHeight: '140px' }}>
-                            </textarea>
-                        </div>
-                    </div>
+                    <div className="pp-section">
 
-                    {/* ── SECTION: Category & Stage ── */}
-                    <div className="form-section">
-                        <div className="form-section-header">
-                            <span className="form-section-icon">🏷️</span>
-                            <div>
-                                <h3 className="form-section-title">Category & Stage</h3>
-                                <p className="form-section-desc">Help freelancers find your project easily.</p>
-                            </div>
-                        </div>
+                        <h3 className="pp-section-title">📋 Basic Details</h3>
 
-                        <div className="form-grid">
-                            <div className="form-group">
-                                <label className="form-label">Category</label>
-                              <select id="category">
-                                    <option value="Web Development">Web Development</option>
-                                    <option value="Mobile App Development">Mobile App Development</option>
-                                    <option value="UI/UX Design">UI/UX Design</option>
-                                    <option value="Graphic Design">Graphic Design</option>
-                                </select>
+                        <div className="pp-grid-2">
 
+                            <div className="pp-field">
+                                <label className="pp-label">Project Title</label>
+                                <input id="title" type="text" className="pp-input" placeholder="Enter project title" />
                             </div>
 
-                            <div className="form-group">
-                                <label className="form-label">Project Stage</label>
-                                <select id="project_stage" className="form-input form-select">
-                                    <option value="idea">💡 Idea</option>
-                                    <option value="prototype">🔧 Prototype</option>
-                                    <option value="launch">🚀 Launch</option>
+                            <div className="pp-field">
+                                <label className="pp-label">Category</label>
+                                <select id="category" className="pp-input">
+                                    <option>Web Development</option>
+                                    <option>Mobile App Development</option>
+                                    <option>UI/UX Design</option>
+                                    <option>Graphic Design</option>
                                 </select>
                             </div>
+
                         </div>
 
-                        <div className="form-group">
-                            <label className="form-label">Collaboration Type</label>
-                            <select id="collaboration_type" className="form-input form-select">
-                                <option value="paid">💰 Paid</option>
-                                <option value="equity">📈 Equity</option>
-                                <option value="learning">📚 Learning</option>
-                            </select>
+                        <div className="pp-field">
+                            <label className="pp-label">Description</label>
+                            <textarea id="description" className="pp-textarea"></textarea>
                         </div>
 
-                        <div className="form-group">
-                            <label className="form-label">Experience Level</label>
-                            <select id="experience_level" className="form-input form-select">
-                                <option value="beginner">🌱 Beginner</option>
-                                <option value="intermediate">⚡ Intermediate</option>
-                                <option value="expert">🏆 Expert</option>
-                            </select>
-                        </div>
                     </div>
 
-                    {/* ── SECTION: Budget & Duration ── */}
-                    <div className="form-section">
-                        <div className="form-section-header">
-                            <span className="form-section-icon">💰</span>
-                            <div>
-                                <h3 className="form-section-title">Budget & Duration</h3>
-                                <p className="form-section-desc">Set your budget range and timeline.</p>
+
+                    {/* PROJECT DETAILS */}
+
+                    <div className="pp-section">
+
+                        <h3 className="pp-section-title">⚙ Project Details</h3>
+
+                        <div className="pp-grid-3">
+
+                            <div className="pp-field">
+                                <label className="pp-label">Project Stage</label>
+                                <select id="project_stage" className="pp-input">
+                                    <option>Idea</option>
+                                    <option>Prototype</option>
+                                    <option>Launch</option>
+                                </select>
                             </div>
+
+                            <div className="pp-field">
+                                <label className="pp-label">Collaboration</label>
+                                <select id="collaboration_type" className="pp-input">
+                                    <option>Paid</option>
+                                    <option>Equity</option>
+                                    <option>Learning</option>
+                                </select>
+                            </div>
+
+                            <div className="pp-field">
+                                <label className="pp-label">Experience</label>
+                                <select id="experience_level" className="pp-input">
+                                    <option>Beginner</option>
+                                    <option>Intermediate</option>
+                                    <option>Expert</option>
+                                </select>
+                            </div>
+
                         </div>
 
-                        <div className="form-grid">
-                            <div className="form-group">
-                                <label className="form-label">Minimum Budget</label>
-                                <div className="form-input-wrapper">
-                                    <span className="form-input-prefix">₹</span>
-                                    <input id="budget_min" type="number" className="form-input form-input-with-prefix" placeholder="10,000" />
-                                </div>
-                            </div>
-
-                            <div className="form-group">
-                                <label className="form-label">Maximum Budget</label>
-                                <div className="form-input-wrapper">
-                                    <span className="form-input-prefix">₹</span>
-                                    <input id="budget_max" type="number" className="form-input form-input-with-prefix" placeholder="50,000" />
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="form-group" style={{ maxWidth: '50%' }}>
-                            <label className="form-label">Duration (Weeks)</label>
-                            <input id="duration_weeks" type="number" className="form-input" placeholder="e.g. 4" />
-                        </div>
                     </div>
 
-                    {/* ── SECTION: Skills ── */}
-                    <div className="form-section form-section-last">
-                        <div className="form-section-header">
-                            <span className="form-section-icon">⚡</span>
-                            <div>
-                                <h3 className="form-section-title">Required Skills</h3>
-                                <p className="form-section-desc">What expertise does your project need?</p>
+
+                    {/* BUDGET */}
+
+                    <div className="pp-section">
+
+                        <h3 className="pp-section-title">💰 Budget</h3>
+
+                        <div className="pp-grid-3">
+
+                            <div className="pp-field">
+                                <label className="pp-label">Min Budget</label>
+                                <input id="budget_min" type="number" className="pp-input" />
                             </div>
+
+                            <div className="pp-field">
+                                <label className="pp-label">Max Budget</label>
+                                <input id="budget_max" type="number" className="pp-input" />
+                            </div>
+
+                            <div className="pp-field">
+                                <label className="pp-label">Duration (weeks)</label>
+                                <input id="duration_weeks" type="number" className="pp-input" />
+                            </div>
+
+                            <div className="pp-field">
+                                <label className="pp-label">Team Members</label>
+                                <input id="team_members_required" type="number" className="pp-input" defaultValue="1" />
+                            </div>
+
                         </div>
 
-                        <div className="form-group">
-                            <label className="form-label">Skills</label>
-                            <input id="required_skills"
+                    </div>
+
+
+                    {/* SKILLS */}
+
+                    <div className="pp-section">
+
+                        <h3 className="pp-section-title">⚡ Skills</h3>
+
+                        <div className="pp-field">
+                            <input
+                                id="required_skills"
                                 type="text"
-                                className="form-input"
-                                placeholder="React, Node.js, MongoDB, Python..." />
-                            <p className="form-helper">💡 Separate each skill with a comma</p>
+                                className="pp-input"
+                                placeholder="React, Node.js, MongoDB"
+                            />
                         </div>
+
                     </div>
 
-                    {/* ── ACTION BUTTONS ── */}
-                    <div className="form-actions">
+
+                    {/* ACTION BUTTONS */}
+
+                    <div className="pp-actions">
+
                         <Button variant="secondary" onClick={() => handlePublish()}>
-                            Save as Draft
+                            Save Draft
                         </Button>
 
                         <Button variant="primary" onClick={() => handlePublish()}>
-                            Publish Project
+                            Publish
                         </Button>
+
                     </div>
 
                 </div>
+
             </div>
         </DashboardLayout>
     );

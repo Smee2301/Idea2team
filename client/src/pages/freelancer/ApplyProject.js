@@ -53,7 +53,6 @@ const ApplyProject = () => {
             .then(() => {
 
                 alert("Application submitted successfully");
-                // Optional: navigate somewhere, like back to browse
 
             })
             .catch(err => console.log(err));
@@ -166,7 +165,7 @@ const ApplyProject = () => {
 
                     <div className="apply-actions">
 
-                        <Button variant="secondary" onClick={() => window.history.back()}>
+                        <Button variant="secondary">
                             Cancel
                         </Button>
 

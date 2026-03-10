@@ -36,7 +36,7 @@ const BrowseProjects = () => {
    ================================ */
 
    const handleApply = (id) => {
-      navigate(`/freelancer/apply/${id}`);
+      navigate(`/apply-project/${id}`);
    };
 
    return (

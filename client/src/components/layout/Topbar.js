@@ -1,28 +1,50 @@
 import React from 'react';
+import "../../styles/Topbar.css"
+import { Link } from "react-router-dom";
 
-const Topbar = ({ collapsed = false, onToggle }) => {
+const Topbar = ({ collapsed = false }) => {
+    const role = localStorage.getItem("role");
+
     return (
-        <header className={`topbar ${collapsed ? 'sidebar-collapsed' : ''}`}>
-            <div className="topbar-left">
-                <button className="topbar-toggle" onClick={onToggle}>
-                    ☰
-                </button>
+        <header className={`app-topbar ${collapsed ? 'app-topbar-collapsed' : ''}`}>
+
+            {/* LEFT */}
+            <div className="app-topbar-left">
+                <div className="app-topbar-brand">
+
+                    <div className="app-topbar-logo">I2</div>
+
+                    <Link
+                        to={role === "founder" ? "/founder/dashboard" : "/freelancer/dashboard"}
+                        className="app-topbar-title"
+                    >
+                        Idea2Team
+                    </Link>
+
+                </div>
             </div>
 
-            <div className="topbar-right">
-                <button className="topbar-icon-btn">
+            {/* RIGHT */}
+            <div className="app-topbar-right">
+
+                {/* Notification */}
+                <button className="app-topbar-btn">
                     🔔
-                    <span className="topbar-badge"></span>
+                    <span className="app-topbar-dot"></span>
                 </button>
-                <button className="topbar-icon-btn">
+
+                {/* Chat */}
+                <button className="app-topbar-btn">
                     💬
                 </button>
-               <div className = "logout">
-                <button className="topbar-icon-btn" style={{color:"black", borderRadius:"2px", padding:"4px 8px",cursor:"pointer",fontWeight:"600",fontSize:"14px", width:"100%"}} >
+
+                {/* Logout */}
+                <button className="app-topbar-logout">
                     Logout
                 </button>
-               </div>
+
             </div>
+
         </header>
     );
 };
