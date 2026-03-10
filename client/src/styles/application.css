@@ -1,0 +1,232 @@
+/* ===========================================
+   PREMIUM APPLICATION STYLES
+=========================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+.app-dashboard-wrapper {
+    padding: 0px 20px 40px;
+    font-family: 'Inter', sans-serif;
+    animation: fadeIn 0.4s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Header */
+.app-page-header {
+    margin-bottom: 35px;
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 40px;
+    color: #1e293b;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.app-main-title {
+    font-size: 32px;
+    font-weight: 700;
+    margin: 0 0 10px 0;
+    letter-spacing: -0.5px;
+}
+
+.app-sub-title {
+    font-size: 16px;
+    color: #64748b;
+    margin: 0;
+    font-weight: 400;
+}
+
+/* Empty State / Loader */
+.app-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    background: white;
+    border-radius: 20px;
+    border: 1px dashed #cbd5e1;
+    text-align: center;
+    color: #64748b;
+}
+
+.empty-icon {
+    font-size: 48px;
+    margin-bottom: 15px;
+}
+
+.app-empty-state h2 {
+    color: #334155;
+    margin-bottom: 10px;
+    font-size: 22px;
+}
+
+.loader {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #e2e8f0;
+    border-top: 4px solid #4f46e5;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Table Design */
+.table-wrapper {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    overflow-x: auto;
+    border: 1px solid #e2e8f0;
+}
+
+.app-data-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 900px;
+}
+
+.app-data-table thead {
+    background: #f8fafc;
+}
+
+.app-data-table th {
+    text-align: left;
+    padding: 18px 20px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.app-table-row {
+    transition: background-color 0.2s;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.app-table-row:hover {
+    background-color: #f8fafc;
+}
+
+.app-table-row td {
+    padding: 16px 20px;
+    font-size: 14px;
+    color: #334155;
+    vertical-align: middle;
+}
+
+.bold-cell {
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.proposal-cell {
+    max-width: 250px;
+    color: #475569;
+}
+
+.budget-cell {
+    font-weight: 600;
+    color: #059669;
+}
+
+.action-col {
+    text-align: right;
+    min-width: 180px;
+}
+
+/* Status Badges */
+.premium-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-block;
+    text-transform: capitalize;
+}
+
+.status-pending {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+.status-accepted {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.status-rejected {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+/* Table Actions */
+.table-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+.modern-btn {
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+}
+
+.btn-accept {
+    background: #4f46e5;
+    color: white;
+}
+
+.btn-accept:hover {
+    background: #4338ca;
+}
+
+.btn-reject {
+    background: #f1f5f9;
+    color: #ef4444;
+}
+
+.btn-reject:hover {
+    background: #fee2e2;
+}
+
+.table-status-label {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.table-status-label.accepted {
+    color: #059669;
+}
+
+.table-status-label.rejected {
+    color: #dc2626;
+}

@@ -1,132 +1,129 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import DashboardLayout from '../../components/layout/DashboardLayout';
-import axios from "axios";
 import SearchBar from '../../components/common/SearchBar';
-import "../../styles/BrowseProject.css";
+import '../../styles/BrowseProject.css';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const BrowseProjects = () => {
 
-   const navigate = useNavigate();
-   const [search, setSearch] = useState("");
    const [projects, setProjects] = useState([]);
-   const [loading, setLoading] = useState(true);
+   const [expanded, setExpanded] = useState({});
+   const navigate = useNavigate();
 
-   // ✅ Fetch Projects
+   /* ===============================
+      FETCH PROJECTS
+   ================================ */
+
    useEffect(() => {
       axios.get("http://localhost:1337/api/projects")
-         .then((res) => {
-            setProjects(res.data);
-            setLoading(false);
+         .then(res => {
+            setProjects(res.data.data);
          })
-         .catch((err) => {
-            console.log(err);
-            setLoading(false);
-         });
+         .catch(err => console.log(err));
    }, []);
 
-   // ✅ Search Filter
-   const filteredProjects = projects.filter((p) =>
-      p.title.toLowerCase().includes(search.toLowerCase()) ||
-      p.required_skills.toLowerCase().includes(search.toLowerCase())
-   );
+   // Toggle description
+   const toggleDescription = (id) => {
+      setExpanded(prev => ({
+         ...prev,
+         [id]: !prev[id]
+      }));
+   };
+
+   /* ===============================
+      APPLY PROJECT
+   ================================ */
+
+   const handleApply = (id) => {
+      navigate(`/freelancer/apply/${id}`);
+   };
 
    return (
       <DashboardLayout role="freelancer">
-
-         <div className="browse-container">
-
-            {/* HEADER */}
-            <div className="browse-header">
-               <h1 className="browse-title">Browse Projects</h1>
-               <p className="browse-subtitle">Find projects matching your skills 🚀</p>
+         {/* PAGE HEADER */}
+         <div className="page-header">
+            <div>
+               <h1>🔍 Browse Projects</h1>
+               <p>Discover projects that match your skills and interests.</p>
             </div>
-
-            {/* SEARCH */}
-            <div className="browse-search">
-               <SearchBar
-                  placeholder="Search by title or skills..."
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-               />
-            </div>
-
-            {/* LOADING */}
-            {loading && <p className="loading-text">Loading projects...</p>}
-
-            {/* EMPTY STATE */}
-            {!loading && filteredProjects.length === 0 && (
-               <p className="loading-text">No projects found 😢</p>
-            )}
-
-            {/* PROJECT GRID */}
-            <div className="project-grid">
-               {filteredProjects.map((p) => (
-                  <div key={p.project_id} className="project-card">
-
-                     {/* TITLE */}
-                     <h3>{p.title}</h3>
-
-                     {/* DESCRIPTION */}
-                     <p className="project-desc">{p.description}</p>
-
-                     {/* DETAILS */}
-                     <div className="project-details-container">
-
-                        <div className="project-detail-item">
-                           💰 Budget:
-                           <span className="project-detail-value">
-                              ₹{p.budget_min} - ₹{p.budget_max}
-                           </span>
-                        </div>
-
-                        <div className="project-detail-item">
-                           ⏱ Duration:
-                           <span className="project-detail-value">
-                              {p.duration_weeks} Weeks
-                           </span>
-                        </div>
-
-                     </div>
-
-                     {/* SKILLS */}
-                     <div className="project-skills-list">
-                        {p.required_skills.split(",").map((skill, i) => (
-                           <span key={i} className="project-skill-tag">
-                              {skill.trim()}
-                           </span>
-                        ))}
-                     </div>
-
-                     {/* ACTION BUTTONS */}
-                     <div className="project-card-actions">
-
-                        <button className="project-action-btn view">
-                           View Details
-                        </button>
-
-                        <button
-                           className="project-action-btn apply"
-                           onClick={() =>
-                              navigate('/freelancer/apply', {
-                                 state: {
-                                    projectId: p.project_id,
-                                    projectTitle: p.title
-                                 }
-                              })
-                           }
-                        >
-                           Apply Now
-                        </button>
-
-                     </div>
-
-                  </div>
-               ))}
-            </div>
-
          </div>
 
+         {/* SEARCH BAR */}
+         <div className="table-container">
+            <SearchBar placeholder="Search projects by title, skill, or company..." style={{ flex: 1 }} />
+         </div>
+
+         {/* PROJECT CARDS */}
+         <div className="projects-grid">
+            {projects.length === 0 ? (
+               <p>No projects available.</p>
+            ) : (
+               projects.map((val) => {
+                  const isExpanded = expanded[val.project_id];
+                  const description = val.description ? (isExpanded ? val.description : val.description.slice(0, 120) + "...") : "";
+
+                  return (
+                     <div className="project-card" key={val.project_id}>
+                        <h2 className="project-title">
+                           {val.title}
+                        </h2>
+
+                        <p className="project-description">
+                           {description}
+                           {val.description && val.description.length > 120 && (
+                              <span
+                                 className="show-more"
+                                 onClick={() => toggleDescription(val.project_id)}
+                              >
+                                 {isExpanded ? " Show Less" : " Show More"}
+                              </span>
+                           )}
+                        </p>
+
+                        <p className="project-founder">
+                           <strong>Founder:</strong> {val.founder_name}
+                        </p>
+
+                        {/* Skills */}
+                        <div className="skills">
+                           {val.required_skills?.split(',').map((skill, index) => (
+                              <span key={index} className="skill-tag">
+                                 {skill.trim()}
+                              </span>
+                           ))}
+                        </div>
+
+                        <p className="project-budget">
+                           <strong>Budget:</strong> ₹{val.budget_min} - ₹{val.budget_max}
+                        </p>
+
+                        <p className="project-duration">
+                           <strong>Duration:</strong> {val.duration_weeks} weeks
+                        </p>
+
+                        <p className="project-team">
+                           <strong>Team Required:</strong> {val.team_members_required} freelancers
+                        </p>
+
+                        <div className="status-line">
+                           Status: <span className="status active">{val.status || 'Active'}</span>
+                        </div>
+
+                        <div className="project-actions">
+                           <button
+                              className="edit-btn"
+                              style={{ width: '100%' }}
+                              onClick={() => handleApply(val.project_id)}
+                           >
+                              Apply Now
+                           </button>
+                        </div>
+                     </div>
+                  );
+               })
+            )}
+         </div>
       </DashboardLayout>
    );
 };

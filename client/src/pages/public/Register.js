@@ -25,7 +25,9 @@ const Register = () => {
             phone
         }).then((res) => {
             console.log(res);
-            return Swal.fire("Success", "Your account has been created successfully!", "success");
+            return Swal.fire("Success", "Your account has been created successfully!", "success").then(() => {
+                window.location.href = "/login";
+            });
 
         }).catch((err) => {
             console.error(err);

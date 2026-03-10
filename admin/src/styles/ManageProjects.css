@@ -95,10 +95,13 @@
     font-size: 13px;
     font-weight: 600;
     color: #ffffff;
-}   .btns{
-    display:flex;
-    flex-direction:row;
 }
+
+.btns {
+    display: flex;
+    flex-direction: row;
+}
+
 .project-table td {
     padding: 14px;
     font-size: 14px;
@@ -161,6 +164,7 @@
 =========================== */
 
 @media (max-width: 1024px) {
+
     .user-table th,
     .user-table td {
         padding: 10px;
@@ -191,4 +195,35 @@
         padding: 4px 8px;
         font-size: 12px;
     }
+}
+
+/* ===========================
+   FIX LONG TEXT (BEST 🔥)
+=========================== */
+
+/* Description column */
+.project-table td:nth-child(3) {
+    max-width: 220px;
+    /* control width */
+    white-space: nowrap;
+    /* single line */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* show ... */
+}
+
+/* Skills column */
+.project-table td:nth-child(5) {
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Category column (optional clean) */
+.project-table td:nth-child(4) {
+    max-width: 120px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

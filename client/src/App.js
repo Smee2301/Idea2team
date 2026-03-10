@@ -50,7 +50,7 @@ function App() {
         {/* Freelancer */}
         <Route path="/freelancer/dashboard" element={<FreelancerOverview />} />
         <Route path="/freelancer/browse" element={<BrowseProjects />} />
-        <Route path="/freelancer/apply" element={<ApplyProject />} />
+        <Route path="/freelancer/apply/:id" element={<ApplyProject />} />
         <Route path="/freelancer/applications" element={<MyApplications />} />
         <Route path="/freelancer/workspace" element={<FreelancerWorkspace />} />
         <Route path="/freelancer/profile" element={<FreelancerProfile />} />
