@@ -12,20 +12,24 @@ const Login = () => {
     function handleLogin() {
         const email = document.querySelector("#login_email").value;
         const password = document.querySelector("#login_password").value;
+        const role = document.querySelector('input[name="role"]:checked')?.value;
 
-        if (!email || !password) {
-            return Swal.fire("Error", "Enter both email and password");
+        if (!email || !password || !role) {
+            return Swal.fire("Error", "Enter your email, password, and select your role.");
         }
-        axios.post("http://localhost:1337/api/login", {
+        axios.post("http://localhost:5000/api/login", {
             email,
-            password
+            password,
+            role
         }).then((res) => {
+            //i need condition here if role is freelacer and try to login in founder then meassage show 
             Swal.fire("Success", "Login successful!", "success");
 
             // Save user details to localStorage
             localStorage.setItem("user_id", res.data.user.user_id);
             localStorage.setItem("role", res.data.user.role);
 
+           
             // Redirect based on role
             const role = res.data?.user?.role;
             if (role === 'founder') {
@@ -35,7 +39,7 @@ const Login = () => {
             }
         }).catch((err) => {
             console.error(err);
-            if (err.response?.status === 403) {
+            if (err.response?.status === "blocked") {
                 Swal.fire({
                     // icon: "error", //this is used to show error icon
                     title: "Account Blocked",
@@ -73,6 +77,22 @@ const Login = () => {
                         </Link>
                         <h1>Sign In</h1>
                         <p>Enter your credentials to access your account</p>
+                    </div>
+
+                    {/* Role Selector */}
+                    <div className="role-selector">
+                        <label className="role-option">
+                            <input type="radio" name="role" value="founder" defaultChecked />
+                            <div className="role-option-icon">🏢</div>
+                            <div className="role-option-label">I'm a Founder</div>
+                            <p style={{ fontSize: '12px', color: 'var(--gray-500)', marginTop: '4px' }}>Post projects & hire talent</p>
+                        </label>
+                        <label className="role-option">
+                            <input type="radio" name="role" value="freelancer" />
+                            <div className="role-option-icon">💻</div>
+                            <div className="role-option-label">I'm a Freelancer</div>
+                            <p style={{ fontSize: '12px', color: 'var(--gray-500)', marginTop: '4px' }}>Find projects & earn money</p>
+                        </label>
                     </div>
 
                     <div className="form-group">

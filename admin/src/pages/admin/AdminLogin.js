@@ -14,7 +14,7 @@ const AdminLogin = () => {
             return Swal.fire("Error", "Please enter both email and password.", "error");
             
         }
-        axios.post("http://localhost:1337/api/admin-login", {
+        axios.post("http://localhost:5000/api/admin-login", {
             email,
             password
         }).then((res) => {

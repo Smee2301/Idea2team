@@ -16,7 +16,7 @@ const BrowseProjects = () => {
    ================================ */
 
    useEffect(() => {
-      axios.get("http://localhost:1337/api/projects")
+      axios.get("http://localhost:5000/api/projects")
          .then(res => {
             setProjects(res.data.data);
          })

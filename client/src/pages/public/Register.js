@@ -17,7 +17,7 @@ const Register = () => {
             return Swal.fire("Error", "Please fill in all the required fields.", "error");
         } else { console.log(role, full_name, email, password, phone); }
 
-        axios.post("http://localhost:1337/api/register", {
+        axios.post("http://localhost:5000/api/register", {
             role,
             full_name,
             email,
@@ -91,13 +91,13 @@ const Register = () => {
                         <label className="form-label">Phone Number</label>
                         <input id="phone" type="tel" className="form-input" placeholder="Enter your phone number" />
                     </div>
-                    <div style={{ marginBottom: '20px' }}>
+                    <div style={{ marginBottom: '20px' }} >
                         <label style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', fontSize: '13px', color: 'var(--gray-600)', cursor: 'pointer' }}>
                             <input type="checkbox" style={{ marginTop: '2px' }} />
-                            I agree to the <a href="#terms" style={{ color: 'var(--primary-600)' }}>Terms of Service</a> and <a href="#privacy" style={{ color: 'var(--primary-600)' }}>Privacy Policy</a>
+                            I agree to the <a href="#terms" style={{ color: 'var(--primary-600)' }}>Terms of Service</a> and <a href="#privacy" style={{ color: 'var(--primary-600)' }} >Privacy Policy</a>
                         </label>
                     </div>
-                    <Button variant="primary" size="lg" style={{ width: '100%' }} onClick={handleSubmit}>Create Account</Button>
+                    <Button variant="primary" size="lg" style={{ width: '100%' }} onClick={handleSubmit} required>Create Account</Button>
 
                     <div className="auth-divider">or</div>
 

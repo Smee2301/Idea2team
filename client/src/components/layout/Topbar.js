@@ -3,6 +3,10 @@ import "../../styles/Topbar.css"
 import { Link } from "react-router-dom";
 
 const Topbar = ({ collapsed = false }) => {
+    const handleLogout =  ()=> {
+        localStorage.clear();
+        window.location.replace("/login")
+    }
     const role = localStorage.getItem("role");
 
     return (
@@ -39,7 +43,7 @@ const Topbar = ({ collapsed = false }) => {
                 </button>
 
                 {/* Logout */}
-                <button className="app-topbar-logout">
+                <button className="app-topbar-logout" onClick={handleLogout}>
                     Logout
                 </button>
 

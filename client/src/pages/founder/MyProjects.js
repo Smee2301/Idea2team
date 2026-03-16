@@ -17,7 +17,7 @@ const MyProjects = () => {
 
         const userId = localStorage.getItem("user_id");
 
-        axios.get(`http://localhost:1337/api/myProject/${userId}`)
+        axios.get(`http://localhost:5000/api/myProject/${userId}`)
             .then(res => setProjects(res.data.data))
             .catch(err => console.log(err));
 
@@ -41,7 +41,7 @@ const MyProjects = () => {
 
         if (!window.confirm("Delete this project?")) return;
 
-        axios.delete(`http://localhost:1337/api/project/${id}`)
+        axios.delete(`http://localhost:5000/api/project/${id}`)
             .then(() => {
 
                 setProjects(prev =>

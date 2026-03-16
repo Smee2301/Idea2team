@@ -23,7 +23,7 @@ const EditProject = () => {
     // ✅ Load Project
     useEffect(() => {
 
-        axios.get(`http://localhost:1337/api/editproject/${id}`)
+        axios.get(`http://localhost:5000/api/editproject/${id}`)
             .then(res => {
                 setForm(res.data.data);
             })
@@ -43,7 +43,7 @@ const EditProject = () => {
     const handleUpdate = () => {
 
         axios.put(
-            `http://localhost:1337/api/founder/edit-project/${id}`,
+            `http://localhost:5000/api/founder/edit-project/${id}`,
             form
         )
             .then(() => {

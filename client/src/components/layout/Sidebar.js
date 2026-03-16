@@ -88,7 +88,7 @@ const Sidebar = ({ collapsed = false, onToggle }) => {
 
         const userId = localStorage.getItem("user_id");
 
-        axios.get(`http://localhost:1337/api/userinfo/${userId}`)
+        axios.get(`http://localhost:5000/api/userinfo/${userId}`)
             .then(res => {
                 setUser(res.data.data);
                 setRole(res.data.data.role);

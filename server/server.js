@@ -33,7 +33,7 @@ app.post("/api/admin-login", (req, res) => {
 
     const query = "SELECT * FROM admin WHERE email = ? AND password = ?";
     db.query(query, [email, password], (err, results) => {
-        if (email === "patelmeet52271@gmail.com" && password === "Meet@0811P_") {
+        if (email === "smitp5281@gmail.com" && password === "Smit2310") {
             return res.json({
                 message: "Admin Login Successful",
                 email: email,
@@ -115,7 +115,7 @@ app.post("/api/login", (req, res) => {
             success: true,
             user: {
                 user_id: user.user_id,
-                fullname: user.full_name,
+               fullname: user.full_name,
                 email: user.email,
                 role: user.role
             }
@@ -190,28 +190,42 @@ app.post("/api/post-project", (req, res) => {
         res.json({ success: true });
     });
 });
-app.post("/api/apply-project", (req, res) => {
+app.post("/api/apply-project",(req,res)=>{
 
-    const { project_id, freelancer_id, proposal, budget, duration } = req.body;
+    const {
+        project_id,
+        freelancer_id,
+        proposal_message,
+        expected_salary
+    } = req.body;
+
+    console.log(req.body);
 
     const query = `
-INSERT INTO applications
-(project_id,freelancer_id,proposal,budget,duration,status)
-VALUES (?,?,?,?,?,'pending')
-`;
+    INSERT INTO applications
+    (project_id, freelancer_id, proposal_message, expected_salary)
+    VALUES (?,?,?,?)
+    `;
 
-    db.query(query, [project_id, freelancer_id, proposal, budget, duration], (err) => {
+    db.query(
+        query,
+        [project_id, freelancer_id, proposal_message, expected_salary],
+        (err,result)=>{
 
-        if (err) {
+        if(err){
             console.log(err);
-            return res.status(500).json({ message: "Application failed" });
+            return res.status(500).json({
+                message:"Error inserting application"
+            })
         }
 
-        res.json({ message: "Application submitted" });
+        res.json({
+            success:true,
+            message:"Application submitted successfully"
+        })
 
-    });
-
-});
+    })
+})
 app.get("/api/Manage-Users", (req, res) => {
     const query = `SELECT *FROM users`;
     db.query(query, (err, result) => {
@@ -354,33 +368,27 @@ app.get("/api/projects", (req, res) => {
     });
 
 });
-app.get("/api/founder-applications/:founderId", (req, res) => {
-
-    const founderId = req.params.founderId;
-
-    const query = `
-        SELECT applications.*, users.full_name, projects.title as project_title
-        FROM applications
-        JOIN users ON applications.freelancer_id = users.user_id
-        JOIN projects ON applications.project_id = projects.project_id
-        WHERE projects.founder_id = ?
-    `;
-
-    db.query(query, [founderId], (err, result) => {
-
-        if (err) {
+app.get("/api/info-projects/:id",(req,res)=>{
+    const project_id = req.params.id;
+    console.log("Project_Id:",project_id);
+    const query = `SELECT * FROM projects WHERE project_id=?`
+    db.query(query,[project_id],(err,result)=>{
+        if(err){
             console.log(err);
-            return res.status(500).json({
-                message: "Error fetching applications"
-            });
+            return res.status(500).json({message:"Error Occoure in fatching data"})
         }
-
         res.json({
-            success: true,
-            data: result
-        });
-    });
-});
+            success:true,
+            data:result[0]
+        })
+    })
+})
+// app.get("/api/info-application/:id",(req,res)=>{
+//     const frellancer_id = req.params.id;
+//     console.log("freelancerId:",freelancer_id)
+
+//     const query
+// })
 app.put("/api/block-user/:id", (req, res) => {
 
     const userId = req.params.id;
@@ -460,20 +468,56 @@ app.put("/api/founder/edit-project/:id", (req, res) => {
     });
 });
 
-app.delete("/api/project/:id", (req, res) => {
+app.delete("/api/project/:id",(req,res)=>{
     const projectId = req.params.id;
-    const query = "DELETE FROM projects WHERE project_id=?";
+    const query= "DELETE FROM projects WHERE project_id=?";
 
-    db.query(query, [projectId], (err) => {
-        if (err) {
+    db.query(query,[projectId],(err)=>{
+        if(err){
             console.log(err);
-            return res.status(500).json({ message: "delete failed" });
+            return res.status(500).json({ message : "delete failed"});
         }
-        res.json({ message: "Project deleted successfully" });
+        res.json({message:"Project deleted successfully"});
     })
 })
 
-const PORT = 1337;
+app.get("/api/admin/stats", (req, res) => {
+    const totalUsersQuery = "SELECT COUNT(*) as totalUsers FROM users WHERE status = 'active'";
+    const activeProjectsQuery = "SELECT COUNT(*) as activeProjects FROM projects WHERE project_stage != 'completed'";
+    const completedProjectsQuery = "SELECT COUNT(*) as completedProjects FROM projects WHERE project_stage = 'completed'";
+
+    db.query(totalUsersQuery, (err, usersResult) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ message: "Error fetching total users" });
+        }
+        const totalUsers = usersResult[0].totalUsers;
+
+        db.query(activeProjectsQuery, (err, activeResult) => {
+            if (err) {
+                console.log(err);
+                return res.status(500).json({ message: "Error fetching active projects" });
+            }
+            const activeProjects = activeResult[0].activeProjects;
+
+            db.query(completedProjectsQuery, (err, completedResult) => {
+                if (err) {
+                    console.log(err);
+                    return res.status(500).json({ message: "Error fetching completed projects" });
+                }
+                const completedProjects = completedResult[0].completedProjects;
+
+                res.json({
+                    totalUsers,
+                    activeProjects,
+                    completedProjects
+                });
+            });
+        });
+    });
+});
+
+const PORT = 5000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });

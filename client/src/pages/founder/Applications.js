@@ -11,7 +11,7 @@ const Applications = () => {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        axios.get(`http://localhost:1337/api/founder-applications/${founderId}`)
+        axios.get(`http://localhost:5000/api/founder-applications/${founderId}`)
             .then(res => {
                 setApplications(res.data.data);
                 setIsLoading(false);
@@ -24,7 +24,7 @@ const Applications = () => {
 
     // ACCEPT APPLICATION
     const handleAccept = (id) => {
-        axios.put(`http://localhost:1337/api/application/accept/${id}`)
+        axios.put(`http://localhost:5000/api/application/accept/${id}`)
             .then(() => {
                 setApplications(prev =>
                     prev.map(app =>
@@ -45,7 +45,7 @@ const Applications = () => {
 
     // REJECT APPLICATION
     const handleReject = (id) => {
-        axios.put(`http://localhost:1337/api/application/reject/${id}`)
+        axios.put(`http://localhost:5000/api/application/reject/${id}`)
             .then(() => {
                 setApplications(prev =>
                     prev.map(app =>

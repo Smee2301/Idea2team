@@ -1,70 +1,70 @@
-import React, { useState, useEffect } from "react";
-import DashboardLayout from "../../components/layout/DashboardLayout";
-import Button from "../../components/common/Button";
-import axios from "axios";
-import { useParams } from "react-router-dom";
-import "../../styles/ApplyProject.css";
-
-const ApplyProject = () => {
-
+import { useState, useEffect } from 'react';
+import { useParams, useNavigate } from "react-router-dom";
+import axios from 'axios';
+import '../../styles/ApplyProject.css';
+import DashboardLayout from '../../components/layout/DashboardLayout';
+import Button from '../../components/common/Button';
+function ApplyProject() {
     const { id } = useParams();
+    const navigate = useNavigate();
+    console.log(id);
+    const [project, setProject] = useState({});
+    const [formData, setformData] = useState({
+        proposal_message: "",
+        expected_salary: "",
+    });
+    const handleChange = (e) => {
 
-    const [projects, setProjects] = useState({});
-    const [proposal, setProposal] = useState("");
-    const [budget, setBudget] = useState("");
-    const [duration, setDuration] = useState("");
-
-
-    /* FETCH PROJECT */
-
-    useEffect(() => {
-
-        axios.get(`http://localhost:1337/api/editproject/${id}`)
-
-            .then(res => {
-                setProjects(res.data.data);
-            })
-
-            .catch(err => console.log(err));
-
-    }, [id]);
-
-
-    /* SUBMIT APPLICATION */
+        setformData({
+            ...formData,
+            [e.target.name]: e.target.value
+        })
+    }
 
     const handleSubmit = () => {
 
-        const freelancer_id = localStorage.getItem("user_id");
-
-        if (!freelancer_id) {
-            alert("Please log in to apply for projects.");
+        if (!formData.proposal_message || !formData.expected_salary) {
+            alert("Please fill all fields");
             return;
         }
 
-        axios.post("http://localhost:1337/api/apply-project", {
+        const freelancer_id = localStorage.getItem("user_id");
 
+        const applicationData = {
+            ...formData,
             project_id: id,
-            freelancer_id,
-            proposal,
-            budget,
-            duration
+            freelancer_id
+        };
 
-        })
-            .then(() => {
+        axios.post("http://localhost:5000/api/apply-project", applicationData)
+            .then(res => {
+                alert("Application Submitted");
 
-                alert("Application submitted successfully");
+                setformData({
+                    proposal_message: "",
+                    expected_salary: ""
+                });
 
+                navigate("/freelancer/browse"); // redirect
             })
             .catch(err => console.log(err));
 
     };
+    useEffect(() => {
+        axios.get(`http://localhost:5000/api/info-projects/${id}`)
 
+            .then(res => {
+                console.log(res.data)
+                setProject(res.data.data)
+            })
+            .catch(err => console.log(err))
+    }, [id])
 
     return (
-
         <DashboardLayout role="freelancer">
 
             <div className="page-header">
+
                 <div>
                     <h1>Apply for Project</h1>
                     <p>Submit your proposal to the founder</p>
@@ -85,25 +85,25 @@ const ApplyProject = () => {
 
                         <div className="info-item">
                             <span className="info-label">Project</span>
-                            <span className="info-value">{projects.title}</span>
+                            <span className="info-value">{project?.title}</span>
                         </div>
 
                         <div className="info-item">
                             <span className="info-label">Category</span>
-                            <span className="info-value">{projects.category}</span>
+                            <span className="info-value">{project?.category}</span>
                         </div>
 
                         <div className="info-item">
                             <span className="info-label">Budget</span>
                             <span className="info-value">
-                                ₹{projects.budget_min} - ₹{projects.budget_max}
+                                ₹{project?.budget_min} - ₹{project?.budget_max}
                             </span>
                         </div>
 
                         <div className="info-item">
                             <span className="info-label">Duration</span>
                             <span className="info-value">
-                                {projects.duration_weeks} weeks
+                                {project?.duration_weeks} weeks
                             </span>
                         </div>
 
@@ -122,9 +122,10 @@ const ApplyProject = () => {
 
                         <textarea
                             className="form-input textarea"
+                            name="proposal_message"
+                            value={formData.proposal_message}
+                            onChange={handleChange}
                             placeholder="Explain why you are the best fit for this project..."
-                            value={proposal}
-                            onChange={(e) => setProposal(e.target.value)}
                         />
 
                     </div>
@@ -138,24 +139,11 @@ const ApplyProject = () => {
 
                             <input
                                 className="form-input"
+                                name="expected_salary"
+                                value={formData.expected_salary}
+                                onChange={handleChange}
                                 type="number"
-                                value={budget}
-                                onChange={(e) => setBudget(e.target.value)}
                                 placeholder="Enter your price"
-                            />
-
-                        </div>
-
-                        <div className="form-group">
-
-                            <label>Duration (in weeks)</label>
-
-                            <input
-                                className="form-input"
-                                type="number"
-                                value={duration}
-                                onChange={(e) => setDuration(e.target.value)}
-                                placeholder="Estimated weeks"
                             />
 
                         </div>
@@ -182,10 +170,6 @@ const ApplyProject = () => {
 
             </div>
 
-        </DashboardLayout>
-
-    );
-
-};
-
+        </DashboardLayout>)
+}
 export default ApplyProject;

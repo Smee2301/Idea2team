@@ -29,7 +29,7 @@ const PostProject = () => {
 
         const founder_id = localStorage.getItem("user_id");
 
-        axios.post("http://localhost:1337/api/post-project", {
+        axios.post("http://localhost:5000/api/post-project", {
 
             founder_id,
             title,
