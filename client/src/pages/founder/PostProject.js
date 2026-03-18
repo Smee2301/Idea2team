@@ -4,55 +4,100 @@ import Button from '../../components/common/Button';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import '../../styles/postproject.css';
+import {useState} from "react";
+
 
 
 const PostProject = () => {
+    const[fileName,setFile] = useState("");
 
-    function handlePublish() {
-        const title = document.querySelector("#title").value;
-        const description = document.querySelector("#description").value;
-        const category = document.querySelector("#category").value;
-        const project_stage = document.querySelector("#project_stage").value;
-        const collaboration_type = document.querySelector("#collaboration_type").value;
-        const experience_level = document.querySelector("#experience_level").value;
-        const budget_min = document.querySelector("#budget_min").value;
-        const budget_max = document.querySelector("#budget_max").value;
-        const duration_weeks = document.querySelector("#duration_weeks").value;
-        const required_skills = document.querySelector("#required_skills").value;
-        const team_members_required = document.querySelector("#team_members_required").value;
 
-        console.log(title, description, category, project_stage, collaboration_type, experience_level, budget_min, budget_max, duration_weeks, required_skills, team_members_required);
+    const handleFile = (e)=>{
+         const file = e.target.files[0];
 
-        if (!title || !description || !category || !project_stage || !collaboration_type || !experience_level || !budget_min || !budget_max || !duration_weeks || !team_members_required) {
-            return Swal.fire("Error", "Please fill all the fields", "error");
+        if(!file){
+            return;
         }
 
-        const founder_id = localStorage.getItem("user_id");
+        const allowedTypes = [
+            "application/pdf",
+            "image/png",
+            "image/jpeg"
+        ]
 
-        axios.post("http://localhost:5000/api/post-project", {
+        if(!allowedTypes.includes(file.type)){
+            alert("please add in pdf or image formet");
+            return;
+        }
 
-            founder_id,
-            title,
-            description,
-            category,
-            required_skills,
-            project_stage,
-            collaboration_type,
-            experience_level,
-            budget_min,
-            budget_max,
-            duration_weeks,
-            team_members_required
-        })
-            .then((res) => {
-                console.log(res.data);
-                Swal.fire("Success", "Project posted successfully!", "success");
-            })
-            .catch((err) => {
-                console.log(err);
-                Swal.fire("Error", "An error occurred while posting the project. Please try again.", "error");
-            })
+        if(file.size > 2 * 1024 * 1024){
+            alert("file size not more than 2mb");
+            return;
+        }
+
+        setFile(file.name);
+    };
+
+    function handlePublish() {
+
+    const founder_id = sessionStorage.getItem("user_id");
+    const title = document.querySelector("#title").value;
+    const description = document.querySelector("#description").value;
+    const category = document.querySelector("#category").value;
+    const required_skills = document.querySelector("#required_skills").value;
+    const project_stage = document.querySelector("#project_stage").value;
+    const collaboration_type = document.querySelector("#collaboration_type").value;
+    const experience_level = document.querySelector("#experience_level").value;
+    const budget_min = document.querySelector("#budget_min").value;
+    const budget_max = document.querySelector("#budget_max").value;
+    const duration_weeks = document.querySelector("#duration_weeks").value;
+    const team_members_required = document.querySelector("#team_members_required").value;
+    const upload_file = document.querySelector("#upload_file").files[0];
+
+    // ✅ Validation
+    if (!founder_id || !title || !description || !category || !required_skills || !project_stage || !budget_min || !budget_max || !duration_weeks) {
+        Swal.fire("Error", "Please fill all required fields", "error");
+        return;
     }
+
+    if (Number(budget_min) > Number(budget_max)) {
+    Swal.fire("Error", "Min budget cannot be greater than max budget", "error");
+    return;
+}
+
+    const formData = new FormData();
+
+    formData.append("founder_id", founder_id);
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("category", category);
+    formData.append("required_skills", required_skills);
+    formData.append("project_stage", project_stage);
+    formData.append("collaboration_type", collaboration_type);
+    formData.append("experience_level", experience_level);
+    formData.append("budget_min", budget_min);
+    formData.append("budget_max", budget_max);
+    formData.append("duration_weeks", duration_weeks);
+    formData.append("team_members_required", team_members_required);
+
+    if (upload_file) {
+        formData.append("upload_file", upload_file);
+    }
+
+    axios.post("http://localhost:5000/api/post-project", formData, {
+        headers: {
+            "Content-Type": "multipart/form-data"
+        }
+    })
+    .then(() => {
+        Swal.fire("Success", "Project posted successfully!", "success");
+    })
+    .catch((err) => {
+        console.log(err);
+        Swal.fire("Error", "Upload failed", "error");
+    });
+}
+
 
     return (
         <DashboardLayout role="founder"     >
@@ -192,9 +237,18 @@ const PostProject = () => {
 
 
                     {/* ACTION BUTTONS */}
+                    <label htmlFor="upload_file" className="upload-label">
+                        .pdf/jpeg
+                    </label>
+                    <div className="Addfile" >
+                            <input onChange={handleFile} type="file" accept=".pdf , image/*" id="upload_file" hidden required/>
+                            <p style={{color:"black" , margin:"4px 0px 0px 4px " }}>
+                                {fileName || "No file select" }
+                            </p>
+                    </div>
 
                     <div className="pp-actions">
-
+                    
                         <Button variant="secondary" onClick={() => handlePublish()}>
                             Save Draft
                         </Button>

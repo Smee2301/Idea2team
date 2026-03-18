@@ -2,11 +2,15 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const mysql = require('mysql2');
+const multer = require('multer');
+const path = require('path');
+
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 app.use(bodyParser.json());
+app.use("/public", express.static("public"));
 
 const db = mysql.createConnection({
     host: "localhost",
@@ -142,7 +146,20 @@ app.post("/api/forgot-password", (req, res) => {
     });
 });
 
-app.post("/api/post-project", (req, res) => {
+
+
+// Multer CONFIG for upload files //
+const storage = multer.diskStorage({
+    destination: function (req,file,cb){
+        cb(null,"public/");
+    },
+    filename: function (req, file, cb){
+        cb(null, Date.now() + path.extname(file.originalname))
+    },
+});
+const upload = multer({storage: storage});
+
+app.post("/api/post-project", upload.single("upload_file"), (req, res) => {
 
     const {
         founder_id,
@@ -159,12 +176,15 @@ app.post("/api/post-project", (req, res) => {
         team_members_required
     } = req.body;
 
+    // ✅ get file name
+    const upload_file = req.file ? req.file.filename : null;
+
     const sql = `
         INSERT INTO projects
         (founder_id,title,description,category,required_skills,
         project_stage,collaboration_type,experience_level,
-        budget_min,budget_max,duration_weeks,team_members_required)
-        VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
+        budget_min,budget_max,duration_weeks,team_members_required,upload_file)
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)
     `;
 
     db.query(sql, [
@@ -179,7 +199,8 @@ app.post("/api/post-project", (req, res) => {
         budget_min,
         budget_max,
         duration_weeks,
-        team_members_required
+        team_members_required,
+        upload_file
     ], (err, result) => {
 
         if (err) {
@@ -190,6 +211,8 @@ app.post("/api/post-project", (req, res) => {
         res.json({ success: true });
     });
 });
+
+
 app.post("/api/apply-project",(req,res)=>{
 
     const {

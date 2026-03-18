@@ -25,9 +25,9 @@ const Login = () => {
             //i need condition here if role is freelacer and try to login in founder then meassage show 
             Swal.fire("Success", "Login successful!", "success");
 
-            // Save user details to localStorage
-            localStorage.setItem("user_id", res.data.user.user_id);
-            localStorage.setItem("role", res.data.user.role);
+            // Save user details to sessionStorage
+            sessionStorage.setItem("user_id", res.data.user.user_id);
+            sessionStorage.setItem("role", res.data.user.role);
 
            
             // Redirect based on role

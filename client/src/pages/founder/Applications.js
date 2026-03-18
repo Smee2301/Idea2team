@@ -6,7 +6,7 @@ import "../../styles/application.css";
 
 const Applications = () => {
 
-    const founderId = localStorage.getItem("user_id");
+    const founderId = sessionStorage.getItem("user_id");
     const [applications, setApplications] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 

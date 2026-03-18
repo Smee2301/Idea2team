@@ -110,6 +110,15 @@ const BrowseProjects = () => {
                            Status: <span className="status active">{val.status || 'Active'}</span>
                         </div>
 
+                        <div className="File">
+                           File: <a
+                                   target="_blank"
+                                   href={`http://localhost:5000/public/${val.upload_file}`}
+                                   >
+                                    {val.upload_file}
+                                 </a>
+                        </div>
+
                         <div className="project-actions">
                            <button
                               className="edit-btn"

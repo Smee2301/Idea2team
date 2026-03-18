@@ -86,14 +86,21 @@ const Sidebar = ({ collapsed = false, onToggle }) => {
 
     useEffect(() => {
 
-        const userId = localStorage.getItem("user_id");
+        const userId = sessionStorage.getItem("user_id");
 
+        if(!userId) return ;
         axios.get(`http://localhost:5000/api/userinfo/${userId}`)
-            .then(res => {
-                setUser(res.data.data);
-                setRole(res.data.data.role);
-            })
-            .catch(err => console.log(err));
+           .then(res => {
+
+            const userData = res?.data?.data;   // ✅ safe access
+
+            if (userData) {
+                setUser(userData);
+                setRole(userData.role || "founder"); // ✅ safe
+            }
+
+        })
+        .catch(err => console.log(err));
 
     }, []);
 
@@ -149,13 +156,13 @@ const Sidebar = ({ collapsed = false, onToggle }) => {
                 <div className="sidebar-user">
 
                     <div className="sidebar-avatar">
-                        {getInitials(user.full_name)}
+                        {getInitials(user?.full_name)}
                     </div>
 
                     <div className="sidebar-user-info">
 
                         <p className="sidebar-user-name">
-                            {user.full_name || "User"}
+                            {user?.full_name || "User"}
                         </p>
 
                         <p className="sidebar-user-role">

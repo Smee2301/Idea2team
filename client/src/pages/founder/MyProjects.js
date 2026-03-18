@@ -15,7 +15,7 @@ const MyProjects = () => {
     // Load Projects
     useEffect(() => {
 
-        const userId = localStorage.getItem("user_id");
+        const userId = sessionStorage.getItem("user_id");
 
         axios.get(`http://localhost:5000/api/myProject/${userId}`)
             .then(res => setProjects(res.data.data))
@@ -139,6 +139,19 @@ const MyProjects = () => {
                                 Status: <span className="status active">Active</span>
                             </div>
 
+                            <div className="uploadFile">
+                                File: {val.upload_file ? (
+                                    <a
+                                        target="_blank"
+                                        href={`http://localhost:5000/public/${val.upload_file}`}
+                                    >
+                                        {val.upload_file}
+                                    </a>
+                                ) : (
+                                    <span>No file uploaded</span>
+                                )}
+                            </div>
+                          
                             <div className="project-actions">
 
                                 <button

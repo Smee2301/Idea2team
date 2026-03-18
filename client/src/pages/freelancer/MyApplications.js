@@ -12,7 +12,7 @@ const MyApplications = () => {
     const filters = ['All', 'pending', 'accepted', 'rejected'];
 
     useEffect(() => {
-        const freelancerId = localStorage.getItem("user_id");
+        const freelancerId = sessionStorage.getItem("user_id");
         if (!freelancerId) {
             setLoading(false);
             return;

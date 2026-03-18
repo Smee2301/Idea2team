@@ -4,10 +4,10 @@ import { Link } from "react-router-dom";
 
 const Topbar = ({ collapsed = false }) => {
     const handleLogout =  ()=> {
-        localStorage.clear();
+        sessionStorage.clear();
         window.location.replace("/login")
     }
-    const role = localStorage.getItem("role");
+    const role = sessionStorage.getItem("role");
 
     return (
         <header className={`app-topbar ${collapsed ? 'app-topbar-collapsed' : ''}`}>

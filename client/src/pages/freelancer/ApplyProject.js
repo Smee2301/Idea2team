@@ -28,7 +28,7 @@ function ApplyProject() {
             return;
         }
 
-        const freelancer_id = localStorage.getItem("user_id");
+        const freelancer_id = sessionStorage.getItem("user_id");
 
         const applicationData = {
             ...formData,
@@ -106,6 +106,7 @@ function ApplyProject() {
                                 {project?.duration_weeks} weeks
                             </span>
                         </div>
+
 
                     </div>
 
