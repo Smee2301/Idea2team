@@ -99,8 +99,8 @@ const PostProject = () => {
 
 
     return (
-        <DashboardLayout role="founder"     >
-            <div className="page-header">
+        <DashboardLayout role="founder">
+            <div className="pp-page-header">
                 <div>
                     <h1>🚀 Post a New Project</h1>
                     <p>Create a detailed listing to attract the right freelancers.</p>
@@ -236,14 +236,14 @@ const PostProject = () => {
 
 
                     {/* ACTION BUTTONS */}
-                    <label htmlFor="upload_file" className="upload-label">
-                        .pdf/jpeg
-                    </label>
-                    <div className="Addfile" >
-                            <input onChange={handleFile} type="file" accept=".pdf , image/*" id="upload_file" hidden required/>
-                            <p style={{color:"black" , margin:"4px 0px 0px 4px " }}>
-                                {fileName || "No file select" }
-                            </p>
+                    <div className="pp-add-file">
+                        <label htmlFor="upload_file" className="pp-upload-label">
+                            .pdf/jpeg
+                        </label>
+                        <p className="pp-file-name" style={{color:"black", margin:"0" }}>
+                            {fileName || "No file selected" }
+                        </p>
+                        <input onChange={handleFile} type="file" accept=".pdf, image/*" id="upload_file" hidden required/>
                     </div>
 
                     <div className="pp-actions">

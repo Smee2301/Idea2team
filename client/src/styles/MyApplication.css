@@ -1,35 +1,35 @@
-.table-container {
+.ma-table-container {
     background: white;
     padding: 24px;
     border-radius: 12px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
-.table-title {
+.ma-table-title {
     font-size: 1.5rem;
     font-weight: 700;
     color: #111827;
     margin-bottom: 20px;
 }
 
-.table-empty {
+.ma-table-empty {
     text-align: center;
     padding: 40px;
     color: #6b7280;
     font-size: 1.1rem;
 }
 
-.table-responsive {
+.ma-table-responsive {
     overflow-x: auto;
 }
 
-.custom-table {
+.ma-custom-table {
     width: 100%;
     border-collapse: collapse;
     text-align: left;
 }
 
-.custom-table th {
+.ma-custom-table th {
     padding: 12px 16px;
     background-color: #141f36;
     color: #ffffff;
@@ -37,42 +37,42 @@
     border-bottom: 2px solid #1f2937;
 }
 
-.custom-table td {
+.ma-custom-table td {
     padding: 16px;
     border-bottom: 1px solid #f3f4f6;
     color: #4b5563;
     vertical-align: middle;
 }
 
-.fw-bold {
+.ma-fw-bold {
     font-weight: 600;
 }
 
-.text-dark {
+.ma-text-dark {
     color: #111827;
 }
 
-.contact-info {
+.ma-contact-info {
     display: flex;
     align-items: center;
     gap: 8px;
     font-size: 0.9rem;
 }
 
-.contact-link {
+.ma-contact-link {
     color: #4f46e5;
     text-decoration: none;
 }
 
-.contact-link:hover {
+.ma-contact-link:hover {
     text-decoration: underline;
 }
 
-.contact-separator {
+.ma-contact-separator {
     color: #d1d5db;
 }
 
-.status-badge {
+.ma-status-badge {
     padding: 4px 12px;
     border-radius: 9999px;
     font-size: 0.75rem;
@@ -80,22 +80,22 @@
     text-transform: uppercase;
 }
 
-.status-badge.pending {
+.ma-status-badge.pending {
     background-color: #fef3c7;
     color: #92400e;
 }
 
-.status-badge.accepted {
+.ma-status-badge.accepted {
     background-color: #d1fae5;
     color: #065f46;
 }
 
-.status-badge.rejected {
+.ma-status-badge.rejected {
     background-color: #fee2e2;
     color: #991b1b;
 }
 
-.table-btn {
+.ma-table-btn {
     background-color: #4f46e5;
     color: white;
     padding: 6px 16px;
@@ -106,6 +106,6 @@
     transition: background-color 0.2s;
 }
 
-.table-btn:hover {
+.ma-table-btn:hover {
     background-color: #4338ca;
 }

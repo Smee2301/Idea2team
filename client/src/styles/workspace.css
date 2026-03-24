@@ -3,59 +3,59 @@
    ============================================ */
 
 /* ── Workspace Layout ── */
-.workspace-layout {
+.ws-workspace-layout {
     display: grid;
     grid-template-columns: 1fr 320px;
     gap: var(--space-6);
     min-height: calc(100vh - var(--topbar-height) - var(--space-16));
 }
 
-.workspace-main {
+.ws-workspace-main {
     display: flex;
     flex-direction: column;
     gap: var(--space-6);
 }
 
-.workspace-sidebar {
+.ws-workspace-sidebar {
     display: flex;
     flex-direction: column;
     gap: var(--space-6);
 }
 
 /* ── Task Board ── */
-.task-board {
+.ws-task-board {
     background: white;
     border-radius: var(--radius-xl);
     border: 1px solid var(--gray-200);
     padding: var(--space-6);
 }
 
-.task-board-header {
+.ws-task-board-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: var(--space-5);
 }
 
-.task-board-header h3 {
+.ws-task-board-header h3 {
     font-size: var(--text-lg);
     font-weight: var(--weight-semibold);
 }
 
-.task-columns {
+.ws-task-columns {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: var(--space-4);
 }
 
-.task-column {
+.ws-task-column {
     background: var(--gray-50);
     border-radius: var(--radius-lg);
     padding: var(--space-4);
     min-height: 300px;
 }
 
-.task-column-header {
+.ws-task-column-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -64,25 +64,25 @@
     border-bottom: 2px solid;
 }
 
-.task-column-header.todo {
+.ws-task-column-header.todo {
     border-color: var(--info-500);
 }
 
-.task-column-header.in-progress {
+.ws-task-column-header.in-progress {
     border-color: var(--warning-500);
 }
 
-.task-column-header.done {
+.ws-task-column-header.done {
     border-color: var(--success-500);
 }
 
-.task-column-title {
+.ws-task-column-title {
     font-size: var(--text-sm);
     font-weight: var(--weight-semibold);
     color: var(--gray-700);
 }
 
-.task-column-count {
+.ws-task-column-count {
     font-size: var(--text-xs);
     font-weight: var(--weight-semibold);
     padding: 2px 8px;
@@ -91,13 +91,13 @@
     color: var(--gray-600);
 }
 
-.task-list {
+.ws-task-list {
     display: flex;
     flex-direction: column;
     gap: var(--space-3);
 }
 
-.task-card {
+.ws-task-card {
     background: white;
     border-radius: var(--radius-md);
     padding: var(--space-4);
@@ -107,12 +107,12 @@
     box-shadow: var(--shadow-xs);
 }
 
-.task-card:hover {
+.ws-task-card:hover {
     box-shadow: var(--shadow-md);
     transform: translateY(-1px);
 }
 
-.task-card-priority {
+.ws-task-card-priority {
     display: inline-block;
     width: 8px;
     height: 8px;
@@ -120,44 +120,44 @@
     margin-right: var(--space-2);
 }
 
-.task-card-priority.high {
+.ws-task-card-priority.high {
     background: var(--danger-500);
 }
 
-.task-card-priority.medium {
+.ws-task-card-priority.medium {
     background: var(--warning-500);
 }
 
-.task-card-priority.low {
+.ws-task-card-priority.low {
     background: var(--success-500);
 }
 
-.task-card-title {
+.ws-task-card-title {
     font-size: var(--text-sm);
     font-weight: var(--weight-medium);
     color: var(--gray-800);
     margin-bottom: var(--space-2);
 }
 
-.task-card-description {
+.ws-task-card-description {
     font-size: var(--text-xs);
     color: var(--gray-500);
     margin-bottom: var(--space-3);
     line-height: var(--leading-relaxed);
 }
 
-.task-card-footer {
+.ws-task-card-footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-.task-card-date {
+.ws-task-card-date {
     font-size: var(--text-xs);
     color: var(--gray-400);
 }
 
-.task-card-assignee {
+.ws-task-card-assignee {
     width: 24px;
     height: 24px;
     border-radius: var(--radius-full);
@@ -171,26 +171,26 @@
 }
 
 /* ── Team Members ── */
-.team-members {
+.ws-team-members {
     background: white;
     border-radius: var(--radius-xl);
     border: 1px solid var(--gray-200);
     padding: var(--space-5);
 }
 
-.team-members h3 {
+.ws-team-members h3 {
     font-size: var(--text-base);
     font-weight: var(--weight-semibold);
     margin-bottom: var(--space-4);
 }
 
-.team-list {
+.ws-team-list {
     display: flex;
     flex-direction: column;
     gap: var(--space-3);
 }
 
-.team-member {
+.ws-team-member {
     display: flex;
     align-items: center;
     gap: var(--space-3);
@@ -199,15 +199,15 @@
     transition: background var(--transition-fast);
 }
 
-.team-member:hover {
+.ws-team-member:hover {
     background: var(--gray-50);
 }
 
-.team-member-avatar {
+.ws-team-member-avatar {
     position: relative;
 }
 
-.team-member-avatar .avatar {
+.ws-team-member-avatar .avatar {
     width: 36px;
     height: 36px;
     border-radius: var(--radius-full);
@@ -219,7 +219,7 @@
     color: white;
 }
 
-.online-indicator {
+.ws-online-indicator {
     position: absolute;
     bottom: 0;
     right: 0;
@@ -230,40 +230,40 @@
     border: 2px solid white;
 }
 
-.online-indicator.offline {
+.ws-online-indicator.offline {
     background: var(--gray-400);
 }
 
-.team-member-info {
+.ws-team-member-info {
     flex: 1;
 }
 
-.team-member-name {
+.ws-team-member-name {
     font-size: var(--text-sm);
     font-weight: var(--weight-medium);
     color: var(--gray-800);
 }
 
-.team-member-role {
+.ws-team-member-role {
     font-size: var(--text-xs);
     color: var(--gray-500);
 }
 
 /* ── File Upload ── */
-.file-upload-section {
+.ws-file-upload-section {
     background: white;
     border-radius: var(--radius-xl);
     border: 1px solid var(--gray-200);
     padding: var(--space-5);
 }
 
-.file-upload-section h3 {
+.ws-file-upload-section h3 {
     font-size: var(--text-base);
     font-weight: var(--weight-semibold);
     margin-bottom: var(--space-4);
 }
 
-.file-dropzone {
+.ws-file-dropzone {
     border: 2px dashed var(--gray-300);
     border-radius: var(--radius-lg);
     padding: var(--space-8);
@@ -273,35 +273,35 @@
     margin-bottom: var(--space-4);
 }
 
-.file-dropzone:hover {
+.ws-file-dropzone:hover {
     border-color: var(--primary-400);
     background: var(--primary-50);
 }
 
-.file-dropzone-icon {
+.ws-file-dropzone-icon {
     font-size: var(--text-3xl);
     color: var(--gray-400);
     margin-bottom: var(--space-3);
 }
 
-.file-dropzone p {
+.ws-file-dropzone p {
     font-size: var(--text-sm);
     color: var(--gray-500);
 }
 
-.file-dropzone .browse-link {
+.ws-file-dropzone .browse-link {
     color: var(--primary-600);
     font-weight: var(--weight-semibold);
     cursor: pointer;
 }
 
-.file-list {
+.ws-file-list {
     display: flex;
     flex-direction: column;
     gap: var(--space-2);
 }
 
-.file-item {
+.ws-file-item {
     display: flex;
     align-items: center;
     gap: var(--space-3);
@@ -310,38 +310,38 @@
     background: var(--gray-50);
 }
 
-.file-item-icon {
+.ws-file-item-icon {
     font-size: var(--text-lg);
     color: var(--primary-500);
 }
 
-.file-item-info {
+.ws-file-item-info {
     flex: 1;
 }
 
-.file-item-name {
+.ws-file-item-name {
     font-size: var(--text-sm);
     font-weight: var(--weight-medium);
     color: var(--gray-800);
 }
 
-.file-item-size {
+.ws-file-item-size {
     font-size: var(--text-xs);
     color: var(--gray-400);
 }
 
-.file-item-action {
+.ws-file-item-action {
     color: var(--gray-400);
     cursor: pointer;
     transition: color var(--transition-fast);
 }
 
-.file-item-action:hover {
+.ws-file-item-action:hover {
     color: var(--danger-500);
 }
 
 /* ── Chat Panel ── */
-.chat-panel {
+.ws-chat-panel {
     background: white;
     border-radius: var(--radius-xl);
     border: 1px solid var(--gray-200);
@@ -350,7 +350,7 @@
     height: 400px;
 }
 
-.chat-header {
+.ws-chat-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -358,12 +358,12 @@
     border-bottom: 1px solid var(--gray-200);
 }
 
-.chat-header h3 {
+.ws-chat-header h3 {
     font-size: var(--text-base);
     font-weight: var(--weight-semibold);
 }
 
-.chat-online-count {
+.ws-chat-online-count {
     font-size: var(--text-xs);
     color: var(--success-600);
     display: flex;
@@ -371,14 +371,14 @@
     gap: var(--space-1);
 }
 
-.chat-online-count .dot {
+.ws-chat-online-count .dot {
     width: 6px;
     height: 6px;
     background: var(--success-500);
     border-radius: var(--radius-full);
 }
 
-.chat-messages {
+.ws-chat-messages {
     flex: 1;
     overflow-y: auto;
     padding: var(--space-4) var(--space-5);
@@ -387,18 +387,18 @@
     gap: var(--space-4);
 }
 
-.chat-message {
+.ws-chat-message {
     display: flex;
     gap: var(--space-3);
     max-width: 85%;
 }
 
-.chat-message.own {
+.ws-chat-message.own {
     flex-direction: row-reverse;
     align-self: flex-end;
 }
 
-.chat-message-avatar {
+.ws-chat-message-avatar {
     width: 32px;
     height: 32px;
     min-width: 32px;
@@ -411,22 +411,22 @@
     font-weight: var(--weight-semibold);
 }
 
-.chat-message-body {
+.ws-chat-message-body {
     flex: 1;
 }
 
-.chat-message-name {
+.ws-chat-message-name {
     font-size: var(--text-xs);
     font-weight: var(--weight-semibold);
     color: var(--gray-700);
     margin-bottom: 2px;
 }
 
-.chat-message.own .chat-message-name {
+.ws-chat-message.own .ws-chat-message-name {
     text-align: right;
 }
 
-.chat-bubble {
+.ws-chat-bubble {
     padding: var(--space-3) var(--space-4);
     border-radius: var(--radius-lg);
     font-size: var(--text-sm);
@@ -435,22 +435,22 @@
     color: var(--gray-800);
 }
 
-.chat-message.own .chat-bubble {
+.ws-chat-message.own .ws-chat-bubble {
     background: var(--primary-600);
     color: white;
 }
 
-.chat-message-time {
+.ws-chat-message-time {
     font-size: 10px;
     color: var(--gray-400);
     margin-top: 2px;
 }
 
-.chat-message.own .chat-message-time {
+.ws-chat-message.own .ws-chat-message-time {
     text-align: right;
 }
 
-.chat-input {
+.ws-chat-input {
     display: flex;
     align-items: center;
     gap: var(--space-3);
@@ -458,7 +458,7 @@
     border-top: 1px solid var(--gray-200);
 }
 
-.chat-input input {
+.ws-chat-input input {
     flex: 1;
     padding: var(--space-3) var(--space-4);
     background: var(--gray-100);
@@ -468,11 +468,11 @@
     font-size: var(--text-sm);
 }
 
-.chat-input input::placeholder {
+.ws-chat-input input::placeholder {
     color: var(--gray-400);
 }
 
-.chat-send-btn {
+.ws-chat-send-btn {
     width: 36px;
     height: 36px;
     border-radius: var(--radius-full);
@@ -487,32 +487,32 @@
     font-size: var(--text-sm);
 }
 
-.chat-send-btn:hover {
+.ws-chat-send-btn:hover {
     box-shadow: var(--shadow-glow);
     transform: scale(1.05);
 }
 
 /* ── Milestones ── */
-.milestones-section {
+.ws-milestones-section {
     background: white;
     border-radius: var(--radius-xl);
     border: 1px solid var(--gray-200);
     padding: var(--space-6);
 }
 
-.milestones-section h3 {
+.ws-milestones-section h3 {
     font-size: var(--text-lg);
     font-weight: var(--weight-semibold);
     margin-bottom: var(--space-5);
 }
 
-.milestones-list {
+.ws-milestones-list {
     display: flex;
     flex-direction: column;
     gap: var(--space-1);
 }
 
-.milestone-item {
+.ws-milestone-item {
     display: flex;
     align-items: flex-start;
     gap: var(--space-4);
@@ -520,14 +520,14 @@
     position: relative;
 }
 
-.milestone-indicator {
+.ws-milestone-indicator {
     display: flex;
     flex-direction: column;
     align-items: center;
     min-width: 24px;
 }
 
-.milestone-dot {
+.ws-milestone-dot {
     width: 24px;
     height: 24px;
     border-radius: var(--radius-full);
@@ -538,59 +538,59 @@
     flex-shrink: 0;
 }
 
-.milestone-dot.completed {
+.ws-milestone-dot.completed {
     background: var(--success-500);
     color: white;
 }
 
-.milestone-dot.current {
+.ws-milestone-dot.current {
     background: var(--primary-600);
     color: white;
     box-shadow: 0 0 0 4px var(--primary-100);
 }
 
-.milestone-dot.upcoming {
+.ws-milestone-dot.upcoming {
     background: var(--gray-200);
     color: var(--gray-500);
 }
 
-.milestone-line {
+.ws-milestone-line {
     width: 2px;
     flex: 1;
     min-height: 24px;
     margin-top: var(--space-1);
 }
 
-.milestone-line.completed {
+.ws-milestone-line.completed {
     background: var(--success-500);
 }
 
-.milestone-line.current {
+.ws-milestone-line.current {
     background: linear-gradient(to bottom, var(--primary-600), var(--gray-200));
 }
 
-.milestone-line.upcoming {
+.ws-milestone-line.upcoming {
     background: var(--gray-200);
 }
 
-.milestone-content {
+.ws-milestone-content {
     flex: 1;
     padding-bottom: var(--space-3);
 }
 
-.milestone-title {
+.ws-milestone-title {
     font-size: var(--text-sm);
     font-weight: var(--weight-semibold);
     color: var(--gray-800);
     margin-bottom: var(--space-1);
 }
 
-.milestone-date {
+.ws-milestone-date {
     font-size: var(--text-xs);
     color: var(--gray-500);
 }
 
-.milestone-description {
+.ws-milestone-description {
     font-size: var(--text-xs);
     color: var(--gray-500);
     margin-top: var(--space-1);
@@ -599,17 +599,17 @@
 
 /* ── Responsive ── */
 @media (max-width: 1024px) {
-    .workspace-layout {
+    .ws-workspace-layout {
         grid-template-columns: 1fr;
     }
 
-    .task-columns {
+    .ws-task-columns {
         grid-template-columns: 1fr;
     }
 }
 
 @media (max-width: 768px) {
-    .task-columns {
+    .ws-task-columns {
         grid-template-columns: 1fr;
     }
 }

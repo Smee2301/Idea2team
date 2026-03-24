@@ -63,112 +63,81 @@ function ApplyProject() {
     return (
         <DashboardLayout role="freelancer">
 
-            <div className="page-header">
-
+            <div className="ap-page-header">
                 <div>
                     <h1>Apply for Project</h1>
                     <p>Submit your proposal to the founder</p>
                 </div>
             </div>
 
-
-            <div className="apply-container">
-
+            <div className="ap-apply-container">
 
                 {/* PROJECT DETAILS */}
-
-                <div className="apply-project-info">
-
+                <div className="ap-apply-project-info">
                     <h3>Project Details</h3>
-
-                    <div className="project-info-grid">
-
-                        <div className="info-item">
-                            <span className="info-label">Project</span>
-                            <span className="info-value">{project?.title}</span>
+                    <div className="ap-project-info-grid">
+                        <div className="ap-info-item">
+                            <span className="ap-info-label">Project</span>
+                            <span className="ap-info-value">{project?.title}</span>
                         </div>
-
-                        <div className="info-item">
-                            <span className="info-label">Category</span>
-                            <span className="info-value">{project?.category}</span>
+                        <div className="ap-info-item">
+                            <span className="ap-info-label">Category</span>
+                            <span className="ap-info-value">{project?.category}</span>
                         </div>
-
-                        <div className="info-item">
-                            <span className="info-label">Budget</span>
-                            <span className="info-value">
+                        <div className="ap-info-item">
+                            <span className="ap-info-label">Budget</span>
+                            <span className="ap-info-value">
                                 ₹{project?.budget_min} - ₹{project?.budget_max}
                             </span>
                         </div>
-
-                        <div className="info-item">
-                            <span className="info-label">Duration</span>
-                            <span className="info-value">
+                        <div className="ap-info-item">
+                            <span className="ap-info-label">Duration</span>
+                            <span className="ap-info-value">
                                 {project?.duration_weeks} weeks
                             </span>
                         </div>
-
-
                     </div>
-
                 </div>
 
-
                 {/* APPLY FORM */}
-
-                <div className="apply-form">
-
-                    <div className="form-group">
-
+                <div className="ap-apply-form">
+                    <div className="ap-form-group">
                         <label>Your Proposal</label>
-
                         <textarea
-                            className="form-input textarea"
+                            className="ap-form-input ap-textarea"
                             name="proposal_message"
                             value={formData.proposal_message}
                             onChange={handleChange}
                             placeholder="Explain why you are the best fit for this project..."
                         />
-
                     </div>
 
-
-                    <div className="form-grid">
-
-                        <div className="form-group">
-
+                    <div className="ap-form-grid">
+                        <div className="ap-form-group">
                             <label>Your Expected Budget</label>
-
                             <input
-                                className="form-input"
+                                className="ap-form-input"
                                 name="expected_salary"
                                 value={formData.expected_salary}
                                 onChange={handleChange}
                                 type="number"
                                 placeholder="Enter your price"
                             />
-
                         </div>
-
                     </div>
 
-
-                    <div className="apply-actions">
-
-                        <Button variant="secondary">
+                    <div className="ap-apply-actions">
+                        <Button variant="secondary" onClick={() => navigate(-1)}>
                             Cancel
                         </Button>
-
                         <Button
                             variant="primary"
                             onClick={handleSubmit}
                         >
                             Submit Application
                         </Button>
-
                     </div>
-
                 </div>
-
             </div>
 
         </DashboardLayout>)

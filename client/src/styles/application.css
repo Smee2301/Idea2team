@@ -1,93 +1,105 @@
-/* Main Container */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+.fap-page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    padding: 0 20px;
 }
-.Grid-Conatiner {
+
+.fap-page-header h1 {
+    font-size: 24px;
+    margin: 0;
+}
+
+.fap-page-header p {
+    font-size: 14px;
+    color: #666;
+    margin-top: 4px;
+}
+
+.fap-grid-container {
     padding: 20px;
     display: flex;
     justify-content: center;
 }
 
 /* Table Styling */
-.table {
+.fap-table {
     width: 100%;    
     border-collapse: collapse;
     background: #ffffff;
-    box-shadow: 0 4px 12px rgb(108, 101, 101);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden;
 }
 
 /* Table Header */
-.table thead {
-    background-color: #141f36e6;
-    color: rgb(255, 255, 255);
-    font-family: 'Poppins', sans-serif;
-    
+.fap-table thead {
+    background-color: #141f36;
+    color: white;
 }
 
-.table th {
+.fap-table th {
     padding: 14px;
     text-align: left;
     font-size: 16px;
-    letter-spacing: 0.5px;
+    font-weight: 600;
 }
 
 /* Table Body */
-.table td {
+.fap-table td {
     padding: 12px 14px;
     border-bottom: 1px solid #eee;
     font-size: 15px;
 }
 
 /* Row Hover Effect */
-.table tbody tr:hover {
+.fap-table tbody tr:hover {
     background-color: #f5f7fa;
     transition: 0.2s ease;
 }
 
 /* Buttons */
-.table button {
-    padding: 6px 12px;
+.fap-btn {
+    padding: 6px 16px;
     margin-right: 8px;
     border: none;
     border-radius: 6px;
     cursor: pointer;
     font-size: 14px;
+    font-weight: 500;
     transition: 0.3s ease;
 }
 
-/* Accept Button */
-.table button:first-child {
-    background-color: blue;
+.fap-btn-success {
+    background-color: #22c55e;
     color: white;
 }
 
-.table button:first-child:hover {
-    background-color: blue;
+.fap-btn-success:hover {
+    background-color: #16a34a;
 }
 
-/* Reject Button */
-.table button:last-child {
-    background-color: #e74c3c;
+.fap-btn-danger {
+    background-color: #ef4444;
     color: white;
 }
 
-.table button:last-child:hover {
-    background-color: #c0392b;
+.fap-btn-danger:hover {
+    background-color: #dc2626;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-    .table {
+    .fap-table {
         font-size: 14px;
     }
 
-    .table th, .table td {
+    .fap-table th, .fap-table td {
         padding: 10px;
     }
 
-    .table button {
+    .fap-btn {
         padding: 5px 10px;
         font-size: 12px;
     }

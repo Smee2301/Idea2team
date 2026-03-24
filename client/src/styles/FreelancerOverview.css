@@ -1,0 +1,112 @@
+.fro-page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-8);
+}
+
+.fro-page-header h1 {
+    font-size: var(--text-2xl);
+    margin: 0;
+}
+
+.fro-page-header p {
+    font-size: var(--text-sm);
+    color: var(--gray-500);
+    margin-top: var(--space-1);
+}
+
+.fro-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-6);
+    margin-bottom: var(--space-8);
+}
+
+.fro-content-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--space-6);
+}
+
+.fro-card {
+    background: white;
+    padding: var(--space-6);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--gray-200);
+    box-shadow: var(--shadow-sm);
+}
+
+.fro-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-6);
+}
+
+.fro-card-title {
+    font-size: var(--text-lg);
+    font-weight: 700;
+    margin: 0;
+}
+
+.fro-activity-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.fro-activity-item {
+    display: flex;
+    gap: var(--space-4);
+    position: relative;
+}
+
+.fro-activity-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-top: 4px;
+    flex-shrink: 0;
+}
+
+.fro-activity-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.fro-activity-text {
+    font-size: var(--text-sm);
+    color: var(--gray-700);
+    margin: 0;
+}
+
+.fro-activity-time {
+    font-size: var(--text-xs);
+    color: var(--gray-500);
+}
+
+.fro-skill-tag {
+    background: var(--primary-50);
+    color: var(--primary-700);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+@media (max-width: 1024px) {
+    .fro-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .fro-content-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .fro-stats-grid {
+        grid-template-columns: 1fr;
+    }
+}

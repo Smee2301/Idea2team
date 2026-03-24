@@ -681,6 +681,65 @@ app.get("/api/profile/:user_id", (req, res) => {
 });
 
 
+// Founder-profile dynamic - 24-03-2026 //
+app.post("/api/founder-profile", (req, res) => {
+    const {
+        user_id, phone, location, bio,
+        company_name, company_website,
+        industry, company_size, company_description
+    } = req.body;
+
+    const query = `
+        INSERT INTO founder_profiles (
+            user_id, phone, location, bio, 
+            company_name, company_website, 
+            industry, company_size, company_description
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ON DUPLICATE KEY UPDATE
+            phone = VALUES(phone),
+            location = VALUES(location),
+            bio = VALUES(bio),
+            company_name = VALUES(company_name),
+            company_website = VALUES(company_website),
+            industry = VALUES(industry),
+            company_size = VALUES(company_size),
+            company_description = VALUES(company_description)
+    `;
+
+    db.query(query, [
+        user_id, phone, location, bio,
+        company_name, company_website,
+        industry, company_size, company_description
+    ], (err) => {
+        if (err) {
+            console.error("SQL Error in Founder Profile POST:", err);
+            return res.status(500).json({ message: "Error saving founder profile" });
+        }
+        res.json({ success: true, message: "Founder Profile saved successfully" });
+    });
+});
+
+app.get("/api/founder-profile/:user_id", (req, res) => {
+    const { user_id } = req.params;
+
+    const query = `
+        SELECT users.full_name, users.email, founder_profiles.*
+        FROM users
+        LEFT JOIN founder_profiles ON users.user_id = founder_profiles.user_id
+        WHERE users.user_id = ?
+    `;
+
+    db.query(query, [user_id], (err, result) => {
+        if (err) {
+            console.error("SQL Error in Founder Profile GET:", err);
+            return res.status(500).json({ message: "Error fetching founder profile" });
+        }
+        res.status(200).json(result[0] || {});
+    });
+});
+
+
 
 
 

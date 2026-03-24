@@ -53,15 +53,14 @@ useEffect(()=>{
 
     return (
       <DashboardLayout role="founder">
-           <div className="page-header">
+           <div className="fap-page-header">
                 <div>
                     <h1>Applications</h1>
                     <p>Manage the applications</p>
                 </div>
-
             </div>
-        <div className="Grid-Conatiner">
-           <table className="table">
+        <div className="fap-grid-container">
+           <table className="fap-table">
             <thead>
                  <tr>
                     <th>#</th>
@@ -76,18 +75,18 @@ useEffect(()=>{
             <tbody>
                 {application.map((val,index)=>{
                     return(
-                        <tr>
+                        <tr key={val.application_id}>
                             <td>{index+1}</td>
                             <td>{val.full_name}</td>
                             <td>{val.title}</td>
                             <td>{val.proposal_message}</td>
-                            <td>{val.expected_salary}</td>
+                            <td>₹{val.expected_salary}</td>
                             <td>
                             {val.status !== 'rejected' && (
                               <button
-                                    className="btn btn-success"
+                                    className="fap-btn fap-btn-success"
                                     disabled={val.status !== "pending"}
-                                    style={{ backgroundColor: val.status === 'accepted' ? '#28a745' : undefined, color: val.status === 'accepted' ? 'white' : undefined }}
+                                    style={{ backgroundColor: val.status === 'accepted' ? '#22c55e' : undefined }}
                                     onClick={() => handleAccept(val.application_id)}
                                     >
                                     {val.status === 'accepted' ? 'Accepted' : 'Accept'}
@@ -96,16 +95,24 @@ useEffect(()=>{
 
                             {val.status !== 'accepted' && (
                                     <button
-                                    className="btn btn-danger"
+                                    className="fap-btn fap-btn-danger"
                                     disabled={val.status !== "pending"}
-                                    style={{ backgroundColor: val.status === 'rejected' ? '#dc3545' : undefined, color: val.status === 'rejected' ? 'white' : undefined }}
+                                    style={{ backgroundColor: val.status === 'rejected' ? '#ef4444' : undefined }}
                                     onClick={() => handleReject(val.application_id)}
                                     >
                                     {val.status === 'rejected' ? 'Rejected' : 'Reject'}
                                     </button>
                             )}
                             </td>
-                            <td>{val.status}</td>
+                            <td>
+                                <span style={{ 
+                                    textTransform: 'capitalize',
+                                    fontWeight: '600',
+                                    color: val.status === 'accepted' ? '#22c55e' : val.status === 'rejected' ? '#ef4444' : '#f59e0b'
+                                }}>
+                                    {val.status}
+                                </span>
+                            </td>
                         </tr>
                     )
                 })}

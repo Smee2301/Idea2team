@@ -57,7 +57,7 @@ const MyProjects = () => {
     return (
         <DashboardLayout role="founder">
 
-            <div className="page-header">
+            <div className="mp-page-header">
                 <div>
                     <h1>My Projects</h1>
                     <p>Manage and track all your posted projects.</p>
@@ -71,75 +71,63 @@ const MyProjects = () => {
                 </Button>
             </div>
 
-            <div className="table-container">
+            <div className="mp-table-container">
                 <SearchBar placeholder="Search projects..." />
             </div>
 
             {/* PROJECT CARDS */}
-
-            <div className="projects-grid">
-
+            <div className="mp-projects-grid">
                 {projects.map((val) => {
-
                     const isExpanded = expanded[val.project_id];
                     const description = isExpanded
                         ? val.description
                         : val.description.slice(0, 120) + "...";
 
                     return (
-
-                        <div className="project-card" key={val.project_id}>
-
-                            <h2 className="project-title">
+                        <div className="mp-project-card" key={val.project_id}>
+                            <h2 className="mp-project-title">
                                 {val.title}
                             </h2>
 
-                            <p className="project-description">
-
+                            <p className="mp-project-description">
                                 {description}
-
                                 <span
-                                    className="show-more"
+                                    className="mp-show-more"
                                     onClick={() => toggleDescription(val.project_id)}
                                 >
                                     {isExpanded ? " Show Less" : " Show More"}
                                 </span>
-
                             </p>
 
-                            <p className="project-founder">
+                            <p className="mp-project-founder">
                                 <strong>Founder:</strong> Meet
                             </p>
 
-                            {/* Skills */}
-
-                            <div className="skills">
-
+                            <div className="mp-skills">
                                 {val.required_skills.split(",").map((skill, index) => (
-                                    <span key={index} className="skill-tag">
+                                    <span key={index} className="mp-skill-tag">
                                         {skill}
                                     </span>
                                 ))}
-
                             </div>
 
-                            <p className="project-budget">
+                            <p className="mp-project-budget">
                                 <strong>Budget:</strong> ₹{val.budget_min} - ₹{val.budget_max}
                             </p>
 
-                            <p className="project-duration">
+                            <p className="mp-project-duration">
                                 <strong>Duration:</strong> {val.duration_weeks} weeks
                             </p>
 
-                            <p className="project-team">
+                            <p className="mp-project-team">
                                 <strong>Team Required:</strong> {val.team_members_required} freelancers
                             </p>
 
-                            <div className="status-line">
-                                Status: <span className="status active">Active</span>
+                            <div className="mp-status-line">
+                                Status: <span className="mp-status active">Active</span>
                             </div>
 
-                            <div className="uploadFile">
+                            <div className="mp-uploadFile">
                                 File: {val.upload_file ? (
                                     <a
                                         target="_blank"
@@ -152,29 +140,24 @@ const MyProjects = () => {
                                 )}
                             </div>
                           
-                            <div className="project-actions">
-
+                            <div className="mp-project-actions">
                                 <button
-                                    className="edit-btn"
+                                    className="mp-edit-btn"
                                     onClick={() => handleEdit(val.project_id)}
                                 >
                                     Edit
                                 </button>
 
                                 <button
-                                    className="delete-btn"
+                                    className="mp-delete-btn"
                                     onClick={() => handleDelete(val.project_id)}
                                 >
                                     Delete
                                 </button>
-
                             </div>
-
                         </div>
-
                     );
                 })}
-
             </div>
 
         </DashboardLayout>

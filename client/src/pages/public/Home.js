@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Navbar from '../../components/layout/Navbar';
 import Footer from '../../components/layout/Footer';
 import Button from '../../components/common/Button';
+import '../../styles/Home.css';
 
 const features = [
     { icon: '🚀', title: 'Post Projects', desc: 'Founders can post detailed projects with budgets, timelines, and required skills to attract top talent.', bg: '#eef2ff', color: '#4f46e5' },
@@ -25,10 +26,10 @@ const Home = () => {
             <Navbar />
 
             {/* Hero Section */}
-            <section className="hero">
-                <div className="hero-content">
-                    <div className="hero-text">
-                        <div className="hero-badge">
+            <section className="hm-hero">
+                <div className="hm-hero-content">
+                    <div className="hm-hero-text">
+                        <div className="hm-hero-badge">
                             <span className="dot"></span>
                             Open for Early Access
                         </div>
@@ -36,11 +37,11 @@ const Home = () => {
                             Build Your Dream Team,{' '}
                             <span className="text-gradient">Launch Faster</span>
                         </h1>
-                        <p className="hero-subtitle">
+                        <p className="hm-hero-subtitle">
                             Idea2Team connects visionary founders with world-class freelancers.
                             Find talent, collaborate in real-time, and bring your startup ideas to life.
                         </p>
-                        <div className="hero-actions">
+                        <div className="hm-hero-actions">
                             <Link to="/register">
                                 <Button variant="primary" size="lg">Start Building — Free</Button>
                             </Link>
@@ -50,25 +51,25 @@ const Home = () => {
                                 </Button>
                             </Link>
                         </div>
-                        <div className="hero-stats">
-                            <div className="hero-stat">
-                                <p className="hero-stat-value">2,500+</p>
-                                <p className="hero-stat-label">Freelancers</p>
+                        <div className="hm-hero-stats">
+                            <div className="hm-hero-stat">
+                                <p className="hm-hero-stat-value">2,500+</p>
+                                <p className="hm-hero-stat-label">Freelancers</p>
                             </div>
-                            <div className="hero-stat">
-                                <p className="hero-stat-value">850+</p>
-                                <p className="hero-stat-label">Projects Launched</p>
+                            <div className="hm-hero-stat">
+                                <p className="hm-hero-stat-value">850+</p>
+                                <p className="hm-hero-stat-label">Projects Launched</p>
                             </div>
-                            <div className="hero-stat">
-                                <p className="hero-stat-value">$2.4M+</p>
-                                <p className="hero-stat-label">Paid to Freelancers</p>
+                            <div className="hm-hero-stat">
+                                <p className="hm-hero-stat-value">$2.4M+</p>
+                                <p className="hm-hero-stat-label">Paid to Freelancers</p>
                             </div>
                         </div>
                     </div>
 
-                    <div className="hero-visual">
-                        <div className="hero-illustration">
-                            <div className="hero-mock-card">
+                    <div className="hm-hero-visual">
+                        <div className="hm-hero-illustration">
+                            <div className="hm-hero-mock-card">
                                 <div className="mock-title"></div>
                                 <div className="mock-text"></div>
                                 <div className="mock-tags">
@@ -77,7 +78,7 @@ const Home = () => {
                                     <span className="mock-tag">AI/ML</span>
                                 </div>
                             </div>
-                            <div className="hero-mock-card">
+                            <div className="hm-hero-mock-card">
                                 <div className="mock-title" style={{ width: '45%' }}></div>
                                 <div className="mock-text" style={{ width: '75%' }}></div>
                                 <div className="mock-tags">
@@ -85,7 +86,7 @@ const Home = () => {
                                     <span className="mock-tag">Figma</span>
                                 </div>
                             </div>
-                            <div className="hero-mock-card">
+                            <div className="hm-hero-mock-card">
                                 <div className="mock-title" style={{ width: '55%' }}></div>
                                 <div className="mock-text" style={{ width: '85%' }}></div>
                                 <div className="mock-tags">
@@ -100,16 +101,16 @@ const Home = () => {
             </section>
 
             {/* Features Section */}
-            <section className="features-section">
-                <div className="section-header">
-                    <span className="section-label">Features</span>
+            <section className="hm-features-section">
+                <div className="hm-section-header">
+                    <span className="hm-section-label">Features</span>
                     <h2>Everything You Need to Build & Scale</h2>
                     <p>Powerful tools designed for founders and freelancers to collaborate seamlessly.</p>
                 </div>
-                <div className="features-grid">
+                <div className="hm-features-grid">
                     {features.map((f, i) => (
-                        <div className="feature-card" key={i}>
-                            <div className="feature-icon" style={{ background: f.bg, color: f.color }}>
+                        <div className="hm-feature-card" key={i}>
+                            <div className="hm-feature-icon" style={{ background: f.bg, color: f.color }}>
                                 {f.icon}
                             </div>
                             <h3>{f.title}</h3>
@@ -120,25 +121,25 @@ const Home = () => {
             </section>
 
             {/* How It Works */}
-            <section className="how-section">
-                <div className="section-header">
-                    <span className="section-label">How It Works</span>
+            <section className="hm-how-section">
+                <div className="hm-section-header">
+                    <span className="hm-section-label">How It Works</span>
                     <h2>Launch in 3 Simple Steps</h2>
                     <p>From idea to team in minutes — it's that easy.</p>
                 </div>
-                <div className="how-steps">
-                    <div className="how-step">
-                        <div className="how-step-number">1</div>
+                <div className="hm-how-steps">
+                    <div className="hm-how-step">
+                        <div className="hm-how-step-number">1</div>
                         <h3>Post Your Project</h3>
                         <p>Describe your project, set your budget, and list the skills you need. It only takes a few minutes.</p>
                     </div>
-                    <div className="how-step">
-                        <div className="how-step-number">2</div>
+                    <div className="hm-how-step">
+                        <div className="hm-how-step-number">2</div>
                         <h3>Find Your Team</h3>
                         <p>Browse applications, review portfolios, and let our smart matching suggest the best candidates.</p>
                     </div>
-                    <div className="how-step">
-                        <div className="how-step-number">3</div>
+                    <div className="hm-how-step">
+                        <div className="hm-how-step-number">3</div>
                         <h3>Collaborate & Launch</h3>
                         <p>Use our integrated workspace with task boards, chat, and milestones to bring your vision to life.</p>
                     </div>
@@ -146,20 +147,20 @@ const Home = () => {
             </section>
 
             {/* Testimonials */}
-            <section className="testimonials-section">
-                <div className="section-header">
-                    <span className="section-label">Testimonials</span>
+            <section className="hm-testimonials-section">
+                <div className="hm-section-header">
+                    <span className="hm-section-label">Testimonials</span>
                     <h2>Loved by Founders & Freelancers</h2>
                     <p>See what our community has to say about their experience on Idea2Team.</p>
                 </div>
-                <div className="testimonials-grid">
+                <div className="hm-testimonials-grid">
                     {testimonials.map((t, i) => (
-                        <div className="testimonial-card" key={i}>
+                        <div className="hm-testimonial-card" key={i}>
                             <div className="testimonial-stars">★★★★★</div>
-                            <p className="testimonial-text">"{t.text}"</p>
+                            <p className="hm-testimonial-text">"{t.text}"</p>
                             <div className="testimonial-author">
                                 <div className="avatar avatar-md" style={{ background: t.color }}>{t.initials}</div>
-                                <div className="testimonial-author-info">
+                                <div className="hm-testimonial-author-info">
                                     <p className="name">{t.name}</p>
                                     <p className="role">{t.role}</p>
                                 </div>
@@ -170,7 +171,7 @@ const Home = () => {
             </section>
 
             {/* CTA */}
-            <section className="cta-section">
+            <section className="hm-cta-section">
                 <h2>Ready to Build Something Amazing?</h2>
                 <p>Join thousands of founders and freelancers who are building the future together.</p>
                 <div className="cta-actions">

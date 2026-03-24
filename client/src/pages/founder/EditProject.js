@@ -63,11 +63,11 @@ const EditProject = () => {
     return (
         <DashboardLayout role="founder">
 
-            <div className="edit-project-container">
+            <div className="ep-edit-project-container">
 
                 <h2>Edit Project</h2>
 
-                <div className="edit-project-form">
+                <div className="ep-edit-project-form">
 
                     <label>Project Title</label>
                     <input
@@ -119,7 +119,7 @@ const EditProject = () => {
                         type="number"
                     />
 
-                    <button className="update-btn" onClick={handleUpdate}>
+                    <button className="ep-update-btn" onClick={handleUpdate}>
                         Update Project
                     </button>
 

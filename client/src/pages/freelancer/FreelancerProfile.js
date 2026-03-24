@@ -77,7 +77,7 @@ const FreelancerProfile = () => {
 
     return (
         <DashboardLayout role="freelancer">
-            <div className="page-header">
+            <div className="fp-page-header">
                 <div>
                     <h1>👩‍💻 My Profile</h1>
                     <p>Showcase your skills and attract the right projects.</p>

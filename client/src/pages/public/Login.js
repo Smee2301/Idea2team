@@ -4,8 +4,7 @@ import Button from '../../components/common/Button';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { useState } from "react";
-
-
+import '../../styles/Login.css';
 
 const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -14,7 +13,7 @@ const Login = () => {
         const password = document.querySelector("#login_password").value;
         const role = document.querySelector('input[name="role"]:checked')?.value;
 
-        if (!email || !password ) {
+        if (!email || !password) {
             return Swal.fire("Error", "Enter your email, password, and select your role.");
         }
         axios.post("http://localhost:5000/api/login", {
@@ -22,15 +21,11 @@ const Login = () => {
             password,
             role
         }).then((res) => {
-            //i need condition here if role is freelacer and try to login in founder then meassage show 
             Swal.fire("Success", "Login successful!", "success");
 
-            // Save user details to sessionStorage
             sessionStorage.setItem("user_id", res.data.user.user_id);
             sessionStorage.setItem("role", res.data.user.role);
 
-           
-            // Redirect based on role
             const role = res.data?.user?.role;
             if (role === 'founder') {
                 window.location.href = "/founder/dashboard";
@@ -41,7 +36,6 @@ const Login = () => {
             console.error(err);
             if (err.response?.status === "blocked") {
                 Swal.fire({
-                    // icon: "error", //this is used to show error icon
                     title: "Account Blocked",
                     html: `
                         Your account is blocked.<br/><br/>
@@ -57,20 +51,19 @@ const Login = () => {
         });
     }
 
-
     return (
-        <div className="auth-page">
-            <div className="auth-visual">
-                <div className="auth-visual-content">
+        <div className="log-auth-page">
+            <div className="log-auth-visual">
+                <div className="log-auth-visual-content">
                     <h2>Welcome Back!</h2>
                     <p>Sign in to access your dashboard, manage projects, and connect with your team.</p>
-                    <div className="auth-visual-graphic">🚀</div>
+                    <div className="log-auth-visual-graphic">🚀</div>
                 </div>
             </div>
 
-            <div className="auth-form-container">
-                <div className="auth-form">
-                    <div className="auth-form-header">
+            <div className="log-auth-form-container">
+                <div className="log-auth-form">
+                    <div className="log-auth-form-header">
                         <Link to="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', marginBottom: '24px', color: 'var(--gray-900)', textDecoration: 'none' }}>
                             <span style={{ width: '32px', height: '32px', background: 'var(--gradient-primary)', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: '800', fontSize: '14px' }}>I2</span>
                             <span style={{ fontFamily: 'var(--font-heading)', fontWeight: '700', fontSize: '18px' }}>Idea2Team</span>
@@ -79,24 +72,20 @@ const Login = () => {
                         <p>Enter your credentials to access your account</p>
                     </div>
 
-                   
-
-                    <div className="form-group">
-                        <label className="form-label">Email Address</label>
-                        <input id="login_email" type="email" className="form-input" placeholder="Enter your email" />
+                    <div className="log-form-group">
+                        <label className="log-form-label">Email Address</label>
+                        <input id="login_email" type="email" className="log-form-input" placeholder="Enter your email" />
                     </div>
 
-                    <div className="form-group">
-                        <label className="form-label">Password</label>
-
+                    <div className="log-form-group">
+                        <label className="log-form-label">Password</label>
                         <div style={{ position: "relative" }}>
                             <input
                                 id="login_password"
                                 type={showPassword ? "text" : "password"}
-                                className="form-input"
+                                className="log-form-input"
                                 placeholder="Enter your password"
                             />
-
                             <span
                                 onClick={() => setShowPassword(!showPassword)}
                                 style={{
@@ -120,7 +109,7 @@ const Login = () => {
                     </div>
                     <Button variant="primary" size="lg" style={{ width: '100%' }} onClick={handleLogin}>Sign In</Button>
 
-                    <div className="auth-divider">or</div>
+                    <div className="log-auth-divider">or</div>
 
                     <Button variant="secondary" size="lg" style={{ width: '100%', marginBottom: '8px' }}>
                         🔵 Continue with Google
@@ -129,7 +118,7 @@ const Login = () => {
                         ⚫ Continue with GitHub
                     </Button>
 
-                    <p className="auth-footer">
+                    <p className="log-auth-footer">
                         Don't have an account? <Link to="/register">Create one</Link>
                     </p>
                     <p style={{ textAlign: 'center', marginTop: '12px', fontSize: '13px' }}>

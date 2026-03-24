@@ -42,7 +42,7 @@ const BrowseProjects = () => {
    return (
       <DashboardLayout role="freelancer">
          {/* PAGE HEADER */}
-         <div className="page-header">
+         <div className="bp-page-header">
             <div>
                <h1>🔍 Browse Projects</h1>
                <p>Discover projects that match your skills and interests.</p>
@@ -50,12 +50,12 @@ const BrowseProjects = () => {
          </div>
 
          {/* SEARCH BAR */}
-         <div className="table-container">
+         <div className="bp-table-container">
             <SearchBar placeholder="Search projects by title, skill, or company..." style={{ flex: 1 }} />
          </div>
 
          {/* PROJECT CARDS */}
-         <div className="projects-grid">
+         <div className="bp-projects-grid">
             {projects.length === 0 ? (
                <p>No projects available.</p>
             ) : (
@@ -64,16 +64,16 @@ const BrowseProjects = () => {
                   const description = val.description ? (isExpanded ? val.description : val.description.slice(0, 120) + "...") : "";
 
                   return (
-                     <div className="project-card" key={val.project_id}>
-                        <h2 className="project-title">
+                     <div className="bp-project-card" key={val.project_id}>
+                        <h2 className="bp-project-title">
                            {val.title}
                         </h2>
 
-                        <p className="project-description">
+                        <p className="bp-project-description">
                            {description}
                            {val.description && val.description.length > 120 && (
                               <span
-                                 className="show-more"
+                                 className="bp-show-more"
                                  onClick={() => toggleDescription(val.project_id)}
                               >
                                  {isExpanded ? " Show Less" : " Show More"}
@@ -81,36 +81,36 @@ const BrowseProjects = () => {
                            )}
                         </p>
 
-                        <p className="project-founder">
+                        <p className="bp-project-founder">
                            <strong>Founder:</strong> {val.founder_name}
                         </p>
 
                         {/* Skills */}
-                        <div className="skills">
+                        <div className="bp-skills">
                            {val.required_skills?.split(',').map((skill, index) => (
-                              <span key={index} className="skill-tag">
+                              <span key={index} className="bp-skill-tag">
                                  {skill.trim()}
                               </span>
                            ))}
                         </div>
 
-                        <p className="project-budget">
+                        <p className="bp-project-budget">
                            <strong>Budget:</strong> ₹{val.budget_min} - ₹{val.budget_max}
                         </p>
 
-                        <p className="project-duration">
+                        <p className="bp-project-duration">
                            <strong>Duration:</strong> {val.duration_weeks} weeks
                         </p>
 
-                        <p className="project-team">
+                        <p className="bp-project-team">
                            <strong>Team Required:</strong> {val.team_members_required} freelancers
                         </p>
 
-                        <div className="status-line">
-                           Status: <span className="status active">{val.status || 'Active'}</span>
+                        <div className="bp-status-line">
+                           Status: <span className="bp-status active">{val.status || 'Active'}</span>
                         </div>
 
-                        <div className="File">
+                        <div className="bp-file-link">
                            File: <a
                                    target="_blank"
                                    href={`http://localhost:5000/public/${val.upload_file}`}
@@ -119,9 +119,9 @@ const BrowseProjects = () => {
                                  </a>
                         </div>
 
-                        <div className="project-actions">
+                        <div className="bp-project-actions">
                            <button
-                              className="edit-btn"
+                              className="bp-edit-btn"
                               style={{ width: '100%' }}
                               onClick={() => handleApply(val.project_id)}
                            >
