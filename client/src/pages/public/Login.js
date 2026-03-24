@@ -14,7 +14,7 @@ const Login = () => {
         const password = document.querySelector("#login_password").value;
         const role = document.querySelector('input[name="role"]:checked')?.value;
 
-        if (!email || !password || !role) {
+        if (!email || !password ) {
             return Swal.fire("Error", "Enter your email, password, and select your role.");
         }
         axios.post("http://localhost:5000/api/login", {
@@ -79,21 +79,7 @@ const Login = () => {
                         <p>Enter your credentials to access your account</p>
                     </div>
 
-                    {/* Role Selector */}
-                    <div className="role-selector">
-                        <label className="role-option">
-                            <input type="radio" name="role" value="founder" defaultChecked />
-                            <div className="role-option-icon">🏢</div>
-                            <div className="role-option-label">I'm a Founder</div>
-                            <p style={{ fontSize: '12px', color: 'var(--gray-500)', marginTop: '4px' }}>Post projects & hire talent</p>
-                        </label>
-                        <label className="role-option">
-                            <input type="radio" name="role" value="freelancer" />
-                            <div className="role-option-icon">💻</div>
-                            <div className="role-option-label">I'm a Freelancer</div>
-                            <p style={{ fontSize: '12px', color: 'var(--gray-500)', marginTop: '4px' }}>Find projects & earn money</p>
-                        </label>
-                    </div>
+                   
 
                     <div className="form-group">
                         <label className="form-label">Email Address</label>

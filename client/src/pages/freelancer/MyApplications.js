@@ -1,104 +1,91 @@
-import React, { useState, useEffect } from 'react';
-import DashboardLayout from '../../components/layout/DashboardLayout';
-import Avatar from '../../components/common/Avatar';
-import StatusBadge from '../../components/common/StatusBadge';
-import Button from '../../components/common/Button';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import DashboardLayout from "../../components/layout/DashboardLayout";
+import axios from "axios";
+import Swal from "sweetalert2";
+import "../../styles/MyApplication.css";
 
 const MyApplications = () => {
     const [applications, setApplications] = useState([]);
-    const [activeFilter, setActiveFilter] = useState('All');
-    const [loading, setLoading] = useState(true);
-    const filters = ['All', 'pending', 'accepted', 'rejected'];
+    const freelancer_id = sessionStorage.getItem("user_id");
 
     useEffect(() => {
-        const freelancerId = sessionStorage.getItem("user_id");
-        if (!freelancerId) {
-            setLoading(false);
-            return;
-        }
+        if (!freelancer_id) return;
 
-        axios.get(`http://localhost:5000/api/my-applications/${freelancerId}`)
-            .then(res => {
-                if (res.data.success) {
-                    setApplications(res.data.data);
-                }
-                setLoading(false);
+        axios
+            .get(`http://localhost:5000/api/freelancer/myapplication/${freelancer_id}`)
+            .then((res) => {
+                setApplications(res.data.data || []);
             })
-            .catch(err => {
-                console.error("Error fetching applications:", err);
-                setLoading(false);
-            });
-    }, []);
+            .catch((err) => console.log(err));
+    }, [freelancer_id]);
 
-    // Filter applications based on active filter
-    const displayApps = activeFilter === 'All' 
-        ? applications 
-        : applications.filter(a => a.status === activeFilter);
-
-    const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        return date.toLocaleDateString('en-US', { 
-            year: 'numeric', 
-            month: 'short', 
-            day: 'numeric' 
+    const handleView = (app) => {
+        Swal.fire({
+            title: app.title,
+            html: `
+        <div style="text-align: left; padding: 10px; font-size: 0.95em;">
+          <p style="margin-bottom: 8px;"><strong>Founder:</strong> ${app.full_name}</p>
+          <p style="margin-bottom: 8px;"><strong>Email:</strong> <a href="mailto:${app.email}" style="color: #4f46e5; text-decoration: none;">${app.email}</a></p>
+          <p style="margin-bottom: 8px;"><strong>Phone:</strong> <a href="tel:${app.phone}" style="color: #4f46e5; text-decoration: none;">${app.phone}</a></p>
+          <p style="margin-bottom: 15px;"><strong>Status:</strong> <span style="color: #10b981; font-weight: bold; text-transform: uppercase;">${app.status || 'Pending'}</span></p>
+          <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;" />
+          <p style="margin-bottom: 8px;"><strong>Project Description:</strong></p>
+          <p style="font-size: 0.9em; color: #555; line-height: 1.5;">${app.description || "No description provided."}</p>
+        </div>
+      `,
+            icon: "info",
+            confirmButtonColor: "#4f46e5",
         });
     };
 
     return (
         <DashboardLayout role="freelancer">
-            <div className="page-header">
-                <div>
-                    <h1>My Applications</h1>
-                    <p>Track all your project applications and their status.</p>
-                </div>
+            <div className="table-container">
+                <h2 className="table-title">My Applications</h2>
+
+                {applications.length === 0 ? (
+                    <p className="table-empty">No applications found.</p>
+                ) : (
+                    <div className="table-responsive">
+                        <table className="custom-table">
+                            <thead>
+                                <tr>
+                                    <th>Project Name</th>
+                                    <th>Founder</th>
+                                    <th>Contact</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {applications.map((app, index) => (
+                                    <tr key={index}>
+                                        <td className="fw-bold text-dark">{app.title}</td>
+                                        <td>{app.full_name}</td>
+                                        <td>
+                                            <div className="contact-info">
+                                                <a href={`mailto:${app.email}`} className="contact-link">{app.email}</a>
+                                                <span className="contact-separator">|</span>
+                                                <a href={`tel:${app.phone}`} className="contact-link">{app.phone}</a>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span className={`status-badge ${app.status?.toLowerCase() || 'pending'}`}>
+                                                {app.status || 'Pending'}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <button className="table-btn" onClick={() => handleView(app)}>
+                                                View
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
             </div>
-
-            <div className="filter-bar">
-                <div className="filter-chips">
-                    {filters.map(f => (
-                        <button
-                            key={f}
-                            className={`filter-chip ${activeFilter === f ? 'active' : ''}`}
-                            onClick={() => setActiveFilter(f)}
-                            style={{ textTransform: 'capitalize' }}
-                        >
-                            {f}
-                        </button>
-                    ))}
-                </div>
-            </div>
-
-            {loading ? (
-                <div style={{ textAlign: 'center', padding: '40px' }}>Loading applications...</div>
-            ) : (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                    {displayApps.map(app => (
-                        <div className="application-card" key={app.application_id}>
-                            <Avatar initials={app.founder_name?.charAt(0) || 'F'} color="#4f46e5" size="md" />
-                            <div className="application-info">
-                                <p className="application-title">{app.project_title}</p>
-                                <p className="application-project">Expected Salary: ₹{app.expected_salary}</p>
-                                <p className="application-date">Applied on {formatDate(app.applied_at)}</p>
-                            </div>
-                            <StatusBadge status={app.status} />
-                            <div className="application-actions">
-                                <Button variant="ghost" size="sm">Details</Button>
-                                {app.status === 'accepted' && (
-                                    <Button variant="primary" size="sm">Go to Workspace</Button>
-                                )}
-                            </div>
-                        </div>
-                    ))}
-
-                    {displayApps.length === 0 && (
-                        <div style={{ textAlign: 'center', padding: '60px 0', color: 'var(--gray-400)' }}>
-                            <p style={{ fontSize: '48px', marginBottom: '12px' }}>📤</p>
-                            <p>No applications found.</p>
-                        </div>
-                    )}
-                </div>
-            )}
         </DashboardLayout>
     );
 };

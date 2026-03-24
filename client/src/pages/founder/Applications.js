@@ -5,144 +5,114 @@ import Swal from "sweetalert2";
 import "../../styles/application.css";
 
 const Applications = () => {
+ 
+    const founder_id = sessionStorage.getItem("user_id");
+    
+    console.log("founder_id:",founder_id);
+    
+ const[application,setApplication]=useState([]);
 
-    const founderId = sessionStorage.getItem("user_id");
-    const [applications, setApplications] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
+  const handleAccept = (id) => {
+    axios.put(`http://localhost:5000/api/application/accept/${id}`)
+      .then(res => {
+        Swal.fire("Success", "Application accepted", "success");
+        setApplication(prev => prev.map(app => 
+          app.application_id === id ? { ...app, status: 'accepted' } : app
+        ));
+      })
+      .catch(err => {
+        console.log(err);
+        Swal.fire("Error", "Failed to accept application", "error");
+      });
+  };
 
-    useEffect(() => {
-        axios.get(`http://localhost:5000/api/founder-applications/${founderId}`)
-            .then(res => {
-                setApplications(res.data.data);
-                setIsLoading(false);
-            })
-            .catch(err => {
-                console.log(err);
-                setIsLoading(false);
-            });
-    }, [founderId]);
+  const handleReject = (id) => {
+    axios.put(`http://localhost:5000/api/application/reject/${id}`)
+      .then(res => {
+        Swal.fire("Success", "Application rejected", "success");
+        setApplication(prev => prev.map(val => 
+          val.application_id === id ? { ...val, status: 'rejected' } : val
+        ));
+      })
+      .catch(err => {
+        console.log(err);
+        Swal.fire("Error", "Failed to reject application", "error");
+      });
+  };
 
-    // ACCEPT APPLICATION
-    const handleAccept = (id) => {
-        axios.put(`http://localhost:5000/api/application/accept/${id}`)
-            .then(() => {
-                setApplications(prev =>
-                    prev.map(app =>
-                        app.application_id === id
-                            ? { ...app, status: "accepted" }
-                            : app
-                    )
-                );
-                Swal.fire({
-                    title: "Accepted!",
-                    text: "You have successfully hired this freelancer.",
-                    icon: "success",
-                    confirmButtonColor: "#4f46e5"
-                });
-            })
-            .catch(err => console.log(err));
-    };
 
-    // REJECT APPLICATION
-    const handleReject = (id) => {
-        axios.put(`http://localhost:5000/api/application/reject/${id}`)
-            .then(() => {
-                setApplications(prev =>
-                    prev.map(app =>
-                        app.application_id === id
-                            ? { ...app, status: "rejected" }
-                            : app
-                    )
-                );
-                Swal.fire({
-                    title: "Rejected!",
-                    text: "The application has been declined.",
-                    icon: "info",
-                    confirmButtonColor: "#ef4444"
-                });
-            })
-            .catch(err => console.log(err));
-    };
+useEffect(()=>{
+    axios.get(`http://localhost:5000/api/info-application/${founder_id}`)
+       .then(res => {
+            setApplication(res.data.data);
+         })
+         .catch(err => console.log(err));
+
+   
+},[founder_id])
 
     return (
-        <DashboardLayout role="founder">
-            <div className="app-dashboard-wrapper">
-
-                <div className="app-page-header">
-                    <div className="app-header-text">
-                        <h1 className="app-main-title">📨 Project Applications</h1>
-                        <p className="app-sub-title">Review, approve, and manage incoming proposals from freelancers across all your projects.</p>
-                    </div>
+      <DashboardLayout role="founder">
+           <div className="page-header">
+                <div>
+                    <h1>Applications</h1>
+                    <p>Manage the applications</p>
                 </div>
 
-                {isLoading ? (
-                    <div className="app-empty-state">
-                        <div className="loader"></div>
-                        <p>Loading applications...</p>
-                    </div>
-                ) : applications.length === 0 ? (
-                    <div className="app-empty-state">
-                        <div className="empty-icon">📭</div>
-                        <h2>No Applications Yet</h2>
-                        <p>When freelancers apply to your active projects, their proposals will appear here.</p>
-                    </div>
-                ) : (
-                    <div className="table-wrapper">
-                        <table className="app-data-table">
-                            <thead>
-                                <tr>
-                                    <th>Applicant Name</th>
-                                    <th>Project Title</th>
-                                    <th>Proposal Message</th>
-                                    <th>Expected Budget</th>
-                                    <th>Duration</th>
-                                    <th>Status</th>
-                                    <th className="action-col">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {applications.map(app => (
-                                    <tr key={app.application_id} className="app-table-row">
-                                        <td className="bold-cell">{app.full_name}</td>
-                                        <td>{app.project_title}</td>
-                                        <td className="proposal-cell" title={app.proposal}>{app.proposal?.length > 50 ? app.proposal.substring(0, 50) + '...' : app.proposal}</td>
-                                        <td className="budget-cell">₹{app.budget}</td>
-                                        <td>{app.duration} Weeks</td>
-                                        <td>
-                                            <span className={`premium-badge status-${app.status?.toLowerCase() || 'pending'}`}>
-                                                {app.status || 'Pending'}
-                                            </span>
-                                        </td>
-                                        <td className="action-col">
-                                            {app.status === "pending" ? (
-                                                <div className="table-actions">
-                                                    <button
-                                                        className="modern-btn btn-accept"
-                                                        onClick={() => handleAccept(app.application_id)}
-                                                    >
-                                                        Accept
-                                                    </button>
-                                                    <button
-                                                        className="modern-btn btn-reject"
-                                                        onClick={() => handleReject(app.application_id)}
-                                                    >
-                                                        Decline
-                                                    </button>
-                                                </div>
-                                            ) : (
-                                                <span className={`table-status-label ${app.status}`}>
-                                                    {app.status === 'accepted' ? 'Hired' : 'Declined'}
-                                                </span>
-                                            )}
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                )}
             </div>
-        </DashboardLayout>
+        <div className="Grid-Conatiner">
+           <table className="table">
+            <thead>
+                 <tr>
+                    <th>#</th>
+                    <th>Applicant name</th>
+                    <th>Project title</th>
+                    <th>Proposal message</th>
+                    <th>Expected salary</th>
+                    <th>Actions</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {application.map((val,index)=>{
+                    return(
+                        <tr>
+                            <td>{index+1}</td>
+                            <td>{val.full_name}</td>
+                            <td>{val.title}</td>
+                            <td>{val.proposal_message}</td>
+                            <td>{val.expected_salary}</td>
+                            <td>
+                            {val.status !== 'rejected' && (
+                              <button
+                                    className="btn btn-success"
+                                    disabled={val.status !== "pending"}
+                                    style={{ backgroundColor: val.status === 'accepted' ? '#28a745' : undefined, color: val.status === 'accepted' ? 'white' : undefined }}
+                                    onClick={() => handleAccept(val.application_id)}
+                                    >
+                                    {val.status === 'accepted' ? 'Accepted' : 'Accept'}
+                                    </button>
+                            )}
+
+                            {val.status !== 'accepted' && (
+                                    <button
+                                    className="btn btn-danger"
+                                    disabled={val.status !== "pending"}
+                                    style={{ backgroundColor: val.status === 'rejected' ? '#dc3545' : undefined, color: val.status === 'rejected' ? 'white' : undefined }}
+                                    onClick={() => handleReject(val.application_id)}
+                                    >
+                                    {val.status === 'rejected' ? 'Rejected' : 'Reject'}
+                                    </button>
+                            )}
+                            </td>
+                            <td>{val.status}</td>
+                        </tr>
+                    )
+                })}
+            </tbody>
+           </table>
+        </div>
+      </DashboardLayout>
     );
 };
 

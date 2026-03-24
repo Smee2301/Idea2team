@@ -1,8 +1,80 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import DashboardLayout from '../../components/layout/DashboardLayout';
 import Button from '../../components/common/Button';
+import axios from "axios";
+import Swal from "sweetalert2";
+import '../../styles/FreelancerProfile.css';
 
 const FreelancerProfile = () => {
+    const user_id = sessionStorage.getItem("user_id");
+    const [user, setUser] = useState({});
+    const [profile, setProfile] = useState({
+        title: "",
+        location: "",
+        bio: "",
+        contact_info: "",
+        skills: "[]",
+        experience: "",
+        portfolio: "[]",
+        pricing: "",
+        availability: "",
+        github: "",
+        linkedin: ""
+    });
+
+    const [newSkill, setNewSkill] = useState("");
+
+    useEffect(() => {
+        if (user_id) {
+            axios.get(`http://localhost:5000/api/userinfo/${user_id}`)
+                .then(res => setUser(res.data.data))
+                .catch(err => console.error(err));
+
+            axios.get(`http://localhost:5000/api/profile/${user_id}`)
+                .then(res => {
+                    if (res.data && res.data.user_id) {
+                        setProfile({
+                            ...res.data,
+                            skills: res.data.skills || "[]",
+                            portfolio: res.data.portfolio || "[]",
+                            github: res.data.github || "",
+                            linkedin: res.data.linkedin || ""
+                        });
+                    }
+                })
+                .catch(err => console.error(err));
+        }
+    }, [user_id]);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setProfile(prev => ({ ...prev, [name]: value }));
+    };
+
+    const handleSave = () => {
+        axios.post("http://localhost:5000/api/profile", { ...profile, user_id })
+            .then(() => {
+                Swal.fire("Success", "Profile updated successfully!", "success");
+            })
+            .catch(err => {
+                console.error(err);
+                Swal.fire("Error", "Failed to update profile", "error");
+            });
+    };
+
+    const skillsList = JSON.parse(profile.skills || "[]");
+    const addSkill = (e) => {
+        if (e.key === 'Enter' && newSkill.trim()) {
+            const updatedSkills = [...skillsList, newSkill.trim()];
+            setProfile(prev => ({ ...prev, skills: JSON.stringify(updatedSkills) }));
+            setNewSkill("");
+        }
+    };
+    const removeSkill = (index) => {
+        const updatedSkills = skillsList.filter((_, i) => i !== index);
+        setProfile(prev => ({ ...prev, skills: JSON.stringify(updatedSkills) }));
+    };
+
     return (
         <DashboardLayout role="freelancer">
             <div className="page-header">
@@ -10,118 +82,108 @@ const FreelancerProfile = () => {
                     <h1>👩‍💻 My Profile</h1>
                     <p>Showcase your skills and attract the right projects.</p>
                 </div>
-                <Button variant="primary">Save Changes</Button>
             </div>
 
-            <div className="profile-page">
-                <div className="profile-header-card">
-                    <div className="profile-cover profile-cover-freelancer"></div>
-                    <div className="profile-avatar-section">
-                        <div className="profile-avatar-large profile-avatar-freelancer">SC</div>
-                        <div className="profile-user-info">
-                            <h2>Sarah Chen</h2>
-                            <p>Full-Stack Developer & UI/UX Designer</p>
+            <div className="fp-profile-page">
+                <div className="fp-header-card">
+                    <div className="fp-cover"></div>
+                    <div className="fp-avatar-section">
+                        <div className="fp-avatar-large">
+                            {user?.full_name ? user.full_name.substring(0, 2).toUpperCase() : "FP"}
                         </div>
-                    </div>
-                    <div className="profile-details">
-                        <div className="profile-details-list">
-                            <span>📍 New York, NY</span>
-                            <span>💼 5 years experience</span>
-                            <span>📅 Joined Feb 2026</span>
-                            <span>⭐ 4.9 Rating (28 reviews)</span>
+                        <div className="fp-user-info">
+                            <h2>{user?.full_name}</h2>
+                            <p>{profile.title || "Professional Freelancer"}</p>
                         </div>
                     </div>
                 </div>
 
-                <div className="form-card">
-                    <div className="form-section">
-                        <div className="form-section-header">
-                            <span className="form-section-icon">👤</span>
-                            <div>
-                                <h3 className="form-section-title">Personal Information</h3>
-                                <p className="form-section-desc">Update your profile to stand out to founders.</p>
+                <div className="fp-form-card">
+                    <div className="fp-form-section">
+                        <div className="fp-form-section-header">
+                            <span className="fp-form-section-icon">👤</span>
+                            <h3 className="fp-form-section-title">Personal & Contact Info</h3>
+                        </div>
+                        <div className="fp-form-grid">
+                            <div className="fp-form-group">
+                                <label className="fp-form-label">Full Name</label>
+                                <input type="text" className="fp-form-input" value={user?.full_name || ""} readOnly />
+                            </div>
+                            <div className="fp-form-group">
+                                <label className="fp-form-label">Email</label>
+                                <input type="email" className="fp-form-input" value={user?.email || ""} readOnly />
                             </div>
                         </div>
-                        <div className="form-grid">
-                            <div className="form-group">
-                                <label className="form-label">First Name</label>
-                                <input type="text" className="form-input" defaultValue="Sarah" />
+                        <div className="fp-form-grid">
+                            <div className="fp-form-group">
+                                <label className="fp-form-label">Location</label>
+                                <input name="location" type="text" className="fp-form-input" value={profile.location} onChange={handleChange} placeholder="e.g. New York, NY" />
                             </div>
-                            <div className="form-group">
-                                <label className="form-label">Last Name</label>
-                                <input type="text" className="form-input" defaultValue="Chen" />
-                            </div>
-                        </div>
-                        <div className="form-group">
-                            <label className="form-label">Professional Title</label>
-                            <input type="text" className="form-input" defaultValue="Full-Stack Developer & UI/UX Designer" />
-                        </div>
-                        <div className="form-grid">
-                            <div className="form-group">
-                                <label className="form-label">Email</label>
-                                <input type="email" className="form-input" defaultValue="sarah@freelance.com" />
-                            </div>
-                            <div className="form-group">
-                                <label className="form-label">Location</label>
-                                <input type="text" className="form-input" defaultValue="New York, NY" />
+                            <div className="fp-form-group">
+                                <label className="fp-form-label">Contact/Phone</label>
+                                <input name="contact_info" type="text" className="fp-form-input" value={profile.contact_info} onChange={handleChange} placeholder="e.g. +1 234 567 890" />
                             </div>
                         </div>
-                        <div className="form-group form-group-half">
-                            <label className="form-label">Hourly Rate</label>
-                            <input type="text" className="form-input" defaultValue="$85/hr" />
+                        <div className="fp-form-group">
+                            <label className="fp-form-label">Professional Title</label>
+                            <input name="title" type="text" className="fp-form-input" value={profile.title} onChange={handleChange} placeholder="e.g. Full-Stack Developer" />
                         </div>
-                        <div className="form-group">
-                            <label className="form-label">Bio</label>
-                            <textarea className="form-input form-textarea" defaultValue="Passionate full-stack developer with 5+ years of experience building modern web applications. Specialized in React, Node.js, and cloud infrastructure. I love creating beautiful, performant user interfaces backed by robust architecture."></textarea>
+                        <div className="fp-form-group">
+                            <label className="fp-form-label">Bio</label>
+                            <textarea name="bio" className="fp-form-input fp-form-textarea" value={profile.bio} onChange={handleChange} placeholder="Tell us about yourself..." />
                         </div>
                     </div>
 
-                    <div className="form-section form-section-spaced">
-                        <div className="form-section-header">
-                            <span className="form-section-icon">⚡</span>
-                            <div>
-                                <h3 className="form-section-title">Skills & Expertise</h3>
-                                <p className="form-section-desc">Add your key skills to get matched with the right projects.</p>
-                            </div>
+                    <div className="fp-form-section">
+                        <div className="fp-form-section-header">
+                            <span className="fp-form-section-icon">⚡</span>
+                            <h3 className="fp-form-section-title">Skills & Expertise</h3>
                         </div>
-                        <div className="skills-container">
-                            {['React', 'Node.js', 'Python', 'TypeScript', 'PostgreSQL', 'AWS', 'Docker', 'Figma', 'TensorFlow', 'Next.js'].map((s, i) => (
-                                <span key={i} className="skill-tag">
-                                    {s}
-                                    <span className="skill-remove-btn">✕</span>
+
+                        <div className="fp-form-group">
+                            <input
+                                type="text"
+                                className="fp-form-input"
+                                placeholder="Add a skill and press Enter..."
+                                value={newSkill}
+                                onChange={(e) => setNewSkill(e.target.value)}
+                                onKeyPress={addSkill}
+                            />
+                        </div>
+                        <div className="fp-skills-container">
+                            {skillsList.map((s, i) => (
+                                <span key={i} className="fp-skill-tag">
+                                    {s} <span className="fp-skill-remove-btn" onClick={() => removeSkill(i)}>✕</span>
                                 </span>
                             ))}
                         </div>
-                        <div className="form-group">
-                            <input type="text" className="form-input" placeholder="Add a new skill and press Enter..." />
+                    </div>
+
+                    <div className="fp-form-section">
+                        <div className="fp-form-section-header">
+                            <span className="fp-form-section-icon">💼</span>
+                            <h3 className="fp-form-section-title">Experience & Social</h3>
+                        </div>
+                        <div className="fp-form-grid">
+                            <div className="fp-form-group">
+                                <label className="fp-form-label">Experience (Years)</label>
+                                <input name="experience" type="text" className="fp-form-input" value={profile.experience} onChange={handleChange} placeholder="e.g. 5 years" />
+                            </div>
+                        </div>
+                        <div className="fp-form-grid">
+                            <div className="fp-form-group">
+                                <label className="fp-form-label">GitHub URL</label>
+                                <input name="github" type="text" className="fp-form-input" value={profile.github} onChange={handleChange} placeholder="github.com/username" />
+                            </div>
+                            <div className="fp-form-group">
+                                <label className="fp-form-label">LinkedIn URL</label>
+                                <input name="linkedin" type="text" className="fp-form-input" value={profile.linkedin} onChange={handleChange} placeholder="linkedin.com/in/username" />
+                            </div>
                         </div>
                     </div>
 
-                    <div className="form-section form-section-last form-section-spaced">
-                        <div className="form-section-header">
-                            <span className="form-section-icon">💼</span>
-                            <div>
-                                <h3 className="form-section-title">Portfolio</h3>
-                                <p className="form-section-desc">Showcase your best work to potential clients.</p>
-                            </div>
-                        </div>
-                        <div className="portfolio-grid">
-                            {[
-                                { title: 'E-commerce Dashboard', desc: 'Modern analytics dashboard with real-time data visualization', tech: 'React, D3.js, Node.js' },
-                                { title: 'HealthTrack Mobile App', desc: 'Cross-platform fitness tracking application', tech: 'React Native, Firebase' },
-                                { title: 'AI Chatbot Platform', desc: 'Enterprise chatbot with NLP capabilities', tech: 'Python, TensorFlow, React' },
-                            ].map((item, i) => (
-                                <div key={i} className="portfolio-card">
-                                    <div className="portfolio-card-img">
-                                        🖼️
-                                    </div>
-                                    <h4 className="portfolio-card-title">{item.title}</h4>
-                                    <p className="portfolio-card-desc">{item.desc}</p>
-                                    <p className="portfolio-card-tech">{item.tech}</p>
-                                </div>
-                            ))}
-                        </div>
-                        <Button variant="outline">+ Add Portfolio Item</Button>
+                    <div style={{ textAlign: "right", marginTop: "20px" }}>
+                        <Button onClick={handleSave}>Save Profile Changes</Button>
                     </div>
                 </div>
             </div>

@@ -7,7 +7,6 @@ import '../../styles/postproject.css';
 import {useState} from "react";
 
 
-
 const PostProject = () => {
     const[fileName,setFile] = useState("");
 

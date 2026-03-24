@@ -1,3 +1,4 @@
+
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -119,7 +120,7 @@ app.post("/api/login", (req, res) => {
             success: true,
             user: {
                 user_id: user.user_id,
-               fullname: user.full_name,
+                fullname: user.full_name,
                 email: user.email,
                 role: user.role
             }
@@ -150,14 +151,14 @@ app.post("/api/forgot-password", (req, res) => {
 
 // Multer CONFIG for upload files //
 const storage = multer.diskStorage({
-    destination: function (req,file,cb){
-        cb(null,"public/");
+    destination: function (req, file, cb) {
+        cb(null, "public/");
     },
-    filename: function (req, file, cb){
+    filename: function (req, file, cb) {
         cb(null, Date.now() + path.extname(file.originalname))
     },
 });
-const upload = multer({storage: storage});
+const upload = multer({ storage: storage });
 
 app.post("/api/post-project", upload.single("upload_file"), (req, res) => {
 
@@ -213,7 +214,7 @@ app.post("/api/post-project", upload.single("upload_file"), (req, res) => {
 });
 
 
-app.post("/api/apply-project",(req,res)=>{
+app.post("/api/apply-project", (req, res) => {
 
     const {
         project_id,
@@ -233,21 +234,21 @@ app.post("/api/apply-project",(req,res)=>{
     db.query(
         query,
         [project_id, freelancer_id, proposal_message, expected_salary],
-        (err,result)=>{
+        (err, result) => {
 
-        if(err){
-            console.log(err);
-            return res.status(500).json({
-                message:"Error inserting application"
+            if (err) {
+                console.log(err);
+                return res.status(500).json({
+                    message: "Error inserting application"
+                })
+            }
+
+            res.json({
+                success: true,
+                message: "Application submitted successfully"
             })
-        }
 
-        res.json({
-            success:true,
-            message:"Application submitted successfully"
         })
-
-    })
 })
 app.get("/api/Manage-Users", (req, res) => {
     const query = `SELECT *FROM users`;
@@ -391,18 +392,18 @@ app.get("/api/projects", (req, res) => {
     });
 
 });
-app.get("/api/info-projects/:id",(req,res)=>{
+app.get("/api/info-projects/:id", (req, res) => {
     const project_id = req.params.id;
-    console.log("Project_Id:",project_id);
+    console.log("Project_Id:", project_id);
     const query = `SELECT * FROM projects WHERE project_id=?`
-    db.query(query,[project_id],(err,result)=>{
-        if(err){
+    db.query(query, [project_id], (err, result) => {
+        if (err) {
             console.log(err);
-            return res.status(500).json({message:"Error Occoure in fatching data"})
+            return res.status(500).json({ message: "Error Occoure in fatching data" })
         }
         res.json({
-            success:true,
-            data:result[0]
+            success: true,
+            data: result[0]
         })
     })
 })
@@ -491,16 +492,16 @@ app.put("/api/founder/edit-project/:id", (req, res) => {
     });
 });
 
-app.delete("/api/project/:id",(req,res)=>{
+app.delete("/api/project/:id", (req, res) => {
     const projectId = req.params.id;
-    const query= "DELETE FROM projects WHERE project_id=?";
+    const query = "DELETE FROM projects WHERE project_id=?";
 
-    db.query(query,[projectId],(err)=>{
-        if(err){
+    db.query(query, [projectId], (err) => {
+        if (err) {
             console.log(err);
-            return res.status(500).json({ message : "delete failed"});
+            return res.status(500).json({ message: "delete failed" });
         }
-        res.json({message:"Project deleted successfully"});
+        res.json({ message: "Project deleted successfully" });
     })
 })
 
@@ -539,6 +540,171 @@ app.get("/api/admin/stats", (req, res) => {
         });
     });
 });
+
+
+app.get("/api/info-application/:id", (req, res) => {
+    const founder_id = req.params.id;
+    console.log("founder_id:", founder_id);
+
+    const query = `SELECT c.application_id, a.full_name,b.title,c.proposal_message,expected_salary,c.status 
+  FROM users as a,projects as b,applications as c where a.user_id = c.freelancer_id  and
+   b.project_id = c.project_id and b.founder_id=?`;
+    db.query(query, [founder_id], (err, result) => {
+
+        if (err) {
+            console.log(err);
+            return res.status(500).json({
+                message: "Error fetching applications"
+            });
+        }
+        res.json({
+            success: true,
+            data: result
+        });
+    });
+})
+
+app.put("/api/application/accept/:id", (req, res) => {
+    const applicationId = req.params.id;
+    console.log("Application ID:", applicationId);
+    const query = "UPDATE applications SET status = 'accepted' WHERE application_id = ?";
+    db.query(query, [applicationId], (err, result) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ message: "Error updating application status" });
+        }
+        res.json({ success: true, message: "Application accepted successfully" });
+    });
+});
+
+app.put("/api/application/reject/:id", (req, res) => {
+    const applicationId = req.params.id;
+    const query = "UPDATE applications SET status = 'rejected' WHERE application_id = ?";
+    db.query(query, [applicationId], (err, result) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ message: "Error updating application status" });
+        }
+        res.json({ success: true, message: "Application rejected successfully" });
+    });
+});
+
+
+
+
+//23-03-2026 enter , update edit profile data 
+// 23-03-2026 enter, update, and edit profile data 
+app.post("/api/profile", (req, res) => {
+    const {
+        user_id, title, location, bio,
+        contact_info, skills, experience,
+        github, linkedin
+    } = req.body;
+
+    const query = `
+        INSERT INTO profiles (
+            user_id, title, location, bio, 
+            contact_info, skills, experience, 
+            github, linkedin
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ON DUPLICATE KEY UPDATE
+            title = VALUES(title),
+            location = VALUES(location),
+            bio = VALUES(bio),
+            contact_info = VALUES(contact_info),
+            skills = VALUES(skills),
+            experience = VALUES(experience),
+            github = VALUES(github),
+            linkedin = VALUES(linkedin)
+    `;
+
+    db.query(query, [
+        user_id, title, location, bio,
+        contact_info, skills, experience,
+        github, linkedin
+    ], (err) => {
+        if (err) {
+            console.error("SQL Error in Profile POST:", err);
+            return res.status(500).json({ message: "Error saving profile" });
+        }
+        res.json({ success: true, message: "Profile saved successfully" });
+    });
+});
+
+app.put("/api/profile/:user_id", (req, res) => {
+    const { user_id } = req.params;
+    const {
+        title, location, bio,
+        contact_info, skills, experience,
+        github, linkedin
+    } = req.body;
+
+    const query = `
+        UPDATE profiles
+        SET title = ?, location = ?, bio = ?, 
+            contact_info = ?, skills = ?, experience = ?, 
+            github = ?, linkedin = ?
+        WHERE user_id = ?`;
+
+    db.query(query, [
+        title, location, bio,
+        contact_info, skills, experience,
+        github, linkedin,
+        user_id
+    ], (err, result) => {
+        if (err) {
+            console.error("SQL Error in Profile PUT:", err);
+            return res.status(500).json({ message: "Error updating profile" });
+        }
+        res.status(200).json({ success: true, message: "Profile updated successfully" });
+    });
+});
+
+app.get("/api/profile/:user_id", (req, res) => {
+    const { user_id } = req.params;
+
+    const query = `
+        SELECT users.full_name, users.email, profiles.*
+        FROM users
+        LEFT JOIN profiles ON users.user_id = profiles.user_id
+        WHERE users.user_id = ?
+    `;
+
+    db.query(query, [user_id], (err, result) => {
+        if (err) {
+            console.error("SQL Error in Profile GET:", err);
+            return res.status(500).json({ message: "Error fetching profile" });
+        }
+        res.status(200).json(result[0] || {});
+    });
+});
+
+
+
+
+
+app.get("/api/freelancer/myapplication/:id", (req, res) => {
+    const id = req.params.id;
+    console.log("freelancer_id:", id)
+
+    const query = `SELECT u.full_name, u.email as email, u.phone as phone, p.title, p.description, a.status FROM users as u,projects as p,applications as a 
+    WHERE u.user_id = p.founder_id AND p.project_id = a.project_id AND freelancer_id = ?`;
+
+    db.query(query, [id], (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(500).json({
+                message: "Error fatching data"
+            })
+        }
+        res.json({
+            success: true,
+            data: result
+        })
+    })
+})
+
 
 const PORT = 5000;
 app.listen(PORT, () => {
