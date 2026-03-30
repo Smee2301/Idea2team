@@ -1,3 +1,4 @@
+// Cleaned up redundant CSS file Import
 import React, { useState, useEffect } from "react";
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import axios from "axios";
@@ -21,6 +22,7 @@ const MyApplications = () => {
 
     const handleView = (app) => {
         Swal.fire({
+
             title: app.title,
             html: `
         <div style="text-align: left; padding: 10px; font-size: 0.95em;">
@@ -40,69 +42,53 @@ const MyApplications = () => {
 
     return (
         <DashboardLayout role="freelancer">
-            <div className="ma-table-container">
-                <h2 className="ma-table-title">My Applications</h2>
-                {applications.length === 0 ? (
-                    <div className="ma-table-empty">
-                        You haven't applied to any projects yet.
-                    </div>
-                ) : (
-                    <div className="ma-table-responsive">
-                        <table className="ma-custom-table">
-                            <thead>
-                                <tr>
-                                    <th>Project Title</th>
-                                    <th>Founder</th>
-                                    <th>Applied On</th>
-                                    <th>Budget</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {applications.map((app, index) => (
-                                    <tr key={index}>
-                                        <td>
-                                            <div className="ma-fw-bold ma-text-dark">{app.title}</div>
-                                            <div style={{ fontSize: '0.8rem', color: '#6b7280' }}>
-                                                {app.category}
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div className="ma-fw-bold ma-text-dark">{app.full_name}</div>
-                                            <div className="ma-contact-info">
-                                                <a href={`mailto:${app.email}`} className="ma-contact-link">Email</a>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            {new Date(app.applied_at).toLocaleDateString('en-IN', {
-                                                day: '2-digit',
-                                                month: 'short',
-                                                year: 'numeric'
-                                            })}
-                                        </td>
-                                        <td>
-                                            <div className="ma-fw-bold ma-text-dark">₹{app.expected_salary}</div>
-                                        </td>
-                                        <td>
-                                            <span className={`ma-status-badge ${app.status.toLowerCase()}`}>
-                                                {app.status}
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <button 
-                                                className="ma-table-btn"
-                                                onClick={() => handleView(app)}
-                                            >
-                                                View
-                                            </button>
-                                        </td>
+            <div className="MyApplications-scope">
+                <div className="table-container">
+                    <h2 className="table-title">My Applications</h2>
+
+                    {applications.length === 0 ? (
+                        <p className="table-empty">No applications found.</p>
+                    ) : (
+                        <div className="table-responsive">
+                            <table className="custom-table">
+                                <thead>
+                                    <tr>
+                                        <th>Project Name</th>
+                                        <th>Founder</th>
+                                        <th>Contact</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                )}
+                                </thead>
+                                <tbody>
+                                    {applications.map((app, index) => (
+                                        <tr key={index}>
+                                            <td className="fw-bold text-dark">{app.title}</td>
+                                            <td>{app.full_name}</td>
+                                            <td>
+                                                <div className="contact-info">
+                                                    <a href={`mailto:${app.email}`} className="contact-link">{app.email}</a>
+                                                    <span className="contact-separator">|</span>
+                                                    <a href={`tel:${app.phone}`} className="contact-link">{app.phone}</a>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span className={`status-badge ${app.status?.toLowerCase() || 'pending'}`}>
+                                                    {app.status || 'Pending'}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <button className="table-btn" onClick={() => handleView(app)}>
+                                                    View
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
+                </div>
             </div>
         </DashboardLayout>
     );

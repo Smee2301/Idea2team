@@ -15,9 +15,11 @@ const FounderProfile = () => {
         company_name: "",
         company_website: "",
         industry: "Technology",
-        company_size: "11-50",
-        company_description: ""
+        company_description: "",
+        image: "",
     });
+
+    const [selectedFile, setSelectedFile] = useState(null);
 
     useEffect(() => {
         if (user_id) {
@@ -36,8 +38,8 @@ const FounderProfile = () => {
                             company_name: data.company_name || "",
                             company_website: data.company_website || "",
                             industry: data.industry || "Technology",
-                            company_size: data.company_size || "11-50",
-                            company_description: data.company_description || ""
+                            company_description: data.company_description || "",
+                            image: data.image || "",
                         });
                     }
                 })
@@ -51,7 +53,27 @@ const FounderProfile = () => {
     };
 
     const handleSave = () => {
-        axios.post("http://localhost:5000/api/founder-profile", { ...profile, user_id })
+        const formData = new FormData();
+        formData.append("user_id", user_id);
+        formData.append("phone", profile.phone);
+        formData.append("location", profile.location);
+        formData.append("bio", profile.bio);
+        formData.append("company_name", profile.company_name);
+        formData.append("company_website", profile.company_website);
+        formData.append("industry", profile.industry);
+        formData.append("company_description", profile.company_description);
+
+        if (selectedFile) {
+            formData.append("image", selectedFile);
+        } else {
+            formData.append("image", profile.image); // Keep existing filename if no new file
+        }
+
+        axios.post("http://localhost:5000/api/founder-profile", formData, {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        })
             .then(() => {
                 Swal.fire("Success", "Profile updated successfully!", "success");
             })
@@ -61,6 +83,23 @@ const FounderProfile = () => {
             });
     };
 
+
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setSelectedFile(file);
+            setProfile(prev => ({ ...prev, image: URL.createObjectURL(file) }));
+        }
+    };
+
+    const getImageUrl = (imagePath) => {
+        if (!imagePath) return null;
+        if (imagePath.startsWith("blob:") || imagePath.startsWith("data:")) {
+            return imagePath;
+        }
+        return `http://localhost:5000/public/${imagePath}`;
+    };
+
     return (
         <DashboardLayout role="founder">
             <div className="fdp-page-header">
@@ -68,15 +107,32 @@ const FounderProfile = () => {
                     <h1>🧑‍💼 My Profile</h1>
                     <p>Manage your personal and company information.</p>
                 </div>
-                <Button variant="primary" onClick={handleSave}>Save Changes</Button>
             </div>
 
             <div className="fdp-profile-page">
                 <div className="fdp-header-card">
                     <div className="fdp-cover"></div>
                     <div className="fdp-avatar-section">
-                        <div className="fdp-avatar-large">
-                            {user?.full_name ? user.full_name.substring(0, 2).toUpperCase() : "FP"}
+                        <div className="fdp-avatar-wrapper">
+                            <label htmlFor="avatar-upload" className="fdp-avatar-label">
+                                <div className="fdp-avatar-large">
+                                    {profile.image ? (
+                                        <img src={getImageUrl(profile.image)} alt="Avatar" className="fdp-avatar-img" />
+                                    ) : (
+                                        <span>{user?.full_name?.charAt(0) || "F"}</span>
+                                    )}
+                                    <div className="fdp-avatar-overlay">
+                                        <span className="fdp-edit-icon">📷</span>
+                                    </div>
+                                </div>
+                            </label>
+                            <input
+                                id="avatar-upload"
+                                type="file"
+                                accept="image/*"
+                                onChange={handleImageChange}
+                                style={{ display: 'none' }}
+                            />
                         </div>
                         <div className="fdp-user-info">
                             <h2>{user?.full_name}</h2>
@@ -146,15 +202,7 @@ const FounderProfile = () => {
                             <div className="fdp-form-group">
                                 <label className="fdp-form-label">Industry</label>
                                 <select name="industry" className="fdp-form-input fdp-form-select" value={profile.industry} onChange={handleChange}>
-                                    {['Technology', 'Healthcare', 'Finance', 'E-commerce', 'Education', 'Marketing', 'Other'].map((opt, i) => (
-                                        <option key={i} value={opt}>{opt}</option>
-                                    ))}
-                                </select>
-                            </div>
-                            <div className="fdp-form-group">
-                                <label className="fdp-form-label">Company Size</label>
-                                <select name="company_size" className="fdp-form-input fdp-form-select" value={profile.company_size} onChange={handleChange}>
-                                    {['1-10', '11-50', '51-200', '200+'].map((opt, i) => (
+                                    {['Technology', 'Healthcare', 'Finance', 'E-commerce', 'Education', 'Marketing', 'Startup', 'Other',].map((opt, i) => (
                                         <option key={i} value={opt}>{opt}</option>
                                     ))}
                                 </select>

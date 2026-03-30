@@ -1,62 +1,109 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom"
 import DashboardLayout from '../../components/layout/DashboardLayout';
-import StatsCard from '../../components/cards/StatsCard';
-import ProjectCard from '../../components/cards/ProjectCard';
-import { founderStats, projects, recentActivity } from '../../data/dummyData';
-import '../../styles/FounderOverview.css';
+import axios from "axios";
+import "../../styles/FounderOverview.css"
 
 const FounderOverview = () => {
+
+    const [projects, setProjects] = useState({
+        totalProjects: 0,
+        activeProjects: 0,
+        totalApplications: 0,
+        acceptedFreelancers: 0
+    })
+    const navigate = useNavigate();
+
+    const founder_id = sessionStorage.getItem("user_id");
+    const full_name = sessionStorage.getItem("full_name") || "Founder";
+
+    useEffect(() => {
+        if (!founder_id) return;
+        axios.get(`http://localhost:5000/api/founder/dashboard/${founder_id}`)
+            .then(res => {
+                console.log(res.data)
+                setProjects(res.data.data)
+            })
+            .catch(err => (err))
+    }, [founder_id]);
+
     return (
         <DashboardLayout role="founder">
-            <div className="foo-page-header">
-                <div>
-                    <h1>Welcome back, Alex! 👋</h1>
-                    <p>Here's what's happening with your projects today.</p>
+            <div className="founder-overview-container">
+
+                {/* Header */}
+                <div className="overview-header">
+                    <h2>👋 Welcome back, {full_name}</h2>
+                    <p>Here’s what’s happening with your projects</p>
                 </div>
-            </div>
 
-            <div className="foo-stats-grid">
-                {founderStats.map((stat, i) => (
-                    <StatsCard key={i} {...stat} />
-                ))}
-            </div>
+                {/* Stats Cards */}
+                <div className="dashboard-cards">
 
-            <div className="foo-content-grid">
-                <div>
-                    <div className="foo-card">
-                        <div className="foo-card-header">
-                            <h3 className="foo-card-title">Recent Projects</h3>
-                            <a href="/founder/projects" style={{ fontSize: '14px', fontWeight: '600', color: '#4f46e5' }}>View All →</a>
+                    <div className="card blue">
+
+                        <p>Total Projects</p>
+                        <h2>{projects.totalProjects}</h2>
+                    </div>
+
+                    <div className="card green">
+
+                        <p>Active Projects</p>
+                        <h2>{projects.activeProjects}</h2>
+                    </div>
+
+                    <div className="card purple">
+
+                        <p>Total Applications</p>
+                        <h2>{projects.totalApplications}</h2>
+                    </div>
+
+                    <div className="card orange">
+
+                        <p>Hired Freelancers</p>
+                        <h2>{projects.acceptedFreelancers}</h2>
+                    </div>
+
+                </div>
+
+                {/* Shortcuts */}
+
+                <div className="quick-actions">
+                    <h3>⚡ Quick Actions</h3>
+
+                    <div className="quick-grid">
+
+                        <div
+                            className="quick-card primary"
+                            onClick={() => navigate('/founder/post-project')}
+                        >
+                            <h3>Post New Project</h3>
+                            <p>Start hiring freelancers in minutes</p>
                         </div>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                            {projects.slice(0, 3).map(project => (
-                                <ProjectCard key={project.id} project={project} />
-                            ))}
+
+                        <div
+                            className="quick-card primary"
+                            onClick={() => navigate('/founder/projects')}
+                        >
+                            <h3>Manage Projects</h3>
+                            <p>Edit, track and update your projects</p>
                         </div>
+
+                        <div
+                            className="quick-card primary"
+                            onClick={() => navigate('/founder/applications')}
+                        >
+                            <h3>View Applications</h3>
+                            <p>Accept or reject freelancers</p>
+                        </div>
+
                     </div>
                 </div>
 
-                <div>
-                    <div className="foo-card">
-                        <div className="foo-card-header">
-                            <h3 className="foo-card-title">Recent Activity</h3>
-                        </div>
-                        <div className="foo-activity-list">
-                            {recentActivity.map((item, i) => (
-                                <div className="foo-activity-item" key={i}>
-                                    <div className="foo-activity-dot" style={{ background: item.color }}></div>
-                                    <div className="foo-activity-content">
-                                        <p className="foo-activity-text" dangerouslySetInnerHTML={{ __html: item.text }}></p>
-                                        <span className="foo-activity-time">{item.time}</span>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
             </div>
         </DashboardLayout>
     );
+
 };
 
 export default FounderOverview;

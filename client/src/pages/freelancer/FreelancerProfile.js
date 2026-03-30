@@ -19,10 +19,12 @@ const FreelancerProfile = () => {
         pricing: "",
         availability: "",
         github: "",
-        linkedin: ""
+        linkedin: "",
+        image: ""
     });
 
     const [newSkill, setNewSkill] = useState("");
+    const [selectedFile, setSelectedFile] = useState(null);
 
     useEffect(() => {
         if (user_id) {
@@ -38,7 +40,8 @@ const FreelancerProfile = () => {
                             skills: res.data.skills || "[]",
                             portfolio: res.data.portfolio || "[]",
                             github: res.data.github || "",
-                            linkedin: res.data.linkedin || ""
+                            linkedin: res.data.linkedin || "",
+                            image: res.data.image || ""
                         });
                     }
                 })
@@ -52,7 +55,28 @@ const FreelancerProfile = () => {
     };
 
     const handleSave = () => {
-        axios.post("http://localhost:5000/api/profile", { ...profile, user_id })
+        const formData = new FormData();
+        formData.append("user_id", user_id);
+        formData.append("title", profile.title);
+        formData.append("location", profile.location);
+        formData.append("bio", profile.bio);
+        formData.append("contact_info", profile.contact_info);
+        formData.append("skills", profile.skills);
+        formData.append("experience", profile.experience);
+        formData.append("github", profile.github);
+        formData.append("linkedin", profile.linkedin);
+
+        if (selectedFile) {
+            formData.append("image", selectedFile);
+        } else {
+            formData.append("image", profile.image);
+        }
+
+        axios.post("http://localhost:5000/api/profile", formData, {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        })
             .then(() => {
                 Swal.fire("Success", "Profile updated successfully!", "success");
             })
@@ -60,6 +84,22 @@ const FreelancerProfile = () => {
                 console.error(err);
                 Swal.fire("Error", "Failed to update profile", "error");
             });
+    };
+
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setSelectedFile(file);
+            setProfile(prev => ({ ...prev, image: URL.createObjectURL(file) }));
+        }
+    };
+
+    const getImageUrl = (imagePath) => {
+        if (!imagePath) return null;
+        if (imagePath.startsWith("blob:") || imagePath.startsWith("data:")) {
+            return imagePath;
+        }
+        return `http://localhost:5000/public/${imagePath}`;
     };
 
     const skillsList = JSON.parse(profile.skills || "[]");
@@ -88,9 +128,25 @@ const FreelancerProfile = () => {
                 <div className="fp-header-card">
                     <div className="fp-cover"></div>
                     <div className="fp-avatar-section">
-                        <div className="fp-avatar-large">
-                            {user?.full_name ? user.full_name.substring(0, 2).toUpperCase() : "FP"}
-                        </div>
+                        <label htmlFor="avatar-upload" className="fp-avatar-label">
+                            <div className="fp-avatar-large">
+                                {profile.image ? (
+                                    <img src={getImageUrl(profile.image)} alt="Avatar" className="fp-avatar-img" />
+                                ) : (
+                                    user?.full_name ? user.full_name.substring(0, 2).toUpperCase() : "FP"
+                                )}
+                                <div className="fp-avatar-overlay">
+                                    <span className="fp-edit-icon">📷</span>
+                                </div>
+                            </div>
+                        </label>
+                        <input
+                            id="avatar-upload"
+                            type="file"
+                            accept="image/*"
+                            onChange={handleImageChange}
+                            style={{ display: 'none' }}
+                        />
                         <div className="fp-user-info">
                             <h2>{user?.full_name}</h2>
                             <p>{profile.title || "Professional Freelancer"}</p>

@@ -12,7 +12,7 @@ const FreelancerWorkspace = () => {
             <div className="page-header">
                 <div>
                     <h1>🛠️ Project Workspace</h1>
-                    <p>AI-Powered SaaS Dashboard — Your active project workspace.</p>
+                    <p>AI-Powered SaaS Dashboard — Track your tasks and collaborate with the team.</p>
                 </div>
             </div>
 

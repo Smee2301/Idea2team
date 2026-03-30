@@ -45,6 +45,15 @@
   gap: 25px;
 }
 
+.fdp-avatar-wrapper {
+  position: relative;
+}
+
+.fdp-avatar-label {
+  cursor: pointer;
+  display: block;
+}
+
 .fdp-avatar-large {
   width: 120px;
   height: 120px;
@@ -58,6 +67,44 @@
   font-weight: 700;
   border: 6px solid white;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.fdp-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fdp-avatar-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.fdp-avatar-large:hover .fdp-avatar-overlay {
+  opacity: 1;
+}
+
+.fdp-avatar-large:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.fdp-edit-icon {
+  font-size: 1.5rem;
+  color: white;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
 }
 
 .fdp-user-info h2 {

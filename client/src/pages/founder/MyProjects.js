@@ -57,7 +57,7 @@ const MyProjects = () => {
     return (
         <DashboardLayout role="founder">
 
-            <div className="mp-page-header">
+            <div className="page-header">
                 <div>
                     <h1>My Projects</h1>
                     <p>Manage and track all your posted projects.</p>
@@ -71,12 +71,12 @@ const MyProjects = () => {
                 </Button>
             </div>
 
-            <div className="mp-table-container">
+            <div className="search-bar-container">
                 <SearchBar placeholder="Search projects..." />
             </div>
 
             {/* PROJECT CARDS */}
-            <div className="mp-projects-grid">
+            <div className="projects-grid">
                 {projects.map((val) => {
                     const isExpanded = expanded[val.project_id];
                     const description = isExpanded
@@ -84,54 +84,59 @@ const MyProjects = () => {
                         : val.description.slice(0, 120) + "...";
 
                     return (
-                        <div className="mp-project-card" key={val.project_id}>
-                            <h2 className="mp-project-title">
+                        <div className="project-card" key={val.project_id}>
+                            <h2 className="project-title">
                                 {val.title}
                             </h2>
 
-                            <p className="mp-project-description">
+                            <p className="project-description">
                                 {description}
                                 <span
-                                    className="mp-show-more"
-                                    onClick={() => toggleDescription(val.project_id)}
+                                    className="show-more"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        toggleDescription(val.project_id);
+                                    }}
                                 >
                                     {isExpanded ? " Show Less" : " Show More"}
                                 </span>
                             </p>
 
-                            <p className="mp-project-founder">
-                                <strong>Founder:</strong> Meet
-                            </p>
-
-                            <div className="mp-skills">
+                            <div className="skill-tags">
                                 {val.required_skills.split(",").map((skill, index) => (
-                                    <span key={index} className="mp-skill-tag">
+                                    <span key={index} className="skill-tag">
                                         {skill}
                                     </span>
                                 ))}
                             </div>
 
-                            <p className="mp-project-budget">
-                                <strong>Budget:</strong> ₹{val.budget_min} - ₹{val.budget_max}
-                            </p>
+                            <div className="project-card-meta">
 
-                            <p className="mp-project-duration">
-                                <strong>Duration:</strong> {val.duration_weeks} weeks
-                            </p>
+                                <span><strong>Budget:</strong>
+                                    <span>₹{val.budget_min} - ₹{val.budget_max}</span>
+                                </span>
 
-                            <p className="mp-project-team">
-                                <strong>Team Required:</strong> {val.team_members_required} freelancers
-                            </p>
+                                <span><strong>Duration:</strong>
+                                    <span>{val.duration_weeks} weeks</span>
+                                </span>
 
-                            <div className="mp-status-line">
-                                Status: <span className="mp-status active">Active</span>
+                                <span><strong>Team Required:</strong>
+                                    <span>{val.team_members_required} freelancers</span>
+                                </span>
+
+                                <span><strong>Status:</strong>
+                                    <span className="status-badge">Active</span>
+                                </span>
                             </div>
 
-                            <div className="mp-uploadFile">
-                                File: {val.upload_file ? (
+
+                            <div className="file-link">
+                                <strong>File:</strong> {val.upload_file ? (
                                     <a
                                         target="_blank"
+                                        rel="noopener noreferrer"
                                         href={`http://localhost:5000/public/${val.upload_file}`}
+                                        onClick={(e) => e.stopPropagation()}
                                     >
                                         {val.upload_file}
                                     </a>
@@ -139,28 +144,36 @@ const MyProjects = () => {
                                     <span>No file uploaded</span>
                                 )}
                             </div>
-                          
-                            <div className="mp-project-actions">
-                                <button
-                                    className="mp-edit-btn"
-                                    onClick={() => handleEdit(val.project_id)}
+
+                            <div className="project-actions">
+                                <Button
+                                    variant="outline"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleEdit(val.project_id);
+                                    }}
+                                    style={{ flex: 1 }}
                                 >
                                     Edit
-                                </button>
+                                </Button>
 
-                                <button
-                                    className="mp-delete-btn"
-                                    onClick={() => handleDelete(val.project_id)}
+                                <Button
+                                    variant="danger"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleDelete(val.project_id);
+                                    }}
+                                    style={{ flex: 1 }}
                                 >
                                     Delete
-                                </button>
+                                </Button>
                             </div>
                         </div>
                     );
                 })}
             </div>
 
-        </DashboardLayout>
+        </DashboardLayout >
     );
 };
 

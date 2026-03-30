@@ -25,6 +25,7 @@ const Login = () => {
 
             sessionStorage.setItem("user_id", res.data.user.user_id);
             sessionStorage.setItem("role", res.data.user.role);
+            sessionStorage.setItem("fullname", res.data.user.fullname);
 
             const role = res.data?.user?.role;
             if (role === 'founder') {

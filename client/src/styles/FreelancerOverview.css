@@ -1,112 +1,132 @@
-.fro-page-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: var(--space-8);
+.freelancer-overview-container {
+    padding: 20px;
 }
 
-.fro-page-header h1 {
-    font-size: var(--text-2xl);
-    margin: 0;
+.freelancer-overview-container .overview-header {
+    margin-bottom: 20px;
 }
 
-.fro-page-header p {
-    font-size: var(--text-sm);
-    color: var(--gray-500);
-    margin-top: var(--space-1);
+.freelancer-overview-container .overview-header h2 {
+    font-size: 24px;
+    color: #333;
 }
 
-.fro-stats-grid {
+.freelancer-overview-container .overview-header p {
+    color: #666;
+    margin-top: 5px;
+}
+
+.freelancer-overview-container .dashboard-cards {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: var(--space-6);
-    margin-bottom: var(--space-8);
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
 }
 
-.fro-content-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: var(--space-6);
-}
-
-.fro-card {
+.freelancer-overview-container .card {
     background: white;
-    padding: var(--space-6);
-    border-radius: var(--radius-xl);
-    border: 1px solid var(--gray-200);
-    box-shadow: var(--shadow-sm);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: 0.3s;
 }
 
-.fro-card-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: var(--space-6);
+.freelancer-overview-container .card:hover {
+    transform: translateY(-6px);
 }
 
-.fro-card-title {
-    font-size: var(--text-lg);
-    font-weight: 700;
-    margin: 0;
+.freelancer-overview-container .card .icon {
+    font-size: 24px;
+    margin-bottom: 10px;
 }
 
-.fro-activity-list {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
+.freelancer-overview-container .card-title {
+    font-weight: bold;
+    font-size: 18px;
+    color: #4e4f50;
+    margin-bottom: 5px;
 }
 
-.fro-activity-item {
-    display: flex;
-    gap: var(--space-4);
-    position: relative;
+.freelancer-overview-container .card-value {
+    font-size: 20px;
+    font-weight: bolder;
+    display: block;
+    margin-top: 8px;
 }
 
-.fro-activity-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    margin-top: 4px;
-    flex-shrink: 0;
+/* Colors similar to FounderOverview */
+.freelancer-overview-container .card.blue {
+    border-left: 5px solid #3b82f6;
 }
 
-.fro-activity-content {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
+.freelancer-overview-container .card.green {
+    border-left: 5px solid #22c55e;
 }
 
-.fro-activity-text {
-    font-size: var(--text-sm);
-    color: var(--gray-700);
-    margin: 0;
+.freelancer-overview-container .card.red {
+    border-left: 5px solid #ef4444;
 }
 
-.fro-activity-time {
-    font-size: var(--text-xs);
-    color: var(--gray-500);
+.freelancer-overview-container .card.yellow {
+    border-left: 5px solid #f59e0b;
 }
 
-.fro-skill-tag {
-    background: var(--primary-50);
-    color: var(--primary-700);
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 500;
+.freelancer-overview-container .card.purple {
+    border-left: 5px solid #8b5cf6;
 }
 
-@media (max-width: 1024px) {
-    .fro-stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    .fro-content-grid {
-        grid-template-columns: 1fr;
-    }
+/* Quick actions */
+.freelancer-overview-container .quick-actions {
+    margin-top: 30px;
 }
 
-@media (max-width: 640px) {
-    .fro-stats-grid {
-        grid-template-columns: 1fr;
-    }
+.freelancer-overview-container .quick-actions h3 {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.freelancer-overview-container .quick-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+}
+
+.freelancer-overview-container .quick-card {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 25px;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    text-align: center;
+}
+
+.freelancer-overview-container .quick-card:hover {
+    transform: translateY(-6px);
+}
+
+.freelancer-overview-container .quick-card.primary {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(78, 70, 229, 0.66));
+    color: #0f172a;
+
+}
+
+.freelancer-overview-container .quick-card.primary h3,
+.freelancer-overview-container .quick-card.primary p {
+    color: rgb(0, 0, 0);
+}
+
+.freelancer-overview-container .q-icon {
+    font-size: 32px;
+    margin-bottom: 15px;
+}
+
+.freelancer-overview-container .quick-card h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.freelancer-overview-container .quick-card p {
+    font-size: 14px;
+    color: #64748b;
 }

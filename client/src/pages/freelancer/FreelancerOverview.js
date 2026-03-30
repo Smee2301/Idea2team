@@ -1,71 +1,100 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import DashboardLayout from '../../components/layout/DashboardLayout';
-import StatsCard from '../../components/cards/StatsCard';
-import ProjectCard from '../../components/cards/ProjectCard';
-import { freelancerStats, projects, recentActivity } from '../../data/dummyData';
-import '../../styles/FreelancerOverview.css';
+import axios from "axios"
+import "../../styles/FreelancerOverview.css"
 
 const FreelancerOverview = () => {
+    const [projects, setProjects] = useState({
+        appliedProjects: 0,
+        acceptedProjects: 0,
+        rejeted: 0,
+        pending: 0,
+        activeProjects: 0
+    })
+    const navigate = useNavigate();
+    const freelancer_id = sessionStorage.getItem("user_id");
+    const fullname = sessionStorage.getItem("fullname") || "Freelancer";
+
+    useEffect(() => {
+        if (!freelancer_id) return;
+        axios.get(`http://localhost:5000/api/freelancer/dashboard/${freelancer_id}`)
+            .then(res => {
+                console.log(res.data)
+                setProjects(res.data.data)
+            })
+            .catch(err => console.log(err))
+    }, [freelancer_id])
+
     return (
-        <DashboardLayout role="freelancer">
-            <div className="fro-page-header">
-                <div>
-                    <h1>Welcome back, Sarah! 👋</h1>
-                    <p>Here's your freelance activity overview.</p>
+        <DashboardLayout role="Freelancer">
+
+            <div className="freelancer-overview-container">
+
+                {/* HEADER */}
+                <div className="overview-header">
+                    <h2>👋 Welcome back, {fullname}</h2>
+                    <p>Track your applications and projects</p>
                 </div>
-            </div>
 
-            <div className="fro-stats-grid">
-                {freelancerStats.map((stat, i) => (
-                    <StatsCard key={i} {...stat} />
-                ))}
-            </div>
+                {/* STATS */}
+                <div className="dashboard-cards">
 
-            <div className="fro-content-grid">
-                <div>
-                    <div className="fro-card">
-                        <div className="fro-card-header">
-                            <h3 className="fro-card-title">Recommended Projects</h3>
-                            <a href="/freelancer/browse" style={{ fontSize: '14px', fontWeight: '600', color: '#4f46e5' }}>Browse All →</a>
+                    <div className="card blue">
+                        <div className="icon">📂</div>
+                        <p className="card-title">Applied Projects</p>
+                        <span className="card-value">{projects.appliedProjects}</span>
+                    </div>
+
+                    <div className="card green">
+                        <div className="icon">✅</div>
+                        <p className="card-title">Accepted</p>
+                        <span className="card-value">{projects.acceptedProjects}</span>
+                    </div>
+
+                    <div className="card red">
+                        <div className="icon">❌</div>
+                        <p className="card-title">Rejected</p>
+                        <span className="card-value">{projects.rejeted}</span>
+                    </div>
+
+                    <div className="card yellow">
+                        <div className="icon">⏳</div>
+                        <p className="card-title">Pending</p>
+                        <span className="card-value">{projects.pending}</span>
+                    </div>
+
+                    <div className="card purple">
+                        <div className="icon">🚀</div>
+                        <p className="card-title">Active Projects</p>
+                        <span className="card-value">{projects.activeProjects}</span>
+                    </div>
+
+                </div>
+
+                {/* QUICK ACTIONS */}
+                <div className="quick-actions">
+                    <h3>⚡ Quick Actions</h3>
+
+                    <div className="quick-grid">
+
+                        <div className="quick-card primary" onClick={() => navigate('/freelancer/browse')}>
+                            <div className="q-icon">🔍</div>
+                            <h3>Browse Projects</h3>
+                            <p>Find new opportunities to apply</p>
                         </div>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                            {projects.filter(p => p.status === 'Active').slice(0, 3).map(project => (
-                                <ProjectCard key={project.id} project={project} />
-                            ))}
+
+                        <div className="quick-card primary" onClick={() => navigate('/freelancer/applications')}>
+                            <div className="q-icon">📨</div>
+                            <h3>My Applications</h3>
+                            <p>Track your application status</p>
                         </div>
+
                     </div>
                 </div>
 
-                <div>
-                    <div className="fro-card">
-                        <div className="fro-card-header">
-                            <h3 className="fro-card-title">Recent Activity</h3>
-                        </div>
-                        <div className="fro-activity-list">
-                            {recentActivity.map((item, i) => (
-                                <div className="fro-activity-item" key={i}>
-                                    <div className="fro-activity-dot" style={{ background: item.color }}></div>
-                                    <div className="fro-activity-content">
-                                        <p className="fro-activity-text" dangerouslySetInnerHTML={{ __html: item.text }}></p>
-                                        <span className="fro-activity-time">{item.time}</span>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-
-                    <div className="fro-card" style={{ marginTop: '24px' }}>
-                        <div className="fro-card-header">
-                            <h3 className="fro-card-title">Your Skills</h3>
-                        </div>
-                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                            {['React', 'Node.js', 'Python', 'Figma', 'PostgreSQL', 'AWS', 'Docker', 'TensorFlow'].map((s, i) => (
-                                <span key={i} className="fro-skill-tag">{s}</span>
-                            ))}
-                        </div>
-                    </div>
-                </div>
             </div>
+
         </DashboardLayout>
     );
 };

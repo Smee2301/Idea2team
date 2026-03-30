@@ -1,111 +1,202 @@
-.ma-table-container {
-    background: white;
-    padding: 24px;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+/* ===== RESET ===== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-.ma-table-title {
-    font-size: 1.5rem;
+/* ===== CONTAINER ===== */
+
+.MyApplications-scope .table-container {
+    padding: 30px;
+    background: linear-gradient(135deg, #eef2ff, #f8fafc);
+}
+
+/* ===== TITLE ===== */
+
+.MyApplications-scope .table-title {
+    font-size: 26px;
     font-weight: 700;
-    color: #111827;
+    color: #0f172a;
     margin-bottom: 20px;
 }
 
-.ma-table-empty {
-    text-align: center;
-    padding: 40px;
-    color: #6b7280;
-    font-size: 1.1rem;
-}
+/* ===== TABLE CARD ===== */
 
-.ma-table-responsive {
+.MyApplications-scope .table-responsive {
+    width: 100%;
     overflow-x: auto;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
 }
 
-.ma-custom-table {
+/* ===== TABLE ===== */
+
+.MyApplications-scope .custom-table {
     width: 100%;
     border-collapse: collapse;
-    text-align: left;
 }
 
-.ma-custom-table th {
-    padding: 12px 16px;
-    background-color: #141f36;
+/* ===== HEADER ===== */
+
+.MyApplications-scope .custom-table thead {
+    background: linear-gradient(135deg, #1e293b, #334155);
     color: #ffffff;
-    font-weight: 600;
-    border-bottom: 2px solid #1f2937;
 }
 
-.ma-custom-table td {
-    padding: 16px;
-    border-bottom: 1px solid #f3f4f6;
-    color: #4b5563;
+.MyApplications-scope .custom-table th {
+    padding: 16px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: left;
+    letter-spacing: 0.4px;
+}
+
+/* ===== BODY ===== */
+
+.MyApplications-scope .custom-table td {
+    padding: 16px 18px;
+    font-size: 14px;
+    color: #1e293b;
+    border-bottom: 1px solid #e5e7eb;
     vertical-align: middle;
 }
 
-.ma-fw-bold {
+/* ===== ROW ===== */
+
+.custom-table tbody tr {
+    transition: all 0.25s ease;
+}
+
+.custom-table tbody tr:hover {
+    background: rgba(79, 70, 229, 0.05);
+    transform: translateY(-1px);
+}
+
+/* ===== TEXT ===== */
+
+.MyApplications-scope .fw-bold {
     font-weight: 600;
 }
 
-.ma-text-dark {
-    color: #111827;
+.MyApplications-scope .text-dark {
+    color: #0f172a;
 }
 
-.ma-contact-info {
+/* ===== CONTACT ===== */
+
+.MyApplications-scope .contact-info {
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-size: 0.9rem;
+    gap: 6px;
+    font-size: 13px;
 }
 
-.ma-contact-link {
+.MyApplications-scope .contact-link {
     color: #4f46e5;
     text-decoration: none;
-}
-
-.ma-contact-link:hover {
-    text-decoration: underline;
-}
-
-.ma-contact-separator {
-    color: #d1d5db;
-}
-
-.ma-status-badge {
-    padding: 4px 12px;
-    border-radius: 9999px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-}
-
-.ma-status-badge.pending {
-    background-color: #fef3c7;
-    color: #92400e;
-}
-
-.ma-status-badge.accepted {
-    background-color: #d1fae5;
-    color: #065f46;
-}
-
-.ma-status-badge.rejected {
-    background-color: #fee2e2;
-    color: #991b1b;
-}
-
-.ma-table-btn {
-    background-color: #4f46e5;
-    color: white;
-    padding: 6px 16px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
     font-weight: 500;
-    transition: background-color 0.2s;
+    transition: 0.2s;
 }
 
-.ma-table-btn:hover {
-    background-color: #4338ca;
+.MyApplications-scope .contact-link:hover {
+    text-decoration: underline;
+    color: #3730a3;
+}
+
+.MyApplications-scope .contact-separator {
+    color: #cbd5e1;
+}
+
+/* ===== STATUS BADGE ===== */
+
+.MyApplications-scope .status-badge {
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: capitalize;
+    display: inline-block;
+    transition: 0.2s;
+}
+
+/* Pending */
+
+.MyApplications-scope .status-badge.pending {
+    background: rgba(99, 102, 241, 0.15);
+    color: #4f46e5;
+}
+
+/* Accepted */
+
+.MyApplications-scope .status-badge.accepted {
+    background: rgba(34, 197, 94, 0.15);
+    color: #16a34a;
+}
+
+/* Rejected */
+
+.MyApplications-scope .status-badge.rejected {
+    background: rgba(239, 68, 68, 0.15);
+    color: #dc2626;
+}
+
+/* Hover effect on badge */
+
+.MyApplications-scope .status-badge:hover {
+    transform: scale(1.05);
+}
+
+/* ===== BUTTON ===== */
+
+.MyApplications-scope .table-btn {
+    padding: 7px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.MyApplications-scope .table-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(79, 70, 229, 0.35);
+}
+
+/* ===== EMPTY ===== */
+
+.MyApplications-scope .table-empty {
+    text-align: center;
+    padding: 40px;
+    color: #64748b;
+    font-size: 16px;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 768px) {
+    .MyApplications-scope .table-container {
+        padding: 15px;
+    }
+
+    .MyApplications-scope .custom-table th,
+    .MyApplications-scope .custom-table td {
+        padding: 10px;
+        font-size: 12px;
+    }
+
+    .MyApplications-scope .contact-info {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .MyApplications-scope .table-btn {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
 }
