@@ -34,7 +34,6 @@ const Login = () => {
                 window.location.href = "/freelancer/dashboard";
             }
         }).catch((err) => {
-            console.error(err);
             if (err.response?.status === "blocked") {
                 Swal.fire({
                     title: "Account Blocked",

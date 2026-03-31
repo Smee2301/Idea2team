@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 app.use("/public", express.static("public"));
 
 const db = mysql.createConnection({
-    host: "localhost",
+    host: "127.0.0.1",
     user: "root",
     password: "",
     database: "idea2team"
