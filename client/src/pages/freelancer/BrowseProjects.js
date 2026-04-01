@@ -9,6 +9,8 @@ const BrowseProjects = () => {
 
    const [projects, setProjects] = useState([]);
    const [expanded, setExpanded] = useState({});
+
+
    const navigate = useNavigate();
 
    /* ===============================
@@ -19,9 +21,22 @@ const BrowseProjects = () => {
       axios.get("http://localhost:5000/api/projects")
          .then(res => {
             setProjects(res.data.data);
+
          })
          .catch(err => console.log(err));
    }, []);
+
+
+   const [searchfilter, setSearchfilter] = useState("");
+   const filterobj = searchfilter
+      ? projects.filter((item) => {
+         return (
+            item.title?.toLowerCase().includes(searchfilter.toLowerCase()) ||
+            item.required_skills?.toLowerCase().includes(searchfilter.toLowerCase())
+
+         );
+      })
+      : projects
 
    // Toggle description
    const toggleDescription = (id) => {
@@ -39,6 +54,11 @@ const BrowseProjects = () => {
       navigate(`/apply-project/${id}`);
    };
 
+   // const handlehighbudget = () => {
+   //    const high = projects.filter((item) => Number(item.budget_min > 200));
+   //    projects(high)
+   // }
+
    return (
       <DashboardLayout role="freelancer">
          {/* PAGE HEADER */}
@@ -51,15 +71,21 @@ const BrowseProjects = () => {
 
          {/* SEARCH BAR */}
          <div className="bp-table-container">
-            <SearchBar placeholder="Search projects by title, skill, or company..." style={{ flex: 1 }} />
+            <SearchBar value={searchfilter}
+               onChange={(e) => setSearchfilter(e.target.value)}
+               placeholder="Search projects by title, skill...." style={{ flex: 1 }} />
          </div>
 
-         {/* PROJECT CARDS */}
+         {/* <button onClick={handlehighbudget}>High-budget💸</button> */}
+
+         {/* PROJECT CARDS */}   
          <div className="bp-projects-grid">
             {projects.length === 0 ? (
                <p>No projects available.</p>
+            ) : filterobj.length === 0 ? (
+               <p>No matching projects found.</p>
             ) : (
-               projects.map((val) => {
+               filterobj.map((val) => {
                   const isExpanded = expanded[val.project_id];
                   const description = val.description ? (isExpanded ? val.description : val.description.slice(0, 120) + "...") : "";
 
@@ -112,11 +138,12 @@ const BrowseProjects = () => {
 
                         <div className="bp-file-link">
                            File: <a
-                                   target="_blank"
-                                   href={`http://localhost:5000/public/${val.upload_file}`}
-                                   >
-                                    {val.upload_file}
-                                 </a>
+                              target="_blank"
+                              rel="noreferrer"
+                              href={`http://localhost:5000/public/${val.upload_file}`}
+                           >
+                              {val.upload_file}
+                           </a>
                         </div>
 
                         <div className="bp-project-actions">

@@ -85,7 +85,7 @@ const Login = () => {
                                 type={showPassword ? "text" : "password"}
                                 className="log-form-input"
                                 placeholder="Enter your password"
-                            />
+                            /> 
                             <span
                                 onClick={() => setShowPassword(!showPassword)}
                                 style={{
